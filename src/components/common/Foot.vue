@@ -1,7 +1,7 @@
 <template>
   <div class="foot-box">
     <ul>
-        <li><h2>T^T Online Judge</h2></li>
+        <li><h2>FJUT Online Judge</h2></li>
         <li><ul class="foot-information">
             <li>Bug反馈</li> |
             <li>Faq</li> |
@@ -30,7 +30,7 @@ export default {
         if(this.timer) {
             clearInterval(this.timer);//在vue实例销毁钱，清除我们的定时器
         }
-    }    
+    }
 }
 </script>
 

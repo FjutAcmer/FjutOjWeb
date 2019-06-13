@@ -1,107 +1,208 @@
 <template>
-    <div class="login">
-        <el-card class="box-card">
-            <h1>登录</h1>
-            <el-form ref="form" :model="form" label-width="80px" label-position="top" :rules="rules">
-                <el-form-item label="用户名" prop="name">
-                    <el-input v-model="form.name" ref="name"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="pwd">
-                    <el-input v-model="form.pwd" ref="pwd"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit('form')">登录</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
-    </div>
+  <div class="login">
+    <el-card :body-style='{ padding: "0px" }' class="box-card">
+      <img src="../../assets/Login_left_bg.jpg">
+      <div style="width:500px;height:100%;float:right">
+        <h1>登录</h1>
+        <el-form ref="form" style="margin-top:8%" :model="form" :rules="rules">
+          <el-form-item prop="name" style="float:center">
+            <input
+              name="name"
+              autocomplete="on"
+              autofocus="autofocus"
+              type="text"
+              v-model="form.name"
+              placeholder="用户名"
+              ref="name"
+            >
+          </el-form-item>
+          <el-form-item prop="pwd" style="float:center" @keyup.enter.native="onSubmit('form')">
+            <input
+              name="pwd"
+              type="password"
+              show-password
+              v-model="form.pwd"
+              placeholder="密码"
+              ref="pwd"
+            >
+          </el-form-item>
+          <el-button type="primary" @click="onSubmit('form')">登录</el-button>
+        </el-form>
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <script>
-import { getUser } from "../../api";
-import { valid } from 'semver';
-import {mapActions} from 'vuex';
+import { valid } from "semver";
 
 export default {
-    data() {
-      return {
-        form:{
-          name: '',
-          pwd: ''
-        },
-        datas:[null],
-        rules: {
-          name: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
-            { min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur' }
-          ],
-          pwd: [
-            { required: true, message: '请输入密码', trigger: 'change' },
-            { min: 4, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
-          ]
-        }
+  data() {
+    // add by axiang [20190609] 添加判断是否为管理员逻辑
+    var validateUsername = (rule, value, callback) => {
+      var reg = /^\w+$/;
+      if (!reg.test(value)) callback(new Error("请输入字母、数字或者下划线"));
+      else callback();
+    };
+    return {
+      form: {
+        name: "",
+        pwd: ""
+      },
+      datas: [],
+      rules: {
+        name: [
+          { required: true, message: "用户名不能为空", trigger: "blur" },
+          {
+            min: 1,
+            max: 20,
+            message: "长度在 1 到 20 个字符",
+            trigger: "blur"
+          },
+          { validator: validateUsername, trigger: "blur" }
+        ],
+        pwd: [
+          { required: true, message: "密码不能为空", trigger: "change" },
+          { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
+        ]
       }
+    };
+  },
+
+  methods: {
+    onSubmit(formName) {
+      this.$log.i("点击登录按钮！");
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.userLogin();
+          this.$log.s("onsubmit正常返回");
+        } else {
+          this.$log.w("onsubmit错误返回");
+          return false;
+        }
+      });
     },
 
-    methods: {
-
-      onSubmit(formName) {
-        console.log('点击登录!');
-        this.$refs[formName].validate((valid) =>{
-          if (valid) {
-            this.userSelect();
-            console.log('onsubmit正常返回');
-          } else {
-            console.log('onsubmit错误返回');
-            return false;
-          }
+    async userLogin() {
+      this.$log.i("调用 userLogin");
+      let params = new URLSearchParams();
+      params.append("username", this.$refs.name.value);
+      params.append("password", this.$refs.pwd.value);
+      let dataGetLogin = await this.$http.post("/dologin", params).catch(() => {
+        this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
+        this.$log.e("URL请求失败");
+        return;
+      });
+      this.$log.i(dataGetLogin.code);
+      this.$log.i(dataGetLogin.data[0].username);
+      if (dataGetLogin.code === 200) {
+        this.$message({
+          message: "登录失败: " + dataGetLogin.data[0],
+          type: "error"
         });
-      },
-
-      async userSelect(){
-        console.log('调用userselect');
-        let {data} = await getUser().catch(()=>{
-          this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
-        });
-        this.datas = data;
-        if(this.datas===[]){
-          console.log('用户未注册！');
-        }else if(this.datas[0].username == this.$refs.name.value && this.datas[0].password == this.$refs.pwd.value){
-          let user = {username,userstate};
-          user.username = this.datas[0].username;
-          user.userstate = true;
-          this.setLogin(user);
-          this.$message({message: '登录成功',type: 'success'});
-          this.$router.push({path:'/'});
-        }else{
-          this.$message({message: '用户名或者密码错误！',type: 'error'});
+        this.$log.e("登录失败");
+      } else {
+        let username = dataGetLogin.data[0].username;
+        this.$store.commit("setUsername", username);
+        this.$store.commit("setIsLogin", true);
+        this.$message({ message: "登录成功！", type: "success" });
+        this.$log.s("登录成功");
+        // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 begin
+        this.$log.i('开始 判断是否管理员');
+        let params = new URLSearchParams();
+        params.append("username", username);
+        let dataGetPermission = await this.$http
+          .post("/GUserPermission", params)
+          .catch(() => {
+            this.$message({
+              message: "服务器繁忙，请稍后再试！",
+              type: "error"
+            });
+            this.$log.e("获取用户权限失败");
+          });
+        this.isAdmin = dataGetPermission.data[0];
+        this.$store.commit("setIsAdmin", this.isAdmin);
+        this.$log.s('管理员权限为：'+this.isAdmin);
+        this.$log.i('结束 判断是否管理员');
+        // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 end
+        // add by axiang [20190613] 判断用户当天签到状态 begin
+        this.$log.i('开始 判断今天是否签到');
+        let dataGetTodayClockIn = await this.$http
+          .post("/clockin/GUserTodayClockIn", params)
+          .catch(() => {
+            this.$message({
+              message: "服务器繁忙，请稍后再试！",
+              type: "error"
+            });
+            this.$log.e('获取用户今天签到记录失败！');
+          });
+        if (dataGetTodayClockIn.code === 200) {
+          this.$log.w("该用户今天没有签到过！");
+        } else {
+          this.$log.s("该用户今天已经签到过！");
+          this.$store.commit("setIsClockIn", true);
         }
-        console.log('userselect返回');
-      },
-
-      ...mapActions([
-        'setLogin'
-      ])
-
+        this.$log.i('结束 判断今天是否签到');
+        this.$router.push({ path: "/" });
+        // add by axiang [20190613] 判断用户当天签到状态 end
+        this.$log.i("userLogin 返回");
+      }
     }
-}
+  }
+};
 </script>
 
 <style scoped>
-.login{
-    width: 100%;
-    height: 700px;
-    padding-top: 5%;
-    margin: 0;
-    display: block;
+.login {
+  width: 100%;
+  height: 700px;
+  padding-top: 5%;
+  margin: 0;
+  display: block;
 }
 
 .box-card {
-    width: 450px;
-    height: 450px;
-    display: block;
-    margin-left: auto;
-    margin-right:auto; 
-    padding: 0;
-  }
+  width: 900px;
+  height: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
+input:focus {
+  outline: none;
+}
+
+input {
+  width: 300px;
+  margin-bottom: 5%;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #f5f5dc;
+  border: 1px solid #f5f5dc;
+  padding: 0 20px 0 20px;
+}
+
+button {
+  width: 340px;
+  margin-bottom: 5%;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #00688b;
+  border: 1px solid #00688b;
+}
+
+h1 {
+  letter-spacing: 10px;
+  font-size: 40px;
+  color: #5d478b;
+}
+
+img {
+  float: left;
+  background-size: cover;
+  width: 400px;
+  height: 400px;
+}
 </style>
