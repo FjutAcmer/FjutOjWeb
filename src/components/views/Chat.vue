@@ -62,7 +62,6 @@
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -109,7 +108,7 @@ export default {
       params.append("discussid", this.$route.query.id);
       params.append("author", sessionStorage.getItem("username"));
       params.append("text", this.message);
-      let datainsertDiscussReply  = await this.$http
+      let datainsertDiscussReply = await this.$http
         .post("/newdiscussreply/insertDiscussReply", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });

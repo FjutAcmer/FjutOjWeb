@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <el-card :body-style='{ padding: "0px" }' class="box-card">
+    <el-card :body-style="{ padding: '0px' }" class="box-card">
       <img src="../../assets/Login_left_bg.jpg">
       <div style="width:500px;height:100%;float:right">
         <h1>登录</h1>
@@ -71,44 +71,40 @@ export default {
 
   methods: {
     onSubmit(formName) {
-      this.$log.i("点击登录按钮！");
+      this.logger.d("点击登录按钮");
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.userLogin();
-          this.$log.s("onsubmit正常返回");
         } else {
-          this.$log.w("onsubmit错误返回");
           return false;
         }
       });
     },
 
     async userLogin() {
-      this.$log.i("调用 userLogin");
+      this.logger.ms("userLogin", "用户登录");
       let params = new URLSearchParams();
       params.append("username", this.$refs.name.value);
       params.append("password", this.$refs.pwd.value);
       let dataGetLogin = await this.$http.post("/dologin", params).catch(() => {
         this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        this.$log.e("URL请求失败");
+        this.logger.e("请求失败");
         return;
       });
-      this.$log.i(dataGetLogin.code);
-      this.$log.i(dataGetLogin.data[0].username);
       if (dataGetLogin.code === 200) {
         this.$message({
           message: "登录失败: " + dataGetLogin.data[0],
           type: "error"
         });
-        this.$log.e("登录失败");
+        this.logger.e("登录失败");
       } else {
         let username = dataGetLogin.data[0].username;
         this.$store.commit("setUsername", username);
         this.$store.commit("setIsLogin", true);
         this.$message({ message: "登录成功！", type: "success" });
-        this.$log.s("登录成功");
+        this.logger.i("登录成功");
         // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 begin
-        this.$log.i('开始 判断是否管理员');
+        this.logger.ms("isAdmin", "判断是否管理员");
         let params = new URLSearchParams();
         params.append("username", username);
         let dataGetPermission = await this.$http
@@ -118,15 +114,15 @@ export default {
               message: "服务器繁忙，请稍后再试！",
               type: "error"
             });
-            this.$log.e("获取用户权限失败");
+            this.logger.e("获取用户权限失败");
           });
         this.isAdmin = dataGetPermission.data[0];
         this.$store.commit("setIsAdmin", this.isAdmin);
-        this.$log.s('管理员权限为：'+this.isAdmin);
-        this.$log.i('结束 判断是否管理员');
+        this.logger.p({ isAdmin: this.isAdmin });
+        this.logger.me("isAdmin", "判断是否管理员");
         // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 end
         // add by axiang [20190613] 判断用户当天签到状态 begin
-        this.$log.i('开始 判断今天是否签到');
+        this.logger.ms("isClockIn", "判断是否签到");
         let dataGetTodayClockIn = await this.$http
           .post("/clockin/GUserTodayClockIn", params)
           .catch(() => {
@@ -134,19 +130,21 @@ export default {
               message: "服务器繁忙，请稍后再试！",
               type: "error"
             });
-            this.$log.e('获取用户今天签到记录失败！');
+            this.logger.e("请求签到信息失败");
           });
         if (dataGetTodayClockIn.code === 200) {
-          this.$log.w("该用户今天没有签到过！");
+          this.$store.commit("setIsClockIn", false);
+          this.logger.p({ 'IsClockIn': false });
         } else {
-          this.$log.s("该用户今天已经签到过！");
           this.$store.commit("setIsClockIn", true);
+          this.logger.p({ 'IsClockIn': true });
         }
-        this.$log.i('结束 判断今天是否签到');
+
         this.$router.push({ path: "/" });
+        this.logger.me("isClockIn", "判断是否签到");
         // add by axiang [20190613] 判断用户当天签到状态 end
-        this.$log.i("userLogin 返回");
       }
+      this.logger.me("userLogin", "用户登录");
     }
   }
 };

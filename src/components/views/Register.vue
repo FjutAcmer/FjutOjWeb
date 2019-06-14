@@ -67,7 +67,7 @@ export default {
         name: [
           { required: true, message: "请输入用户名", trigger: "blur" },
           { min: 1, max: 20, message: "长度在 1 到 5 个字符", trigger: "blur" },
-          { validator: validateUsername, trigger: 'blur'}
+          { validator: validateUsername, trigger: "blur" }
         ],
         pwd: [
           { required: true, message: "请输入密码", trigger: "change" },

@@ -246,7 +246,6 @@
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -367,7 +366,7 @@ export default {
         let params = new URLSearchParams();
         params.append("pid", this.pid);
         params.append("ojStr", this.oj);
-        let  dataAddProblem = await this.$http
+        let dataAddProblem = await this.$http
           .post("/addProblem/IAddProblem", params)
           .catch(() => {
             this.$message({
@@ -402,7 +401,7 @@ export default {
         params.append("contestLevel", this.contestLevel);
         params.append("awardsLevel", this.reward);
         params.append("text", this.remark);
-        let  dataIContestAward = await this.$http
+        let dataIContestAward = await this.$http
           .post("/addContestAward/IContestAward", params)
           .catch(() => {
             this.$message({
@@ -438,7 +437,7 @@ export default {
         params.append("awardsLevel", this.reward);
         params.append("text", this.remark);
         params.append("id", this.id);
-        let  dataUContestAward  = await this.$http
+        let dataUContestAward = await this.$http
           .post("/addContestAward/UContestAward", params)
           .catch(() => {
             this.$message({
@@ -457,7 +456,7 @@ export default {
         let params = new URLSearchParams();
         params.append("id", this.discussid);
         params.append("priority", this.priority);
-        let  dataUPriority = await this.$http
+        let dataUPriority = await this.$http
           .post("/discuss/UPriority", params)
           .catch(() => {
             this.$message({
@@ -489,15 +488,13 @@ export default {
         // params.append('ctype',this.contestTypeValue);
         // params.append('password',this.contestPassword);
         // params.append('kind',this.kindValue);
-        await this.$http
-          .post("/IContest", params)
-          .catch(() => {
-            this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
+        await this.$http.post("/IContest", params).catch(() => {
+          this.$message({
+            message: "服务器繁忙，请稍后再试！",
+            type: "error"
           });
+          return;
+        });
         //this.addProblems();
         this.$message({ message: "添加比赛成功!", type: "success" });
       } else {
@@ -508,15 +505,13 @@ export default {
       if (this.cid !== null) {
         let params = new URLSearchParams();
         params.append("cid", this.cid);
-        await this.$http
-          .post("/deleteContest", params)
-          .catch(() => {
-            this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
+        await this.$http.post("/deleteContest", params).catch(() => {
+          this.$message({
+            message: "服务器繁忙，请稍后再试！",
+            type: "error"
           });
+          return;
+        });
         this.$message({ message: "删除比赛成功！", type: "success" });
       }
     },
@@ -524,15 +519,13 @@ export default {
       if (this.discussid !== null) {
         let params = new URLSearchParams();
         params.append("discussid", this.discussid);
-        await this.$http
-          .post("/discuss/deleteDiscuss", params)
-          .catch(() => {
-            this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
+        await this.$http.post("/discuss/deleteDiscuss", params).catch(() => {
+          this.$message({
+            message: "服务器繁忙，请稍后再试！",
+            type: "error"
           });
+          return;
+        });
         this.$message({ message: "删除帖子成功！", type: "success" });
       }
     }

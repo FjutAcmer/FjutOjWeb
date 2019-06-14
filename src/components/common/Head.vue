@@ -140,7 +140,7 @@ export default {
     // add by axiang [20190613]
     async clockin() {
       let username = this.$store.getters.getUsername;
-      this.$log.i("用户： " + username + " 点击ClockIn按钮");
+
       let params = new URLSearchParams();
       params.append("username", username);
       let dataSetClockIn = await this.$http
@@ -150,14 +150,14 @@ export default {
             message: "服务器繁忙，请稍后再试！",
             type: "error"
           });
-          this.$log.e('请求签到URL失败！');
+
         });
       if (dataSetClockIn.code === 200) {
-        this.$log.e("签到失败！" + dataSetClockIn.data[0]);
+
         this.$message({ message: "签到失败:" + dataSetClockIn.data[0], type: "error" });
         this.$store.commit("setIsClockIn", false);
       } else {
-        this.$log.s("签到成功！");
+
         this.$message({ message: "签到成功！", type: "success" });
         this.$store.commit("setIsClockIn", true);
         this.$router.push({ path: "ClockIn" });

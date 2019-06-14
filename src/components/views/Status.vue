@@ -104,7 +104,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -222,7 +221,8 @@ export default {
         });
       this.$message({
         dangerouslyUseHTMLString: true,
-        message: "rid:" + dataCeinfo.data[0].rid + "  info:" + dataCeinfo.data[0].info,
+        message:
+          "rid:" + dataCeinfo.data[0].rid + "  info:" + dataCeinfo.data[0].info,
         showClose: true,
         duration: 0
       });

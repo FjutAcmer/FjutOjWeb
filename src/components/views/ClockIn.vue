@@ -2,11 +2,11 @@
   <div class="ClockInBody">
     <div class="CalendarBox">
       <div class="CalendarBox-head">
-        <div style="float:left">
+        <div class="clockin-title">
           签到记录
           <tr/>
         </div>
-        <div style="float:right">
+        <div>
           <font color="yellow">黄◉:今天未签到</font>
           &emsp;
           <font color="orange">橙◉:今天已签到</font>
@@ -18,11 +18,11 @@
     </div>
     <div class="ClockInList">
       <div class="ClockInList-head">
-        <div style="float:left">
+        <div class="clockin-title">
           <font color="blue">{{username}}</font> 的签到记录
         </div>
       </div>
-      <el-table :data="tableData" max-height="600" style="width: 100%">
+      <el-table :data="tableData" max-height="600" :row-class-name="tableRowClass">
         <el-table-column prop="username" label="用户名" width="180"></el-table-column>
         <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
         <el-table-column prop="sign" label="状态" width="100"></el-table-column>
@@ -91,6 +91,13 @@ export default {
           todytimes: data_clockin[i].todytimes
         });
       }
+    },
+    tableRowClass({ row, rowIndex }) {
+      if ("日常" === row.sign) {
+        return "warning-row";
+      } else {
+        return "success-row";
+      }
     }
   }
 };
@@ -144,6 +151,18 @@ export default {
   border-bottom: 1px solid #eeeeee;
   padding: 10px;
   display: block;
+}
+
+.clockin-title {
+  float: left;
+}
+
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>
 
