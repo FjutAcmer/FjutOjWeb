@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "bfj-node4": "^5.3.1",
     "echarts": "^4.2.1",
     "element-ui": "^2.9.1",
     "private": "^0.1.8",
@@ -78,7 +79,7 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
