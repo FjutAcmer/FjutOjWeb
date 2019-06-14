@@ -18,7 +18,7 @@
             <div style="width:50%;float:left">User</div>
             <div style="width:30%;float:left">Rating</div>
           </div>
-          <div v-for="(o,index) in ratingTop?ratingTop:10" :key="o" class="text item">
+          <div v-for="(o,index) in ratingTop?ratingTop:10" :key="index" class="text item">
             <div style="width:100%;display:inline-flex;">
               <div style="width:20%;float:left">{{index+1}}</div>
               <div
@@ -62,7 +62,7 @@
             <div style="width:50%;float:left">User</div>
             <div style="width:30%;float:left">AC</div>
           </div>
-          <div v-for="(o,index) in acTop?acTop:10" :key="o" class="text item">
+          <div v-for="(o,index) in acTop?acTop:10" :key="index" class="text item">
             <div style="width:100%;display:inline-flex;">
               <div style="width:20%;">{{index+1}}</div>
               <div
@@ -106,7 +106,7 @@
             <div style="width:50%;float:left">User</div>
             <div style="width:30%;float:left">ACB</div>
           </div>
-          <div v-for="(o,index) in acbTop?acbTop:10" :key="o" class="text item">
+          <div v-for="(o,index) in acbTop?acbTop:10" :key="index" class="text item">
             <div style="width:100%;display:inline-flex;">
               <div style="width:20%;float:left">{{index+1}}</div>
               <div

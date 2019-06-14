@@ -1,7 +1,7 @@
 未完成工作：
   VUE组件的API接口替换、CSS样式分离、格式标准化； 日历组件替换；  一大堆...；
 已完成工作：
-  重新封装axios，重构API接口； 部分CSS样式分离（命名可能不规范需要重新修改）；
+  重新封装axios，重构API接口； 部分CSS样式分离（命名不规范可能需要重新修改）；
 
 
 add by axiang [20190614]
@@ -10,7 +10,5 @@ add by axiang [20190614]
   HonorRank.vue, Login.vue, MainRank.vue, Problem.vue, Register.vue,
   Status.vue, Submit.vue, User.vue 进行了重构，重新设置了API接口。
 发现 Admin.vue 控制台报WARNING，功能不正常, Contest.vue 功能不完整， Mall.vue 功能不完整，
-  Message.vue 没内容，
-
-  还未修改。
+  Message.vue 没内容， 还未修改。
 

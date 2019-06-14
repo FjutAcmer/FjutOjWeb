@@ -107,8 +107,7 @@ export default {
       datas: []
     };
   },
-
-  mounted: {},
+  // mounted: {},
   computed: {
     isLogin() {
       return this.$store.getters.getIsLogin;
