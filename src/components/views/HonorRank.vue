@@ -16,7 +16,7 @@
                 <el-table-column prop="text" label="备注"></el-table-column>
             </el-table>
         </el-card>
-    </div>    
+    </div>
 </template>
 <script>
 import {getUser} from '../../api'
@@ -36,12 +36,12 @@ export default {
             let params = new URLSearchParams();
             params.append('pagenum',val);
             this.currentPage = val;
-            let {data} = await getUser().post('/addContestAward/GAllTeamMemberInfo',params).catch(()=>{
+            let dataTeamMemberInfo = await this.$http.post('/addContestAward/GAllTeamMemberInfo',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
-            this.currentTotal = data.data[0];
+            this.currentTotal = dataTeamMemberInfo.data[0];
             // console.log(this.currentTotal);
-            this.tableData = data.data[1];
+            this.tableData = dataTeamMemberInfo.data[1];
         }
     },
     mounted(){
@@ -63,7 +63,7 @@ export default {
     min-height:500px;
     display: block;
     margin-left: auto;
-    margin-right:auto; 
+    margin-right:auto;
     padding: 0;
     margin-top: 2%;
     margin-bottom: 2%;

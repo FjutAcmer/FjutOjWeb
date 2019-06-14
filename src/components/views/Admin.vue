@@ -351,7 +351,7 @@ export default {
         let params = new URLSearchParams();
         params.append("pid", this.pid);
         params.append("ojStr", this.oj);
-        let { data } = await getUser()
+        let { data } = await this.$http
           .post("/addProblem/GAddProblemTitle", params)
           .catch(() => {
             this.$message({
@@ -368,7 +368,7 @@ export default {
         let params = new URLSearchParams();
         params.append("pid", this.pid);
         params.append("ojStr", this.oj);
-        let { data } = await getUser()
+        let  dataAddProblem = await this.$http
           .post("/addProblem/IAddProblem", params)
           .catch(() => {
             this.$message({
@@ -403,7 +403,7 @@ export default {
         params.append("contestLevel", this.contestLevel);
         params.append("awardsLevel", this.reward);
         params.append("text", this.remark);
-        let { data } = await getUser()
+        let  dataIContestAward = await this.$http
           .post("/addContestAward/IContestAward", params)
           .catch(() => {
             this.$message({
@@ -412,7 +412,7 @@ export default {
             });
             return;
           });
-        this.$message({ message: data.data[0], type: "success" });
+        this.$message({ message: dataIContestAward.data[0], type: "success" });
       } else {
         this.$message({ message: "缺少重要信息!", type: "error" });
       }
@@ -439,7 +439,7 @@ export default {
         params.append("awardsLevel", this.reward);
         params.append("text", this.remark);
         params.append("id", this.id);
-        let { data } = await getUser()
+        let  dataUContestAward  = await this.$http
           .post("/addContestAward/UContestAward", params)
           .catch(() => {
             this.$message({
@@ -448,7 +448,7 @@ export default {
             });
             return;
           });
-        this.$message({ message: data.data[0], type: "success" });
+        this.$message({ message: dataUContestAward.data[0], type: "success" });
       } else {
         this.$message({ message: "缺少重要信息!", type: "error" });
       }
@@ -458,7 +458,7 @@ export default {
         let params = new URLSearchParams();
         params.append("id", this.discussid);
         params.append("priority", this.priority);
-        let { data } = await getUser()
+        let  dataUPriority = await this.$http
           .post("/discuss/UPriority", params)
           .catch(() => {
             this.$message({
@@ -467,7 +467,7 @@ export default {
             });
             return;
           });
-        this.$message({ message: data.data[0], type: "success" });
+        this.$message({ message: dataUPriority.data[0], type: "success" });
       } else {
         this.$message({ message: "缺少重要信息!", type: "error" });
       }
@@ -490,7 +490,7 @@ export default {
         // params.append('ctype',this.contestTypeValue);
         // params.append('password',this.contestPassword);
         // params.append('kind',this.kindValue);
-        await getUser()
+        await this.$http
           .post("/IContest", params)
           .catch(() => {
             this.$message({
@@ -509,7 +509,7 @@ export default {
       if (this.cid !== null) {
         let params = new URLSearchParams();
         params.append("cid", this.cid);
-        await getUser()
+        await this.$http
           .post("/deleteContest", params)
           .catch(() => {
             this.$message({
@@ -525,7 +525,7 @@ export default {
       if (this.discussid !== null) {
         let params = new URLSearchParams();
         params.append("discussid", this.discussid);
-        await getUser()
+        await this.$http
           .post("/discuss/deleteDiscuss", params)
           .catch(() => {
             this.$message({
