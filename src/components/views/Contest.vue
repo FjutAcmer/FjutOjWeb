@@ -62,7 +62,6 @@
     </div>
 </template>
 <script>
-import {getUser} from '../../api'
 
 export default {
     data() {
@@ -80,12 +79,12 @@ export default {
             let params = new URLSearchParams();
             params.append('pagenum',val);
             this.currentPage = val;
-            let {data} = await getUser().post('/GAllContest',params).catch(()=>{
+            let dataAllContest = await this.$http.post('/GAllContest',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
-            this.currentTotal = data.data[0];
+            this.currentTotal = dataAllContest.data[0];
             // console.log(this.currentTotal);
-            this.tableData = data.data[1];
+            this.tableData = dataAllContest.data[1];
             // console.log(this.tableData);
         },
         toSignUp(row){
@@ -114,11 +113,11 @@ export default {
                 let params = new URLSearchParams();
                 params.append('cid',row.id);
                 params.append('username',sessionStorage.getItem("username"));
-                let {data} = await getUser().post('/problem/GProblemByTitle',params).catch(()=>{
+                let dataProblemByTitle = await this.$http.post('/problem/GProblemByTitle',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
                 });
-                if(data.data[0]==="该用户已报名"){
+                if(dataProblemByTitle.data[0]==="该用户已报名"){
                     this.$router.push({ path: '/ContestInfo', query: { cid: row.id }});
                 }else{
                     this.$message({message: '请先报名才能进入！',type: 'error'});
@@ -132,7 +131,7 @@ export default {
                     this.$message({
                         type: 'info',
                         message: '取消输入'
-                    });       
+                    });
                 });
             }else{
                 this.$router.push({ path: '/ContestInfo', query: { cid: row.id }});
@@ -145,19 +144,19 @@ export default {
                 let params = new URLSearchParams();
                 params.append('title',this.input);
                 params.append('pagenum',this.currentPage);
-                let {data} = await getUser().post('/problem/GProblemByTitle',params).catch(()=>{
+                let dataProblemByTitle = await this.$http.post('/problem/GProblemByTitle',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
                 });
-                this.currentTotal = data.data[0];
-                this.tableData = data.data[1];
+                this.currentTotal = dataProblemByTitle.data[0];
+                this.tableData = dataProblemByTitle.data[1];
             }
         },
         async vertifyPassword(val,val2){
             let params = new URLSearchParams();
                 params.append('password',val);
                 params.append('cid',val2);
-                let {data} = await getUser().post('/CheckContestPassword',params).catch(()=>{
+                let {data} = await this.$http.post('/CheckContestPassword',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
             });
@@ -198,10 +197,10 @@ export default {
     min-height:500px;
     display: block;
     margin-left: auto;
-    margin-right:auto; 
+    margin-right:auto;
     padding: 0;
 }
-  
+
 .contest-head{
     background-color:#f5f5f5;
     height: 20px;

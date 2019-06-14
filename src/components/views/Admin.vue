@@ -246,7 +246,6 @@
   </div>
 </template>
 <script>
-import { getUser } from "../../api";
 
 export default {
   data() {

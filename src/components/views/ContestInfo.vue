@@ -58,7 +58,7 @@
                             </el-card>
                             <el-card class="list-div">
                                 <div class="clearfix">
-                                    <span style="float:left"><h2>SampleInput</h2></span>    
+                                    <span style="float:left"><h2>SampleInput</h2></span>
                                 </div>
                                 <div class="text item">
                                     <span style="float:left"><div style="text-align:left;font-size:20px" v-html="simpledata?simpledata.input:'没有例子'"></div></span>
@@ -66,7 +66,7 @@
                             </el-card>
                             <el-card class="list-div">
                                 <div class="clearfix">
-                                    <span style="float:left"><h2>SampleOutput</h2></span>    
+                                    <span style="float:left"><h2>SampleOutput</h2></span>
                                 </div>
                                 <div class="text item">
                                     <span style="float:left">
@@ -142,7 +142,6 @@
     </div>
 </template>
 <script>
-import {getUser} from '../../api'
 
 export default {
     data(){
@@ -182,12 +181,12 @@ export default {
         async getContestProblem(){
             let params = new URLSearchParams();
             params.append("cid",this.$route.query.cid);
-            let {data} = await getUser().post('/GContestProblem',params).catch(()=>{
+            let dataContestProblem = await this.$http.post('/GContestProblem',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
             });
             // console.log(data.data[0]);
-            this.contestProblem = data.data[0];
+            this.contestProblem = dataContestProblem.data[0];
             // console.log(this.contestProblem[0].tpid);
         },
         toCodeView(row){
@@ -198,11 +197,11 @@ export default {
         async getInfo(row){
             let params = new URLSearchParams();
             params.append('rid',row.id);
-            let {data} = await getUser().post('/ceinfo/GCeinfo',params).catch(()=>{
+            let dataCeinfo = await this.$http.post('/ceinfo/GCeinfo',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                 return;
             });
-            this.$message({dangerouslyUseHTMLString: true,message: "rid:"+data.data[0].rid+"  info:"+data.data[0].info,showClose: true,duration:0});
+            this.$message({dangerouslyUseHTMLString: true,message: "rid:"+dataCeinfo.data[0].rid+"  info:"+dataCeinfo.data[0].info,showClose: true,duration:0});
         },
         async getContestStatu(val){
             this.tableData = [];
@@ -210,24 +209,24 @@ export default {
             params.append('pagenum',val);
             params.append('cid',this.$route.query.cid);
             this.currentPage = val;
-            let {data} = await getUser().post('/GContestStatus',params).catch(()=>{
+            let dataContestStatus = await this.$http.post('/GContestStatus',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
-            this.tableData = data.data[1];
-            this.currentTotal = data.data[0];
+            this.tableData = dataContestStatus.data[1];
+            this.currentTotal = dataContestStatus.data[0];
         },
         async getContestRank(){
             let params = new URLSearchParams();
             params.append("cid",this.$route.query.cid);
-            let {data} = await getUser().post('/GContestRank',params).catch(()=>{
+            let dataContestRank = await this.$http.post('/GContestRank',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
             });
             // console.log(data.data[0]);
-            if(data.data[0]==""){
+            if(dataContestRank.data[0]==""){
                 this.contestRank = [{username:"没有用户参加",acnum:-1}];
             }else{
-                this.contestRank = data.data[0];
+                this.contestRank = dataContestRank.data[0];
             }
         },
         async getProblem(val){
@@ -235,14 +234,14 @@ export default {
             params.append('pid',val);
             params.append('user',sessionStorage.getItem("username"));
             this.pid = val;
-            let {data} = await getUser().post('/problemview/Gproblemview',params).catch(()=>{
+            let dataProblemView = await this.$http.post('/problemview/Gproblemview',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
             // console.log(data);
-            this.maindata = data.data[0];
-            this.carddata = data.data[1];
-            this.simpledata = data.data[2];
-            this.isAc = data.data[3];
+            this.maindata = dataProblemView.data[0];
+            this.carddata = dataProblemView.data[1];
+            this.simpledata = dataProblemView.data[2];
+            this.isAc = dataProblemView.data[3];
             // console.log(simpledata);
         },
         async onSubmit(){
@@ -253,7 +252,7 @@ export default {
                 params.append('code',this.code);
                 params.append('language',this.compileLanguage);
                 params.append('cid',this.$route.query.cid);
-                let {data} = await getUser().post('/submit/submitProblem',params).catch(()=>{
+                let dataSubmitProblem = await this.$http.post('/submit/submitProblem',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                 });
                 this.tableTabValue = '3';

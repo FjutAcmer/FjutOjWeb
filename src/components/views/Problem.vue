@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import {getUser} from '../../api'
 
 export default {
     data() {
@@ -53,13 +52,13 @@ export default {
             let params = new URLSearchParams();
             params.append('pagenum',val);
             this.currentPage = val;
-            let {data} = await getUser().post('/problem/GProblemsByPage',params).catch(()=>{
+            let dataProblemsByPage = await this.$http.post('/problem/GProblemsByPage',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
             this.loading = false;
-            this.currentTotal = data.data[0];
+            this.currentTotal = dataProblemsByPage.data[0];
             // console.log(this.currentTotal);
-            let tableData_2 = data.data[1];
+            let tableData_2 = dataProblemsByPage.data[1];
             for(let i =0;i<tableData_2.length;i++){
                 this.tableData.push({'id':tableData_2[i].pid,'Title':tableData_2[i].title,'Ratio':tableData_2[i].strRadio+'('+tableData_2[i].totalAcUser+'/'+tableData_2[i].totalSubmit+')'});
             }
@@ -76,14 +75,14 @@ export default {
                 let params = new URLSearchParams();
                 params.append('title',this.input);
                 params.append('pagenum',this.currentPage);
-                let {data} = await getUser().post('/problem/GProblemByTitle',params).catch(()=>{
+                let dataProblemByTitle = await this.$http.post('/problem/GProblemByTitle',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
                 });
                 this.loading = false;
                 this.tableData = [];
-                this.currentTotal = data.data[0];
-                let tableData_2 = data.data[1];
+                this.currentTotal = dataProblemByTitle.data[0];
+                let tableData_2 = dataProblemByTitle.data[1];
                 for(let i =0;i<tableData_2.length;i++){
                     this.tableData.push({'id':tableData_2[i].pid,'Title':tableData_2[i].title,'Ratio':tableData_2[i].strRadio+'('+tableData_2[i].totalAcUser+'/'+tableData_2[i].totalSubmit+')'});
                 }

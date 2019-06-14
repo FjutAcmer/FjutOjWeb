@@ -7,12 +7,12 @@
             <div class="functionBar">
                 <el-pagination style="float:left" layout="prev, pager, next" :current-page="currentPage" @current-change="getList" :total="this.currentTotal*10"></el-pagination>
                 <el-button v-if="isLogin" style="float:right;margin-right:10px;margin-top:10px" @click="newDiscuss" size="mini">新建帖子</el-button>
-                
+
                 <el-button class="button" size="mini" @click="getSearch(1)">确定</el-button>
                 <el-input v-model="input" placeholder="title" size="mini" class="input">
                     <template slot="prepend">查找</template>
                 </el-input>
-           
+
             </div>
             <el-table style="width:100%;" :data="this.tableData" highlight-current-row v-loading="loading">
                 <el-table-column prop="discussid" label="#" width="300"></el-table-column>
@@ -32,7 +32,6 @@
     </div>
 </template>
 <script>
-import {getUser} from '../../api'
 
 export default {
     data(){
@@ -53,13 +52,13 @@ export default {
             let params = new URLSearchParams();
             params.append('pagenum',val);
             this.currentPage = val;
-            let {data} = await getUser().post('/discuss/GDiscuss',params).catch(()=>{
+            let dataDiscuss = await this.$http.post('/discuss/GDiscuss',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
             this.loading = false;
-            this.currentTotal = data.data[0];
+            this.currentTotal = dataDiscuss.data[0];
             // console.log(this.currentTotal);
-            this.tableData = data.data[1];
+            this.tableData = dataDiscuss.data[1];
         },
         async getList(val){
             if(this.isSearch){
@@ -77,13 +76,13 @@ export default {
                 params.append('pagenum',val);
                 params.append('title',this.input);
                 this.currentPage = val;
-                let {data} = await getUser().post('/discuss/GDiscussByTitle',params).catch(()=>{
+                let dataDiscussByTitle = await this.$http.post('/discuss/GDiscussByTitle',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                 });
                 this.loading = false;
-                this.currentTotal = data.data[0];
+                this.currentTotal = dataDiscussByTitle.data[0];
                 // console.log(this.currentTotal);
-                this.tableData = data.data[1];
+                this.tableData = dataDiscussByTitle.data[1];
             }
         },
         toChat(row){
@@ -100,17 +99,17 @@ export default {
                 this.$message({
                     type: 'info',
                     message: '取消创建'
-                });       
+                });
             });
         },
         async insertDiscuss(val){
             let params = new URLSearchParams();
             params.append('title',val);
             params.append('author',sessionStorage.getItem("username"));
-            let {data} = await getUser().post('/discuss/insertDiscuss',params).catch(()=>{
+            let dataInsertDiscuss = await this.$http.post('/discuss/insertDiscuss',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
-            this.$message({message: data.data[0],type: 'success'});
+            this.$message({message: dataInsertDiscuss.data[0],type: 'success'});
         },
         getLoginStatu(){
             if(sessionStorage.getItem("username")){

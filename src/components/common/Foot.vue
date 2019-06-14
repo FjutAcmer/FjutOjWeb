@@ -6,25 +6,28 @@
     <div class="foot-box-item">
       <ul>
         <li>
-          [<a href="#">Bug反馈</a>]
+          [
+          <a href="#">Bug反馈</a>]
         </li>
         <li>
-          [<a href="#">FAQ</a>]
+          [
+          <a href="#">FAQ</a>]
         </li>
         <li>
-         [<a href="#">闽ICP备17026590号-1</a>]
+          [
+          <a href="#">闽ICP备17026590号-1</a>]
         </li>
       </ul>
     </div>
     <div class="foot-box-information">
       <ul>
         <li>
-          <strong>当前版本：</strong>
-          <a href="#">3.22</a>
-        </li>
-        <li>
           <strong>系统时间：</strong>
           {{date}}
+        </li>
+        <li>
+          <strong>当前版本：</strong>
+          <a href="#">3.22</a>
         </li>
       </ul>
     </div>
@@ -55,7 +58,7 @@ export default {
 <style>
 a {
   text-decoration: none;
-  color:#475669;
+  color: #475669;
 }
 
 a:hover {
@@ -90,7 +93,6 @@ a:hover {
 
 .foot-box-information ul li {
   list-style: none;
-
 }
 
 .foot-box-item {

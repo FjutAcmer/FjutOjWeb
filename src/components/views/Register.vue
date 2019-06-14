@@ -105,7 +105,7 @@ export default {
         params.append("email", this.$refs.email.value);
         params.append("school", this.$refs.school.value);
         params.append("motto", this.$refs.motto.value);
-        let { data } = await getUser()
+        let dataInserUser = await this.$http
           .post("/insertUser", params)
           .catch(() => {
             this.$message({
@@ -115,7 +115,7 @@ export default {
             console.log("userInsert服务器未响应返回");
             return;
           });
-        if (data.code == 200) {
+        if (dataInserUser.code == 200) {
           this.$message({ message: "注册未成功，用户已存在", type: "error" });
         } else {
           this.$message({ message: "注册成功", type: "success" });

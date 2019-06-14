@@ -13,30 +13,30 @@
                 <el-table-column type="index" label="Rank" width="100" :index="indexMethod">Rank</el-table-column>
                 <el-table-column label="UserName" width="200">
                     <template slot-scope="scope">
-                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=0&&scope.row.acnum<=100" style="cursor:pointer;color:gray">{{scope.row.username}}</div> 
-                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=100&&scope.row.acnum<=500" style="cursor:pointer;color:blue">{{scope.row.username}}</div> 
-                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=500&&scope.row.acnum<=700" style="cursor:pointer;color:purple">{{scope.row.username}}</div> 
-                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=700&&scope.row.acnum<=1000" style="cursor:pointer;color:#FF6A6A">{{scope.row.username}}</div> 
-                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=1000" style="cursor:pointer;color:orange">{{scope.row.username}}</div> 
+                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=0&&scope.row.acnum<=100" style="cursor:pointer;color:gray">{{scope.row.username}}</div>
+                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=100&&scope.row.acnum<=500" style="cursor:pointer;color:blue">{{scope.row.username}}</div>
+                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=500&&scope.row.acnum<=700" style="cursor:pointer;color:purple">{{scope.row.username}}</div>
+                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=700&&scope.row.acnum<=1000" style="cursor:pointer;color:#FF6A6A">{{scope.row.username}}</div>
+                        <div @click="toUser(scope.row)" v-if="scope.row.acnum>=1000" style="cursor:pointer;color:orange">{{scope.row.username}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column label="Nick" width="220">
                     <template slot-scope="scope">
-                        <div v-if="scope.row.acnum>=0&&scope.row.acnum<=100" style="color:gray">{{scope.row.nick}}</div> 
-                        <div v-if="scope.row.acnum>=100&&scope.row.acnum<=500" style="color:blue">{{scope.row.nick}}</div> 
-                        <div v-if="scope.row.acnum>=500&&scope.row.acnum<=700" style="color:purple">{{scope.row.nick}}</div> 
-                        <div v-if="scope.row.acnum>=700&&scope.row.acnum<=1000" style="color:#FF6A6A">{{scope.row.nick}}</div> 
-                        <div v-if="scope.row.acnum>=1000" style="color:orange">{{scope.row.nick}}</div> 
+                        <div v-if="scope.row.acnum>=0&&scope.row.acnum<=100" style="color:gray">{{scope.row.nick}}</div>
+                        <div v-if="scope.row.acnum>=100&&scope.row.acnum<=500" style="color:blue">{{scope.row.nick}}</div>
+                        <div v-if="scope.row.acnum>=500&&scope.row.acnum<=700" style="color:purple">{{scope.row.nick}}</div>
+                        <div v-if="scope.row.acnum>=700&&scope.row.acnum<=1000" style="color:#FF6A6A">{{scope.row.nick}}</div>
+                        <div v-if="scope.row.acnum>=1000" style="color:orange">{{scope.row.nick}}</div>
                     </template>
                 </el-table-column>
                 <el-table-column prop="motto" label="Motto" width="500"></el-table-column>
                 <el-table-column label="AC">
                     <template slot-scope="scope">
-                        <div v-if="scope.row.acnum>=0&&scope.row.acnum<=100" style="color:gray">{{scope.row.acnum}}</div> 
-                        <div v-if="scope.row.acnum>=100&&scope.row.acnum<=500" style="color:blue">{{scope.row.acnum}}</div> 
-                        <div v-if="scope.row.acnum>=500&&scope.row.acnum<=700" style="color:purple">{{scope.row.acnum}}</div> 
-                        <div v-if="scope.row.acnum>=700&&scope.row.acnum<=1000" style="color:#FF6A6A">{{scope.row.acnum}}</div> 
-                        <div v-if="scope.row.acnum>=1000" style="color:orange">{{scope.row.acnum}}</div> 
+                        <div v-if="scope.row.acnum>=0&&scope.row.acnum<=100" style="color:gray">{{scope.row.acnum}}</div>
+                        <div v-if="scope.row.acnum>=100&&scope.row.acnum<=500" style="color:blue">{{scope.row.acnum}}</div>
+                        <div v-if="scope.row.acnum>=500&&scope.row.acnum<=700" style="color:purple">{{scope.row.acnum}}</div>
+                        <div v-if="scope.row.acnum>=700&&scope.row.acnum<=1000" style="color:#FF6A6A">{{scope.row.acnum}}</div>
+                        <div v-if="scope.row.acnum>=1000" style="color:orange">{{scope.row.acnum}}</div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -44,7 +44,6 @@
     </div>
 </template>
 <script>
-import {getUser} from '../../api'
 
 export default {
     data(){
@@ -68,13 +67,13 @@ export default {
             let params = new URLSearchParams();
             params.append('pagenum',val);
             this.currentPage = val;
-            let {data} = await getUser().post('/rank/GUserRank',params).catch(()=>{
+            let dataUserRank = await this.$http.post('/rank/GUserRank',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
             this.loading = false;
-            this.currentTotal = data.data[0];
+            this.currentTotal = dataUserRank.data[0];
             // console.log(this.currentTotal);
-            this.tableData = data.data[1];
+            this.tableData = dataUserRank.data[1];
             this.Rank=0;
         },
         async getSearch(val){
@@ -85,14 +84,14 @@ export default {
                 let params = new URLSearchParams();
                 params.append('username',this.input);
                 params.append('pagenum',this.currentPage);
-                let {data} = await getUser().post('/rank/GUserRankByName',params).catch(()=>{
+                let dataUserRankByName = await this.$http.post('/rank/GUserRankByName',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
                 });
                 this.loading = false;
                 this.tableData = [];
-                this.currentTotal = data.data[0];
-                this.tableData = data.data[1];
+                this.currentTotal = dataUserRankByName.data[0];
+                this.tableData = dataUserRankByName.data[1];
             }
         },
         getList(val){
@@ -125,7 +124,7 @@ export default {
     min-height:500px;
     display: block;
     margin-left: auto;
-    margin-right:auto; 
+    margin-right:auto;
     padding: 0;
     margin-top: 2%;
     margin-bottom: 2%;

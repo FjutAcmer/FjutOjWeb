@@ -104,7 +104,6 @@
 </template>
 
 <script>
-import { getUser } from "../../api";
 
 export default {
   data() {
@@ -159,14 +158,14 @@ export default {
       let params = new URLSearchParams();
       params.append("pagenum", val);
       this.currentPage = val;
-      let { data } = await getUser()
+      let dataAllStatus = await this.$http
         .post("/status/GAllStatus", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
       this.loading = false;
-      this.tableData = data.data[1];
-      this.currentTotal = data.data[0];
+      this.tableData = dataAllStatus.data[1];
+      this.currentTotal = dataAllStatus.data[0];
       // console.log(this.tableData);
     },
     async getSearch(val) {
@@ -180,15 +179,15 @@ export default {
       params.append("result", this.result);
       params.append("lang", this.lang);
       this.currentPage = val;
-      let { data } = await getUser()
+      let dataStatusByConditions = await this.$http
         .post("/status/GStatusByConditions", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
           return;
         });
       this.loading = false;
-      this.tableData = data.data[1];
-      this.currentTotal = data.data[0];
+      this.tableData = dataStatusByConditions.data[1];
+      this.currentTotal = dataStatusByConditions.data[0];
       // }
     },
     toSubmit(row) {
@@ -215,7 +214,7 @@ export default {
     async getInfo(row) {
       let params = new URLSearchParams();
       params.append("rid", row.id);
-      let { data } = await getUser()
+      let dataCeinfo = await this.$http
         .post("/ceinfo/GCeinfo", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
@@ -223,7 +222,7 @@ export default {
         });
       this.$message({
         dangerouslyUseHTMLString: true,
-        message: "rid:" + data.data[0].rid + "  info:" + data.data[0].info,
+        message: "rid:" + dataCeinfo.data[0].rid + "  info:" + dataCeinfo.data[0].info,
         showClose: true,
         duration: 0
       });

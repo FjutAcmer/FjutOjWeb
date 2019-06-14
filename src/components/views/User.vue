@@ -87,7 +87,6 @@
 
 <script>
 import echarts from "echarts";
-import { getRadar } from "../../api";
 import { setInterval } from "timers";
 
 export default {
@@ -134,20 +133,20 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataUserRadar = await this.$http
         .post("/GUserRadar", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.radar = data.data[0];
+      this.radar = dataUserRadar.data[0];
       // console.log(this.radar);
       this.leida();
     },
     // async getPutTagNum(){
     //     // console.log('调用getPutTagNum');
     //     let params = new URLSearchParams();
-    //     params.append('username', sessionStorage.getItem("username"));
-    //     let {data} = await getRadar().post('/GPutTagNum',params).catch(()=>{
+    //     params.append('username', sessionStorage.getItem('username'));
+    //     let {data} = await this.$http.post('/GPutTagNum',params).catch(()=>{
     //         this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
     //     });
     //     this.puttagnum = data.data[0];
@@ -162,13 +161,13 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataUserInfo = await this.$http
         .post("/GUserInfo", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.user = data.data[0];
-      // this.img = this.img + username+".jpg"
+      this.user = dataUserInfo.data[0];
+      // this.img = this.img + username+'.jpg'
     },
     async getawardinfo() {
       // console.log('调用getawardinfo');
@@ -180,12 +179,12 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataAwardInfo = await this.$http
         .post("/awardinfo", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.rewordinfo = data.data[0];
+      this.rewordinfo = dataAwardInfo.data[0];
     },
     async getStatusProblems2() {
       // console.log('调用getStatusProblems');
@@ -198,12 +197,12 @@ export default {
       let params = new URLSearchParams();
       params.append("username", username);
       params.append("status", 0);
-      let { data } = await getRadar()
+      let dataStatusProblems = await this.$http
         .post("/GStatusProblems", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.statusproblems2 = data.data[0];
+      this.statusproblems2 = dataStatusProblems.data[0];
     },
     async getStatusProblems1() {
       let username;
@@ -215,12 +214,12 @@ export default {
       let params = new URLSearchParams();
       params.append("username", username);
       params.append("status", 1);
-      let { data } = await getRadar()
+      let dataStatusProblems = await this.$http
         .post("/GStatusProblems", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.statusproblems1 = data.data[0];
+      this.statusproblems1 = dataStatusProblems.data[0];
     },
     async getCanViewCodeProblems() {
       // console.log('调用getCanViewCodeProblems');
@@ -232,12 +231,12 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataCanViewCodeProblems = await this.$http
         .post("/Gcanviewcodeproblems")
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.canviewcodeproblems = data.data[0];
+      this.canviewcodeproblems = dataCanViewCodeProblems.data[0];
     },
     async getSubmitRecord() {
       // console.log('调用getSubmitRecord');
@@ -249,12 +248,12 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataAllStatusByUsername = await this.$http
         .post("/status/GAllStatusByUsername", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.submitrecord = data.data[0];
+      this.submitrecord = dataAllStatusByUsername.data[0];
       // console.log(this.submitrecord);
       this.zhexian1();
     },
@@ -268,12 +267,12 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataRatingGraph = await this.$http
         .post("/GRatingGraph", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.ratingrecord = data.data[0];
+      this.ratingrecord = dataRatingGraph.data[0];
       // console.log(this.submitrecord);
       this.zhexian2();
     },
@@ -287,12 +286,10 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
-        .post("/GAcGraph", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.acrecord = data.data[0];
+      let dataAcGraph = await this.$http.post("/GAcGraph", params).catch(() => {
+        this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
+      });
+      this.acrecord = dataAcGraph.data[0];
       // console.log(this.acrecord);
       this.quxian();
     },
@@ -306,12 +303,12 @@ export default {
       }
       let params = new URLSearchParams();
       params.append("username", username);
-      let { data } = await getRadar()
+      let dataUserPermission = await this.$http
         .post("/GUserPermission", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
-      this.isAdmin = data.data[0];
+      this.isAdmin = dataUserPermission.data[0];
       // console.log(this.acrecord);
     },
     toAdmin() {

@@ -26,7 +26,6 @@
     </div>
 </template>
 <script>
-import { getUser } from "../../api";
 
 export default {
     data() {
@@ -57,11 +56,11 @@ export default {
                 params.append('school', this.$refs.school.value);
                 params.append('motto', this.$refs.motto.value);
                 params.append('Email', this.$refs.email.value);
-                let {data} = await getUser().post('/updateUser',params).catch(()=>{
+                let dataUpdateUser = await this.$http.post('/updateUser',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
                 });
-                this.$message({message: data.data[0],type: 'success'});
+                this.$message({message: dataUpdateUser.data[0],type: 'success'});
             }
         }
     }
@@ -81,10 +80,10 @@ export default {
     display: block;
     margin-top:5%;
     margin-left: auto;
-    margin-right:auto; 
+    margin-right:auto;
     border: 0;
     padding: 0;
-    
+
 }
 
 .el-form{

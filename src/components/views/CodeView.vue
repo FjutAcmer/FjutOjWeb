@@ -17,7 +17,6 @@
     </div>
 </template>
 <script>
-import {getUser} from '../../api'
 
 export default {
     data(){
@@ -35,11 +34,11 @@ export default {
             let params = new URLSearchParams();
             params.append("id",this.$route.query.id);
             params.append("user",sessionStorage.getItem("username"));
-            let {data} = await getUser().post('/status/GStatusCode',params).catch(()=>{
+            let dataStatusCode = await this.$http.post('/status/GStatusCode',params).catch(()=>{
                     this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
                     return;
             });
-            this.code = data.data[0];
+            this.code = dataStatusCode.data[0];
             this.author = this.$route.query.ruser;
             this.runId = this.$route.query.id;
             this.problem = this.$route.query.problem;
@@ -65,7 +64,7 @@ export default {
     min-height: 600px;
     display: block;
     margin-left: 7%;
-    margin-right:7%; 
+    margin-right:7%;
     margin-bottom: 2%;
     margin-top:2%;
     padding: 0;
@@ -76,7 +75,7 @@ export default {
     height: 70px;
     display: block;
     margin-left: 7%;
-    margin-right:7%; 
+    margin-right:7%;
     margin-bottom: 2%;
     margin-top:2%;
     padding: 0;

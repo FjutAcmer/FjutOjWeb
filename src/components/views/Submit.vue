@@ -196,16 +196,16 @@ export default {
       let params = new URLSearchParams();
       params.append("pid", this.$route.query.pid);
       params.append("user", sessionStorage.getItem("username"));
-      let { data } = await getUser()
+      let dataProblemView = await this.$http
         .post("/problemview/Gproblemview", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
         });
       // console.log(data);
-      this.maindata = data.data[0];
-      this.carddata = data.data[1];
-      this.simpledata = data.data[2];
-      this.isAc = data.data[3];
+      this.maindata = dataProblemView.data[0];
+      this.carddata = dataProblemView.data[1];
+      this.simpledata = dataProblemView.data[2];
+      this.isAc = dataProblemView.data[3];
       //console.log(isAc);
     },
     async onSubmit() {
@@ -215,7 +215,7 @@ export default {
         params.append("user", sessionStorage.getItem("username"));
         params.append("code", this.code);
         params.append("language", this.compileLanguage);
-        let { data } = await getUser()
+        let dataSubmitProblem = await this.$http
           .post("/submit/submitProblem", params)
           .catch(() => {
             this.$message({

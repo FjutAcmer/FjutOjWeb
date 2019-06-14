@@ -97,7 +97,6 @@
     </div>
 </template>
 <script>
-import {getUser} from '../../api'
 
 export default {
     data(){
@@ -116,21 +115,21 @@ export default {
             params.append("cid",this.$route.query.cid);
             params.append("pagenum",val);
             this.currentPage = val;
-            let {data} = await getUser().post('/GContestUsers',params).catch(()=>{
+            let dataContestUsers = await this.$http.post('/GContestUsers',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
-            this.currentTotal = data.data[0];
-            this.tableData = data.data[1];
+            this.currentTotal = dataContestUsers.data[0];
+            this.tableData = dataContestUsers.data[1];
             // console.log(this.tableData);
         },
         async addContestUser(){
             let params = new URLSearchParams();
             params.append("cid",this.$route.query.cid);
             params.append("username",sessionStorage.getItem("username"));
-            let {data} = await getUser().post('/IContestuser',params).catch(()=>{
+            let dataContestuser = await this.$http.post('/IContestuser',params).catch(()=>{
                 this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'});
             });
-            this.$message({message: data.data[0],type: 'success'});
+            this.$message({message: dataContestuser.data[0],type: 'success'});
         }
     },
     mounted(){
@@ -151,7 +150,7 @@ export default {
     min-height:700px;
     display: block;
     margin-left: auto;
-    margin-right:auto; 
+    margin-right:auto;
     padding: 0;
 }
 
