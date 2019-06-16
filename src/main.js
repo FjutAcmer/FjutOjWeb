@@ -16,7 +16,7 @@ Vue.use(ElementUI)
 Vue.prototype.logger = logger
 Vue.prototype.$http = http
 
-/* eslint-disable no-new */
+// eslint-disable-next-line no-new
 new Vue({
   el: '#app',
   router,

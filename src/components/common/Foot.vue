@@ -49,26 +49,16 @@ export default {
   },
   beforeDestroy() {
     if (this.timer) {
-      clearInterval(this.timer); //在vue实例销毁钱，清除我们的定时器
+      clearInterval(this.timer); // 在vue实例销毁钱，清除我们的定时器
     }
   }
 };
 </script>
 
 <style>
-a {
-  text-decoration: none;
-  color: #475669;
-}
-
-a:hover {
-  color: blueviolet;
-}
-
 .foot-box {
   padding: 0 5% 0 5%;
   margin: 0;
-  /* border-top: 2px solid #eeeeee; */
   width: 90%;
   height: 10%;
   font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
@@ -76,9 +66,17 @@ a:hover {
   background-color: #eeeeee;
 }
 
+.foot-box a {
+  text-decoration: none;
+  color: #475669;
+}
+
+.foot-box a:hover {
+  color: blue;
+}
+
 .foot-box-main {
   padding: 0;
-  /* margin-right: 10px; */
   padding-right: 20px;
   float: left;
   border-right: white solid 2px;
@@ -88,7 +86,6 @@ a:hover {
   padding: 0;
   margin: 0;
   float: right;
-  /* background-color: aqua; */
 }
 
 .foot-box-information ul li {
@@ -102,14 +99,10 @@ a:hover {
 }
 
 .foot-box-item ul {
-  /* float: left; */
   list-style: none;
-  /* background-color: red; */
-  /* display: inline-block; */
 }
 
 .foot-box-item ul li {
-  /* background-color: aquamarine; */
   float: left;
   margin-right: 15px;
 }

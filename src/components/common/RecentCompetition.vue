@@ -57,6 +57,7 @@ export default {
 </script>
 
 <style scoped>
+
 .recent-competition {
   padding: 0;
   width: 100%;
