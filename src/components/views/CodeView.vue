@@ -40,7 +40,7 @@ export default {
     async getCode() {
       let params = new URLSearchParams();
       params.append("id", this.$route.query.id);
-      params.append("user", sessionStorage.getItem("username"));
+      params.append("user", this.$store.getters.getUsername);
       let dataStatusCode = await this.$http
         .post("/status/GStatusCode", params)
         .catch(() => {

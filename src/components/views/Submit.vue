@@ -192,10 +192,10 @@ export default {
   },
   methods: {
     async getProblem() {
-      this.islogin = sessionStorage.getItem("username");
+      this.islogin = this.$store.getters.getUsername;
       let params = new URLSearchParams();
       params.append("pid", this.$route.query.pid);
-      params.append("user", sessionStorage.getItem("username"));
+      params.append("user", this.$store.getters.getUsername);
       let dataProblemView = await this.$http
         .post("/problemview/Gproblemview", params)
         .catch(() => {
@@ -212,7 +212,7 @@ export default {
       if (this.code.length > 50) {
         let params = new URLSearchParams();
         params.append("pid", this.$route.query.pid);
-        params.append("user", sessionStorage.getItem("username"));
+        params.append("user", this.$store.getters.getUsername);
         params.append("code", this.code);
         params.append("language", this.compileLanguage);
         let dataSubmitProblem = await this.$http

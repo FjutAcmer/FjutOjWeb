@@ -97,7 +97,7 @@ export default {
     },
     isLoginStatu() {
       // console.log(sessionStorage.getItem('username'));
-      if (sessionStorage.getItem("username")) {
+      if (this.$store.getters.getUsername) {
         this.isLogin = true;
       } else {
         this.isLogin = false;
@@ -106,7 +106,7 @@ export default {
     async sendMessage() {
       let params = new URLSearchParams();
       params.append("discussid", this.$route.query.id);
-      params.append("author", sessionStorage.getItem("username"));
+      params.append("author", this.$store.getters.getUsername);
       params.append("text", this.message);
       let datainsertDiscussReply = await this.$http
         .post("/newdiscussreply/insertDiscussReply", params)

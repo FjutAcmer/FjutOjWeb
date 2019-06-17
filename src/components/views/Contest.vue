@@ -98,7 +98,7 @@ export default {
     },
     toSignUp(row) {
       // console.log(row.id);
-      if (sessionStorage.getItem("username") == "") {
+      if (this.$store.getters.getUsername == "") {
         this.$message({ message: "请先登录！", type: "error" });
         return;
       } else if (row.status === 2) {
@@ -111,7 +111,7 @@ export default {
     },
     async toContestInfo(row) {
       // console.log(row.id);
-      if (sessionStorage.getItem("username") == "") {
+      if (this.$store.getters.getUsername == "") {
         this.$message({ message: "请先登录！", type: "error" });
         return;
       } else if (row.status === 2) {
@@ -121,7 +121,7 @@ export default {
       } else if (row.ctype === 3 || row.ctype === 4 || row.ctype === 5) {
         let params = new URLSearchParams();
         params.append("cid", row.id);
-        params.append("username", sessionStorage.getItem("username"));
+        params.append("username", this.$store.getters.getUsername);
         let dataProblemByTitle = await this.$http
           .post("/problem/GProblemByTitle", params)
           .catch(() => {

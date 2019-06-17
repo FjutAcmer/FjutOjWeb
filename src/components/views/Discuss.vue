@@ -133,7 +133,7 @@ export default {
     async insertDiscuss(val) {
       let params = new URLSearchParams();
       params.append("title", val);
-      params.append("author", sessionStorage.getItem("username"));
+      params.append("author", this.$store.getters.getUsername);
       let dataInsertDiscuss = await this.$http
         .post("/discuss/insertDiscuss", params)
         .catch(() => {
@@ -142,7 +142,7 @@ export default {
       this.$message({ message: dataInsertDiscuss.data[0], type: "success" });
     },
     getLoginStatu() {
-      if (sessionStorage.getItem("username")) {
+      if (this.$store.getters.getUsername) {
         this.isLogin = true;
       } else {
         this.isLogin = false;

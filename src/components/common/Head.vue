@@ -76,14 +76,16 @@
         size="medium"
         @click="toClockIn"
       >你已签到</el-button>
-      <el-dropdown>
-        <li class="head-box-login-register-item">
-          <router-link to="User" class="head-box-title-router">{{$store.getters.getUsername}}</router-link>
+      <el-dropdown class="head-box-dropdown-name" >
+        <li class="head-box-list-name">
+          <router-link to="User" class="head-box-title-router" >
+            <i class="el-icon-user" >{{$store.getters.getUsername}}</i>
+          </router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item >
+          <el-dropdown-item>
             <span @click="toMessage">消息</span>
-            </el-dropdown-item>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="toEditUser">编辑</span>
           </el-dropdown-item>
@@ -139,8 +141,8 @@ export default {
     toClockIn() {
       this.$router.push({ path: "ClockIn" });
     },
-    toMessage(){
-      this.$router.push({path: 'Message'});
+    toMessage() {
+      this.$router.push({ path: "Message" });
     },
 
     // add by axiang [20190613]
@@ -208,13 +210,16 @@ export default {
   /* background-color: blue; */
 }
 
+.head-box-dropdown-name{
+  width: auto;
+}
+
 .head-box-title-router {
   text-decoration: none;
   color: black;
 }
 
 .head-box-title-router:hover {
-  font-size: 16px;
   color: lightblue;
 }
 
@@ -236,6 +241,16 @@ export default {
   line-height: 50px;
   border-left: 1px solid #eeeeee;
   /* background-color: blue; */
+}
+
+.head-box-list-name{
+  font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
+  font-size: 15px;
+  float: left;
+  display: block;
+  width: auto;
+  line-height: 50px;
+  border-left: 1px solid #eeeeee;
 }
 
 .head-box-clockin-button {

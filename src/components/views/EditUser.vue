@@ -60,7 +60,7 @@ export default {
         this.$message({ message: "两次密码不同！", type: "error" });
       } else {
         let params = new URLSearchParams();
-        params.append("username", sessionStorage.getItem("username"));
+        params.append("username", this.$store.getters.getUsername);
         params.append("password", this.$refs.pwd.value);
         params.append("nick", this.$refs.nick.value);
         params.append("school", this.$refs.school.value);

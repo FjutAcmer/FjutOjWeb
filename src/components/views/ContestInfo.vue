@@ -334,7 +334,7 @@ export default {
     async getProblem(val) {
       let params = new URLSearchParams();
       params.append("pid", val);
-      params.append("user", sessionStorage.getItem("username"));
+      params.append("user", this.$store.getters.getUsername);
       this.pid = val;
       let dataProblemView = await this.$http
         .post("/problemview/Gproblemview", params)
@@ -352,7 +352,7 @@ export default {
       if (this.code.length > 50) {
         let params = new URLSearchParams();
         params.append("pid", this.pid);
-        params.append("user", sessionStorage.getItem("username"));
+        params.append("user", this.$store.getters.getUsername);
         params.append("code", this.code);
         params.append("language", this.compileLanguage);
         params.append("cid", this.$route.query.cid);

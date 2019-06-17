@@ -40,6 +40,8 @@
         <el-table-column prop="Ratio" label="Ratio" style="width:30%"></el-table-column>
       </el-table>
     </el-card>
+    <!-- <el-backtop target=".page-component__scroll .el-scrollbar__wrap">
+    </el-backtop> -->
   </div>
 </template>
 

@@ -12,21 +12,22 @@
           @current-change="getUserMessage"
           :total="Total"
         ></el-pagination>
-        <el-table style="height:700px;" :data="this.tableData">
-          <el-table-column type="index" :index="indexChange" label="#" ></el-table-column>
-          <el-table-column prop="status" label="已读" ></el-table-column>
-          <el-table-column prop="time" label="时间" ></el-table-column>
-          <el-table-column prop="title" label="标题"></el-table-column>
-          <el-table-column label="操作">
+        <el-table :data="this.tableData" highlight-current-row="true">
+          <el-table-column type="index" :index="indexChange" label="#" width="100"></el-table-column>
+          <el-table-column prop="status" label="状态" width="80">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini">查看</el-button>
+              <div v-if="'已读'===scope.row.status" class="table-row-readed">{{scope.row.status}}</div>
+              <div v-else class="table-row-unread">{{scope.row.status}}</div>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="text" label="内容">
+          <el-table-column prop="time" label="时间" width="200"></el-table-column>
+          <el-table-column prop="title" label="标题"></el-table-column>
+          <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-              <div v-html="scope.row.text"></div>
+              <el-button type="primary" size="mini" @click="showText(scope.row)">查看</el-button>
+              <el-button type="danger" size="mini" @click="delMessage(scope.row)">删除</el-button>
             </template>
-          </el-table-column>-->
+          </el-table-column>
         </el-table>
       </div>
     </el-card>
@@ -45,6 +46,7 @@ export default {
   },
   methods: {
     async getUserMessage(pagenum) {
+      this.logger.ms("getUserMessage", "获取当前页的用户消息列表");
       this.tableData = [];
       let params = new URLSearchParams();
       let username = this.$store.getters.getUsername;
@@ -62,17 +64,76 @@ export default {
       this.Total = dataMessage.datas[1];
       for (let i = 0; i < dataTempMessage.length; i++) {
         let localeTime = new Date(dataTempMessage[i].time).toLocaleString();
-        let status = 1 === dataTempMessage[i].status ? "已读" : "未读";
+        let status = (1 === dataTempMessage[i].status) ? "已读" : "未读";
         this.tableData.push({
           mid: dataTempMessage[i].mid,
           status: status,
           title: dataTempMessage[i].title,
+          text: dataTempMessage[i].text,
           time: localeTime
         });
       }
+      this.logger.me("getUserMessage", "获取当前页的用户消息列表");
     },
     indexChange(index) {
       return (this.currentPage - 1) * 10 + index + 1;
+    },
+    showText(row) {
+      this.logger.ms("showText", "显示详情");
+      this.$alert(row.text, "查看系统消息", {
+        dangerouslyUseHTMLString: true,
+        callback: action => {
+          if ("未读" === row.status) {
+            this.logger.i("未读设置已读");
+            this.setReaded(row.mid);
+            row.status = "已读";
+          }
+        }
+      });
+      this.logger.me("showText", "显示详情");
+    },
+    delMessage(row) {
+      this.logger.ms("delMessage", "删除消息记录");
+      this.$confirm("你确定要删除这条记录吗？", "警告", {
+        cancelButtonText: "取消",
+        confirmButtonText: "确定",
+        type: "warning"
+      })
+        .then(() => {
+          this.delMessageByMid(row.mid);
+        })
+        .catch(() => {});
+    },
+    async setReaded(mid) {
+      let params = new URLSearchParams();
+      params.append("mid", mid);
+      let dataSetReaded = await this.$http
+        .post("/message/setReadedByMid", params)
+        .catch(() => {
+          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
+          this.logger.e("请求失败");
+        });
+      if (100 === dataSetReaded.code) {
+        this.logger.i("设置 mid: " + mid + " 已读成功");
+      } else {
+        this.logger.e("设置 mid: " + mid + " 已读失败");
+      }
+    },
+    async delMessageByMid(mid) {
+      let params = new URLSearchParams();
+      params.append("mid", mid);
+      let dataSetReaded = await this.$http
+        .post("/message/delMessageByMid", params)
+        .catch(() => {
+          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
+          this.logger.e("请求失败");
+        });
+      if (100 === dataSetReaded.code) {
+        this.logger.i("删除成功！");
+        this.getUserMessage(this.currentPage);
+      } else {
+        this.logger.e("删除失败！");
+      }
     }
   },
   mounted() {
@@ -99,6 +160,13 @@ export default {
   padding: 0;
   margin-top: 2%;
   margin-bottom: 2%;
+  /* background-color: #eeeeee; */
+}
+
+.clearfix {
+  margin: 0px;
+  padding: 0px;
+  /* background-color: #eeeeee; */
 }
 
 .clearfix:before,
@@ -117,5 +185,15 @@ export default {
   padding: 0;
   height: 50px;
   border-bottom: 1px solid silver;
+}
+
+.table-row-readed {
+  color: green;
+  font-weight: bold;
+}
+
+.table-row-unread {
+  color: red;
+  font-weight: bold;
 }
 </style>

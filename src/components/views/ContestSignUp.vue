@@ -132,7 +132,7 @@ export default {
     async addContestUser() {
       let params = new URLSearchParams();
       params.append("cid", this.$route.query.cid);
-      params.append("username", sessionStorage.getItem("username"));
+      params.append("username", this.$store.getters.getUsername);
       let dataContestuser = await this.$http
         .post("/IContestuser", params)
         .catch(() => {
