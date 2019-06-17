@@ -4,7 +4,6 @@
  * XoW.logger.logStart("aaa") // 输出 [log]aaa 开始
  * XoW.logger.logEnd("aaa") // 输出 [log]aaa 结束
  * XoW.logger.logParams({k1 : "v1", k2 : "v2"}); 输出 [log][参数][k1 : v1][k2 : v2]
- * @param factory
  */
 const logger = {
   // 'use strict'

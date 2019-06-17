@@ -22,10 +22,15 @@
           <font color="blue">{{username}}</font> 的签到记录
         </div>
       </div>
-      <el-table :data="tableData" max-height="600" :row-class-name="tableRowClass">
+      <!--要设置单元格颜色必须设置全局样式，或者使用scope设置v-html，这里暂时不弄-->
+      <el-table :data="tableData" max-height="600">
         <el-table-column prop="username" label="用户名" width="180"></el-table-column>
         <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
-        <el-table-column prop="sign" label="状态" width="100"></el-table-column>
+        <el-table-column prop="sign" label="状态" width="100">
+          <template slot-scope="scope">
+            <div v-html="scope.row.sign"></div>
+          </template>
+        </el-table-column>
         <el-table-column prop="ip" label="签到IP"></el-table-column>
         <el-table-column prop="#" label="奖励ACB"></el-table-column>
         <!-- <el-table-column prop='todytimes' label='当天第几次签到'></el-table-column> -->
@@ -59,7 +64,7 @@ export default {
   methods: {
     // add by axiang [20190613] 获取签到列表
     async getSomedayClockInList() {
-      this.$log.i("获取签到列表 开始");
+      this.logger.ms("getSomedayClockInList", "获取签到列表");
       this.tableData = [];
       let params = new URLSearchParams();
       params.append("username", this.username);
@@ -67,37 +72,39 @@ export default {
         .post("/clockin/GUserClockIn", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          this.$log.e("获取签到列表 失败");
+          this.logger.e("获取签到列表 失败");
         });
-      this.$log.s("获取签到列表 成功");
+      this.logger.i("获取签到列表 成功");
       let data_clockin = dataGetClockInList.data[0];
       for (let i = 0; i < data_clockin.length; i++) {
         let time = data_clockin[i].time;
         let timeStr = new Date(time).toLocaleString();
         let className = "";
-        if (data_clockin[i].sign === "日常" || data_clockin[i].sign === "正常")
+        if (
+          data_clockin[i].sign === "日常" ||
+          data_clockin[i].sign === "正常"
+        ) {
           className = "clockInNormal";
-        else if (data_clockin[i].sign === "迟到") className = "clockInLate";
-        else className = "clockInOther";
+        } else if (data_clockin[i].sign === "迟到") {
+          className = "clockInLate";
+        } else {
+          className = "clockInOther";
+        }
         this.clockInDateArr.push({
           date: timeStr.split(" ")[0],
           className: className
         });
+
         this.tableData.push({
           username: data_clockin[i].username,
           time: timeStr,
-          sign: data_clockin[i].sign,
+          // add by axiang [20190616] 暂时用这个测试一下，之后需要动态判断
+          sign: '<font color="blue">' + data_clockin[i].sign + "</font>",
           ip: data_clockin[i].ip,
           todytimes: data_clockin[i].todytimes
         });
       }
-    },
-    tableRowClass({ row, rowIndex }) {
-      if ("日常" === row.sign) {
-        return "warning-row";
-      } else {
-        return "success-row";
-      }
+      this.logger.me("getSomedayClockInList", "获取签到列表");
     }
   }
 };
@@ -155,14 +162,6 @@ export default {
 
 .clockin-title {
   float: left;
-}
-
-.el-table .warning-row {
-  background: oldlace;
-}
-
-.el-table .success-row {
-  background: #f0f9eb;
 }
 </style>
 

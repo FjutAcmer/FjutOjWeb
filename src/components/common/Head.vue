@@ -74,6 +74,7 @@
         type="info"
         v-if="this.isClockIn"
         size="medium"
+        @click="toClockIn"
       >你已签到</el-button>
       <el-dropdown>
         <li class="head-box-login-register-item">
@@ -85,9 +86,9 @@
             <span @click="toEditUser">编辑</span>
           </el-dropdown-item>
           <!-- <el-dropdown-item divided>认证</el-dropdown-item> -->
-          <el-dropdown-item divided>
+          <!-- <el-dropdown-item divided>
             <span @click="toClockIn">签到</span>
-          </el-dropdown-item>
+          </el-dropdown-item>-->
           <!-- <el-dropdown-item divided>称号</el-dropdown-item> -->
           <el-dropdown-item divided>
             <span @click="logout">退出</span>
@@ -150,14 +151,14 @@ export default {
             message: "服务器繁忙，请稍后再试！",
             type: "error"
           });
-
         });
       if (dataSetClockIn.code === 200) {
-
-        this.$message({ message: "签到失败:" + dataSetClockIn.data[0], type: "error" });
+        this.$message({
+          message: "签到失败:" + dataSetClockIn.data[0],
+          type: "error"
+        });
         this.$store.commit("setIsClockIn", false);
       } else {
-
         this.$message({ message: "签到成功！", type: "success" });
         this.$store.commit("setIsClockIn", true);
         this.$router.push({ path: "ClockIn" });

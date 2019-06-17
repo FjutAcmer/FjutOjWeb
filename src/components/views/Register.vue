@@ -37,16 +37,12 @@
 </template>
 
 <script>
-import { getUser } from "../../api";
+
 import { valid } from "semver";
 
 export default {
   data() {
-    /**
-     * axiang编写 测试自定义验证
-     * 规范用户名，只允许输入字母、数字、下划线
-     * 2019.6.9
-     */
+    // add by axiang [20190609] 规范用户名输入内容，只允许输入字母、数字、下划线
     var validateUsername = (rule, value, callback) => {
       var reg = /^\w+$/;
       if (!reg.test(value)) callback(new Error("请输入字母、数字或者下划线"));
@@ -66,37 +62,39 @@ export default {
       rules: {
         name: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 1, max: 20, message: "长度在 1 到 5 个字符", trigger: "blur" },
+          { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
           { validator: validateUsername, trigger: "blur" }
         ],
         pwd: [
           { required: true, message: "请输入密码", trigger: "change" },
-          { min: 4, max: 20, message: "长度在 4 到 12 个字符", trigger: "blur" }
+          { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
         ],
         pwd2: [
           { required: true, message: "请输入密码", trigger: "change" },
-          { min: 4, max: 20, message: "长度在 4 到 12 个字符", trigger: "blur" }
+          { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
         ]
       }
     };
   },
   methods: {
     onSubmit(formName) {
-      console.log("点击注册!");
+      this.logger.ms('onSubmit','点击注册！');
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.userInsert();
-          console.log("onsubmit正常返回");
+          this.logger.i('onsubmit正常');
         } else {
-          console.log("onsubmit错误返回");
+          this.logger.e('onsubmit错误');
           return false;
         }
       });
+      this.logger.me('onSubmit','点击注册！');
     },
     async userInsert() {
-      console.log("调用userInsert");
+      this.logger.ms('userInsert','调用userInsert');
       if (this.$refs.pwd.value != this.$refs.pwd2.value) {
         this.$message({ message: "两次密码不正确", type: "error" });
+        this.logger.e('两次密码不一致');
       } else {
         let params = new URLSearchParams();
         params.append("username", this.$refs.name.value);
@@ -112,17 +110,19 @@ export default {
               message: "服务器繁忙，请稍后再试！",
               type: "error"
             });
-            console.log("userInsert服务器未响应返回");
+            this.logger.e('userInsert服务器未响应返回');
             return;
           });
         if (dataInserUser.code == 200) {
-          this.$message({ message: "注册未成功，用户已存在", type: "error" });
+          this.$message({ message: '注册未成功，用户已存在', type: "error" });
+          this.logger.e('注册失败 '+dataInserUser.msg);
         } else {
           this.$message({ message: "注册成功", type: "success" });
+          this.logger.i('注册成功');
           this.$router.push({ path: "/Login" });
         }
-        console.log("userInsert正常返回");
       }
+      this.logger.me('userInsert','调用userInsert');
     }
   }
 };
