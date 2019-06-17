@@ -22,19 +22,29 @@
           <font color="blue">{{username}}</font> 的签到记录
         </div>
       </div>
-      <!--要设置单元格颜色必须设置全局样式，或者使用scope设置v-html，这里暂时不弄-->
-      <el-table :data="tableData" max-height="600">
-        <el-table-column prop="username" label="用户名" width="180"></el-table-column>
-        <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
-        <el-table-column prop="sign" label="状态" width="100">
-          <template slot-scope="scope">
-            <div v-html="scope.row.sign"></div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="ip" label="签到IP"></el-table-column>
-        <el-table-column prop="#" label="奖励ACB"></el-table-column>
-        <!-- <el-table-column prop='todytimes' label='当天第几次签到'></el-table-column> -->
-      </el-table>
+      <div class="ClockInList-table">
+        <el-pagination
+          style="float:left"
+          layout="prev, pager, next"
+          :total="tableData.length"
+          :page-size="pagesize"
+          :current-page="currentPage"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+        <!--要设置单元格颜色必须设置全局样式，或者使用scope设置v-html，这里暂时不弄-->
+        <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" max-height="600">
+          <el-table-column prop="username" label="用户名" width="180"></el-table-column>
+          <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
+          <el-table-column prop="sign" label="状态" width="100">
+            <template slot-scope="scope">
+              <div v-html="scope.row.sign"></div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="ip" label="签到IP"></el-table-column>
+          <el-table-column prop="#" label="奖励ACB"></el-table-column>
+          <!-- <el-table-column prop='todytimes' label='当天第几次签到'></el-table-column> -->
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -49,11 +59,16 @@ export default {
       username: "",
       tableData: [],
       clockInDateArr: [],
-      today: new Date()
+      today: new Date(),
+
+      pagesize: 10,
+      currentTotal: 0,
+      currentPage: 1
     };
   },
   created() {
     this.username = this.$store.getters.getUsername;
+    this.getUserAllClockInList();
     this.getSomedayClockInList();
   },
   // computed(){},
@@ -62,20 +77,25 @@ export default {
     Calendar
   },
   methods: {
+    handleCurrentChange(currentPage){
+      this.currentPage = currentPage;
+      this.logger.i('currentPage: '+currentPage);
+    },
+
     // add by axiang [20190613] 获取签到列表
-    async getSomedayClockInList() {
-      this.logger.ms("getSomedayClockInList", "获取签到列表");
-      this.tableData = [];
+    async getUserAllClockInList() {
+      this.logger.ms("getUserAllClockInList", "获取用户全部签到列表");
       let params = new URLSearchParams();
       params.append("username", this.username);
       let dataGetClockInList = await this.$http
         .post("/clockin/GUserClockIn", params)
         .catch(() => {
           this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          this.logger.e("获取签到列表 失败");
+          this.logger.e("获取用户全部签到列表 失败");
         });
-      this.logger.i("获取签到列表 成功");
+      this.logger.i("获取用户签到列表 成功");
       let data_clockin = dataGetClockInList.data[0];
+      this.logger.p({ currentTotal: this.currentTotal });
       for (let i = 0; i < data_clockin.length; i++) {
         let time = data_clockin[i].time;
         let timeStr = new Date(time).toLocaleString();
@@ -85,7 +105,7 @@ export default {
           data_clockin[i].sign === "正常"
         ) {
           className = "clockInNormal";
-        } else if (data_clockin[i].sign === "迟到") {
+        } else if ("迟到" === data_clockin[i].sign) {
           className = "clockInLate";
         } else {
           className = "clockInOther";
@@ -94,7 +114,10 @@ export default {
           date: timeStr.split(" ")[0],
           className: className
         });
-
+      }
+      for (let i = 0; i < data_clockin.length; i++) {
+        let time = data_clockin[i].time;
+        let timeStr = new Date(time).toLocaleString();
         this.tableData.push({
           username: data_clockin[i].username,
           time: timeStr,
@@ -104,7 +127,8 @@ export default {
           todytimes: data_clockin[i].todytimes
         });
       }
-      this.logger.me("getSomedayClockInList", "获取签到列表");
+      this.logger.i('tableData.length='+this.tableData.length);
+      this.logger.me("getUserAllClockInList", "获取用户全部签到列表");
     }
   }
 };
@@ -126,7 +150,7 @@ export default {
 
 .CalendarBox-head {
   background-color: lightblue;
-  height: 20px;
+  height: auto;
   width: 79%;
   margin: 0;
   border-bottom: 1px solid #eeeeee;
@@ -161,6 +185,10 @@ export default {
 }
 
 .clockin-title {
+  float: left;
+}
+
+.ClockInList-table {
   float: left;
 }
 </style>

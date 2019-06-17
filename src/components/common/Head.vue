@@ -81,7 +81,9 @@
           <router-link to="User" class="head-box-title-router">{{$store.getters.getUsername}}</router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>消息</el-dropdown-item>
+          <el-dropdown-item >
+            <span @click="toMessage">消息</span>
+            </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="toEditUser">编辑</span>
           </el-dropdown-item>
@@ -136,6 +138,9 @@ export default {
     },
     toClockIn() {
       this.$router.push({ path: "ClockIn" });
+    },
+    toMessage(){
+      this.$router.push({path: 'Message'});
     },
 
     // add by axiang [20190613]

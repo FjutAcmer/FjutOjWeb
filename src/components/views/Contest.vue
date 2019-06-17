@@ -27,13 +27,13 @@
         layout="prev, pager, next"
         :current-page="currentPage"
         @current-change="getList"
-        :total="currentTotal*10"
+        :total="currentTotal/10"
       ></el-pagination>
       <el-table style="width:100%;" :data="tableData">
         <el-table-column prop="id" label="#" width="150"></el-table-column>
         <el-table-column label="名称" width="400">
           <template slot-scope="scope">
-            <div @click="toContestInfo(scope.row)">{{scope.row.name}}</div>
+            <div @click="toContestInfo(scope.row)" >{{scope.row.name}}</div>
           </template>
         </el-table-column>
         <el-table-column prop="beginTime" label="开始时间" style="width:30%"></el-table-column>

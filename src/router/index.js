@@ -97,6 +97,11 @@ export default new Router({
       path: '/ClockIn',
       name: 'ClockIn',
       component: () => import('@/components/views/ClockIn')
+    },
+    {
+      path: '/Message',
+      name: 'Message',
+      component: () => import('@/components/views/Message')
     }
   ]
 })
