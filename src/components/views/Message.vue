@@ -18,7 +18,7 @@
           size="medium"
           plain
           @click="handleDelAllMessage"
-        >清空消息</el-button> -->
+        >清空消息</el-button>-->
         <el-button
           class="button-readAll"
           type="warning"
@@ -26,7 +26,7 @@
           plain
           @click="handleAllMessageRead"
         >全部已读</el-button>
-        <el-table :data="this.tableData" highlight-current-row>
+        <el-table :data="this.tableData" highlight-current-row max-height="700">
           <el-table-column type="index" :index="indexChange" label="#" width="100"></el-table-column>
           <el-table-column prop="status" label="状态" width="100">
             <template slot-scope="scope">
@@ -35,14 +35,14 @@
             </template>
           </el-table-column>
           <el-table-column prop="time" label="时间" width="240"></el-table-column>
-          <el-table-column prop="title" label="标题">
+          <el-table-column prop="title" label="标题" width="300">
             <template slot-scope="scope">
               <el-link type="info" @click="showText(scope.row)">
                 <strong>{{scope.row.title}}</strong>
               </el-link>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200">
+          <el-table-column label="操作">
             <template slot-scope="scope">
               <!-- <el-button type="primary" size="mini" @click="">查看</el-button> -->
               <el-button type="danger" size="mini" @click="delMessage(scope.row)">删除</el-button>
@@ -64,6 +64,15 @@ export default {
       tableData: []
     }
   },
+  computed: {
+    isAllReaded () {
+      if (this.$store.getters.getUnReadMsgCount > 0) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
   methods: {
     indexChange (index) {
       return (this.currentPage - 1) * 10 + index + 1
@@ -77,6 +86,10 @@ export default {
             this.logger.i('未读设置已读')
             this.setReaded(row.mid)
             row.status = '已读'
+            this.$store.commit(
+              'setUnReadMsgCount',
+              this.$store.getters.getUnReadMsgCount - 1
+            )
           }
         }
       })
@@ -95,13 +108,18 @@ export default {
         .catch(() => {})
     },
     handleAllMessageRead () {
-      this.$confirm('你确定要设置全部已读吗？可能会错过重要消息', '警告', {
-        cancelButtonText: '取消',
-        confirmButtonText: '确定',
-        type: 'warning'
-      }).then(() => {
-        this.setMessageAllRead()
-      })
+      let unReadMsgCount = this.$store.getters.getUnReadMsgCount
+      if (unReadMsgCount > 0) {
+        this.$confirm('你确定要设置全部已读吗？可能会错过重要消息', '警告', {
+          cancelButtonText: '取消',
+          confirmButtonText: '确定',
+          type: 'warning'
+        }).then(() => {
+          this.setMessageAllRead()
+        })
+      } else {
+        this.$message({message: '已经全部已读！', type: 'warning'})
+      }
     },
     // handleDelAllMessage () {
     //   this.$confirm('你确定要清空你的消息列表吗？这个操作不能恢复', '警告', {
@@ -132,7 +150,7 @@ export default {
 
       if (typeof dataTempMessage !== 'undefined') {
         for (let i = 0; i < dataTempMessage.length; i++) {
-          let localeTime = new Date(dataTempMessage[i].time).toLocaleString()
+          let localeTime = new Date(dataTempMessage[i].time).toLocaleString('chinese', {hour12: false})
           let status = dataTempMessage[i].status === 1 ? '已读' : '未读'
           this.tableData.push({
             mid: dataTempMessage[i].mid,
@@ -194,6 +212,7 @@ export default {
         this.logger.i(
           '设置全部消息已读成功! 设置成功条数：' + dataSetMsgAllRead.datas[0]
         )
+        this.$store.commit('setUnReadMsgCount', 0)
         this.getUserMessage(this.currentPage)
       } else {
         this.$message({ message: '消息已经全部已读', type: 'warning' })
@@ -201,6 +220,27 @@ export default {
           '设置全部消息已读失败！设置成功条数：' + dataSetMsgAllRead.datas[0]
         )
       }
+    },
+    async checkUnReadMsgCount () {
+      this.logger.ms('UnReadMsgCount', '未读消息数量')
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataUnReadMsgCount = await this.$http
+        .post('/message/getUnReadMessageCountByUser', params)
+        .catch(() => {
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          this.logger.e('请求签到信息失败')
+        })
+
+      if (dataUnReadMsgCount.code === 100) {
+        let unReadMsgCount = dataUnReadMsgCount.datas[0]
+        this.$store.commit('setUnReadMsgCount', unReadMsgCount)
+      }
+      this.logger.me('UnReadMsgCount', '未读消息数量')
     }
     // FIXME: 这里与服务端交互失败，需要修改
     // async delAllMessage () {
@@ -226,6 +266,7 @@ export default {
   },
   mounted () {
     this.getUserMessage(this.currentPage)
+    this.checkUnReadMsgCount()
   }
 }
 </script>
@@ -234,14 +275,14 @@ export default {
 .message-box {
   margin: 2% 10% 2% 10%;
   width: 80%;
-  min-height: 680px;
+  min-height: 700px;
   padding: 0;
 }
 
 .message-box-card {
   width: 90%;
   height: 100%;
-  min-height: 680px;
+  min-height: 700px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -250,6 +291,12 @@ export default {
   margin-bottom: 2%;
   /* background-color: #eeeeee; */
 }
+
+/* .table-message{
+  min-height: 500px;
+  width: 100%;
+  height: auto;
+} */
 
 .clearfix {
   margin: 0px;

@@ -100,7 +100,7 @@ export default {
       this.logger.p({ currentTotal: this.currentTotal })
       for (let i = 0; i < dataClockIn.length; i++) {
         let time = dataClockIn[i].time
-        let timeStr = new Date(time).toLocaleString()
+        let timeStr = new Date(time).toLocaleString('chinese', {hour12: false})
         let className = ''
         if (dataClockIn[i].sign === '日常' || dataClockIn[i].sign === '正常') {
           className = 'clockInNormal'
@@ -116,7 +116,7 @@ export default {
       }
       for (let i = 0; i < dataClockIn.length; i++) {
         let time = dataClockIn[i].time
-        let timeStr = new Date(time).toLocaleString()
+        let timeStr = new Date(time).toLocaleString('chinese', {hour12: false})
         this.tableData.push({
           username: dataClockIn[i].username,
           time: timeStr,

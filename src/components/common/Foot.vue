@@ -38,13 +38,13 @@
 export default {
   data () {
     return {
-      date: new Date().toLocaleString()
+      date: new Date().toLocaleString('chinese', {hour12: false})
     }
   },
   mounted () {
     var _this = this // 声明一个变量指向vue实例this,保证作用域一致
     this.timer = setInterval(() => {
-      _this.date = new Date().toLocaleString() // 修改数据date
+      _this.date = new Date().toLocaleString('chinese', {hour12: false}) // 修改数据date
     }, 1000)
   },
   beforeDestroy () {

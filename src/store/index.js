@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isLogin: false,
     isAdmin: false,
     isClockIn: false,
+    unReadMsgCount: 0,
     token: ''
   },
   mutations: {
@@ -19,6 +20,7 @@ export default new Vuex.Store({
       state.isLogin = false
       state.isAdmin = false
       state.isClockIn = false
+      state.unReadMsgCount = 0
       state.token = ''
     },
     setUsername (state, username) {
@@ -32,6 +34,9 @@ export default new Vuex.Store({
     },
     setIsClockIn (state, isClockIn) {
       state.isClockIn = isClockIn
+    },
+    setUnReadMsgCount (state, unReadMsgCount) {
+      state.unReadMsgCount = unReadMsgCount
     }
   },
   actions,
@@ -40,6 +45,7 @@ export default new Vuex.Store({
     getIsLogin: state => state.isLogin,
     getToken: state => state.token,
     getIsAdmin: state => state.isAdmin,
-    getIsClockIn: state => state.isClockIn
+    getIsClockIn: state => state.isClockIn,
+    getUnReadMsgCount: state => state.unReadMsgCount
   }
 })

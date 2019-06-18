@@ -79,14 +79,18 @@
       <el-dropdown class="head-box-dropdown-name">
         <li class="head-box-list-name">
           <router-link to="User" class="head-box-title-router">
-            <i class="el-icon-user">{{$store.getters.getUsername}}</i>
+            <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
+              <i class="el-icon-user">{{$store.getters.getUsername}}</i>
+            </el-badge>
+            <i class="el-icon-user" v-else>{{$store.getters.getUsername}}</i>
           </router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <el-badge :value="1111" :max="99" class="mark">
+            <el-badge :value="unReadMsgCount" :max="99" class="mark" v-if="this.unReadMsgCount > 0">
               <span @click="toMessage">消息</span>
             </el-badge>
+            <span @click="toMessage" v-else>消息</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="toEditUser">编辑</span>
@@ -114,7 +118,9 @@ export default {
       datas: []
     }
   },
-  // mounted: {},
+  mounted () {
+    this.checkUnReadMsgCount()
+  },
   computed: {
     isLogin () {
       return this.$store.getters.getIsLogin
@@ -124,11 +130,18 @@ export default {
     },
     isClockIn () {
       return this.$store.getters.getIsClockIn
+    },
+    unReadMsgCount () {
+      return this.$store.getters.getUnReadMsgCount
     }
   },
   methods: {
     logout () {
       this.$store.commit('LOGOUT')
+      this.$message({
+        message: '您已退出登录！',
+        type: 'info'
+      })
       this.$router.push({ path: '/' })
     },
     admin () {
@@ -172,6 +185,27 @@ export default {
         this.$store.commit('setIsClockIn', true)
         this.$router.push({ path: 'ClockIn' })
       }
+    },
+    async checkUnReadMsgCount () {
+      this.logger.ms('UnReadMsgCount', '未读消息数量')
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataUnReadMsgCount = await this.$http
+        .post('/message/getUnReadMessageCountByUser', params)
+        .catch(() => {
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          this.logger.e('请求签到信息失败')
+        })
+
+      if (dataUnReadMsgCount.code === 100) {
+        let unReadMsgCount = dataUnReadMsgCount.datas[0]
+        this.$store.commit('setUnReadMsgCount', unReadMsgCount)
+      }
+      this.logger.me('UnReadMsgCount', '未读消息数量')
     }
   }
 }
@@ -261,5 +295,10 @@ export default {
   float: left;
   margin-top: 7px;
   margin-right: 5px;
+}
+
+.badge-dot{
+  line-height: 0px;
+  margin-right: 10px;
 }
 </style>

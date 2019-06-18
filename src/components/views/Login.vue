@@ -80,7 +80,6 @@ export default {
         }
       })
     },
-
     async userLogin () {
       this.logger.ms('userLogin', '用户登录')
       let params = new URLSearchParams()
@@ -103,48 +102,80 @@ export default {
         this.$store.commit('setIsLogin', true)
         this.$message({ message: '登录成功！', type: 'success' })
         this.logger.i('登录成功')
-        // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 begin
-        this.logger.ms('isAdmin', '判断是否管理员')
-        let params = new URLSearchParams()
-        params.append('username', username)
-        let dataGetPermission = await this.$http
-          .post('/GUserPermission', params)
-          .catch(() => {
-            this.$message({
-              message: '服务器繁忙，请稍后再试！',
-              type: 'error'
-            })
-            this.logger.e('获取用户权限失败')
-          })
-        this.isAdmin = dataGetPermission.data[0]
-        this.$store.commit('setIsAdmin', this.isAdmin)
-        this.logger.p({ isAdmin: this.isAdmin })
-        this.logger.me('isAdmin', '判断是否管理员')
-        // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 end
-        // add by axiang [20190613] 判断用户当天签到状态 begin
-        this.logger.ms('isClockIn', '判断是否签到')
-        let dataGetTodayClockIn = await this.$http
-          .post('/clockin/GUserTodayClockIn', params)
-          .catch(() => {
-            this.$message({
-              message: '服务器繁忙，请稍后再试！',
-              type: 'error'
-            })
-            this.logger.e('请求签到信息失败')
-          })
-        if (dataGetTodayClockIn.code === 200) {
-          this.$store.commit('setIsClockIn', false)
-          this.logger.p({ 'IsClockIn': false })
-        } else {
-          this.$store.commit('setIsClockIn', true)
-          this.logger.p({ 'IsClockIn': true })
-        }
-
+        this.checkIsAdmin()
+        this.checkIsClockIn()
+        this.checkUnReadMsgCount()
         this.$router.push({ path: '/' })
-        this.logger.me('isClockIn', '判断是否签到')
-        // add by axiang [20190613] 判断用户当天签到状态 end
       }
       this.logger.me('userLogin', '用户登录')
+    },
+    async checkIsAdmin () {
+      // TODO: 目前还没做API，只判断是不是‘admin’账号
+      // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 begin
+      this.logger.ms('isAdmin', '判断是否管理员')
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataGetPermission = await this.$http
+        .post('/GUserPermission', params)
+        .catch(() => {
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          this.logger.e('获取用户权限失败')
+        })
+      this.isAdmin = dataGetPermission.data[0]
+      this.$store.commit('setIsAdmin', this.isAdmin)
+      this.logger.p({ isAdmin: this.isAdmin })
+      this.logger.me('isAdmin', '判断是否管理员')
+      // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 end
+    },
+    async checkIsClockIn () {
+      // add by axiang [20190613] 判断用户当天签到状态 begin
+      this.logger.ms('isClockIn', '判断是否签到')
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataGetTodayClockIn = await this.$http
+        .post('/clockin/GUserTodayClockIn', params)
+        .catch(() => {
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          this.logger.e('请求签到信息失败')
+        })
+      if (dataGetTodayClockIn.code === 200) {
+        this.$store.commit('setIsClockIn', false)
+        this.logger.p({ 'IsClockIn': false })
+      } else {
+        this.$store.commit('setIsClockIn', true)
+        this.logger.p({ 'IsClockIn': true })
+      }
+      this.logger.me('isClockIn', '判断是否签到')
+      // add by axiang [20190613] 判断用户当天签到状态 end
+    },
+    async checkUnReadMsgCount () {
+      this.logger.ms('UnReadMsgCount', '未读消息数量')
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataUnReadMsgCount = await this.$http
+        .post('/message/getUnReadMessageCountByUser', params)
+        .catch(() => {
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          this.logger.e('请求签到信息失败')
+        })
+
+      if (dataUnReadMsgCount.code === 100) {
+        let unReadMsgCount = dataUnReadMsgCount.datas[0]
+        this.$store.commit('setUnReadMsgCount', unReadMsgCount)
+      }
+      this.logger.me('UnReadMsgCount', '未读消息数量')
     }
   }
 }
