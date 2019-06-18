@@ -10,7 +10,7 @@
       <div style="width:30%;margin-right:5%">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="float:left">Rating Top10</span>
+            <span style="float:left;color:red">积分榜 Top10</span>
             <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
           </div>
           <div slot="header" style="margin:8px 0 15px 0;">
@@ -54,7 +54,7 @@
       <div style="width:30%">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="float:left">AC榜 Top10</span>
+            <span style="float:left;color:red">AC题数榜 Top10</span>
             <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
           </div>
           <div slot="header" style="margin:8px 0 15px 0;">
@@ -98,7 +98,7 @@
       <div style="width:30%;margin-left:5%">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="float:left">ACB富豪榜 Top10</span>
+            <span style="float:left;color:red">AC币富豪榜 Top10</span>
             <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
           </div>
           <div slot="header" style="margin:8px 0 15px 0;">

@@ -108,11 +108,12 @@ export default {
       params.append('discussid', this.$route.query.id)
       params.append('author', this.$store.getters.getUsername)
       params.append('text', this.message)
-      // let datainsertDiscussReply = await this.$http
-      //   .post('/newdiscussreply/insertDiscussReply', params)
-      //   .catch(() => {
-      //     this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-      //   })
+      let datainsertDiscussReply = await this.$http
+        .post('/newdiscussreply/insertDiscussReply', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.logger.i(datainsertDiscussReply.data[0])
       this.$router.go({
         path: '/Chat',
         query: { title: this.$route.query.title, id: this.$route.query.id }

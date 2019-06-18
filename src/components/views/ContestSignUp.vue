@@ -74,30 +74,44 @@
         <!-- <el-table-column prop="statu" label="状态" style="width:5%"></el-table-column> -->
         <el-table-column prop="time" label="时间" style="width:15%"></el-table-column>
         <!-- <el-table-column fixed="right" label="admin" width="200" v-if="isadmin">
-                        <template slot-scope="scope">
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                等待
-                            </el-button>
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                通过
-                            </el-button>
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                拒绝
-                            </el-button>
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                非正式
-                            </el-button>
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                需修改
-                            </el-button>
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                已签到
-                            </el-button>
-                            <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)" type="text" size="small">
-                                删除
-                            </el-button>
-                        </template>
-        </el-table-column>-->
+          <template slot-scope="scope">
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >等待</el-button>
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >通过</el-button>
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >拒绝</el-button>
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >非正式</el-button>
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >需修改</el-button>
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >已签到</el-button>
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData4)"
+              type="text"
+              size="small"
+            >删除</el-button>
+          </template>
+        </el-table-column> -->
       </el-table>
     </el-card>
   </div>

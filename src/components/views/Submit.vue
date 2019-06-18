@@ -209,19 +209,21 @@ export default {
     },
     async onSubmit () {
       if (this.code.length > 50) {
+        // FIXME: 这里需要修改交题逻辑
         let params = new URLSearchParams()
         params.append('pid', this.$route.query.pid)
         params.append('user', this.$store.getters.getUsername)
         params.append('code', this.code)
         params.append('language', this.compileLanguage)
-        // let dataSubmitProblem = await this.$http
-        //   .post('/submit/submitProblem', params)
-        //   .catch(() => {
-        //     this.$message({
-        //       message: '服务器繁忙，请稍后再试！',
-        //       type: 'error'
-        //     })
-        //   })
+        let dataSubmitProblem = await this.$http
+          .post('/submit/submitProblem', params)
+          .catch(() => {
+            this.$message({
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+          })
+        this.logger.i(dataSubmitProblem.datas)
         this.$router.push({ path: '/Status' })
       } else {
         this.$message({ message: '提交长度过少！', type: 'error' })

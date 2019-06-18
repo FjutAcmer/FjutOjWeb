@@ -76,15 +76,17 @@
         size="medium"
         @click="toClockIn"
       >你已签到</el-button>
-      <el-dropdown class="head-box-dropdown-name" >
+      <el-dropdown class="head-box-dropdown-name">
         <li class="head-box-list-name">
-          <router-link to="User" class="head-box-title-router" >
-            <i class="el-icon-user" >{{$store.getters.getUsername}}</i>
+          <router-link to="User" class="head-box-title-router">
+            <i class="el-icon-user">{{$store.getters.getUsername}}</i>
           </router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <span @click="toMessage">消息</span>
+            <el-badge :value="1111" :max="99" class="mark">
+              <span @click="toMessage">消息</span>
+            </el-badge>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span @click="toEditUser">编辑</span>
@@ -210,7 +212,7 @@ export default {
   /* background-color: blue; */
 }
 
-.head-box-dropdown-name{
+.head-box-dropdown-name {
   width: auto;
 }
 
@@ -243,12 +245,13 @@ export default {
   /* background-color: blue; */
 }
 
-.head-box-list-name{
+.head-box-list-name {
   font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
   font-size: 15px;
   float: left;
   display: block;
   width: auto;
+  min-width: 100px;
   line-height: 50px;
   border-left: 1px solid #eeeeee;
 }

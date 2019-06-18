@@ -363,18 +363,20 @@ export default {
     },
     async addProblem () {
       if (this.pid !== null) {
+        // FIXME: 这里需要修改判断逻辑
         let params = new URLSearchParams()
         params.append('pid', this.pid)
         params.append('ojStr', this.oj)
-        // let dataAddProblem = await this.$http
-        //   .post('/addProblem/IAddProblem', params)
-        //   .catch(() => {
-        //     this.$message({
-        //       message: '服务器繁忙，请稍后再试！',
-        //       type: 'error'
-        //     })
-        //     // return
-        //   })
+        let dataAddProblem = await this.$http
+          .post('/addProblem/IAddProblem', params)
+          .catch(() => {
+            this.$message({
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.logger.i(dataAddProblem.data[0])
         this.$message({ message: '插入题目成功!', type: 'success' })
         // this.title = data.data[0]
       } else {

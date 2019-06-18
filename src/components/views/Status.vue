@@ -260,7 +260,7 @@ export default {
     this.getStatus(this.currentPage)
   },
   computed: {
-    // filter_data() {
+    // filter_data () {
     //   return
     // }
   },

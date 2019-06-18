@@ -349,13 +349,14 @@ export default {
     },
     async onSubmit () {
       if (this.code.length > 50) {
+        // FIXME: 需要添加判题逻辑
         let params = new URLSearchParams()
         params.append('pid', this.pid)
         params.append('user', this.$store.getters.getUsername)
         params.append('code', this.code)
         params.append('language', this.compileLanguage)
         params.append('cid', this.$route.query.cid)
-        // let dataSubmitProblem = await this.$http
+        let dataSubmitProblem = await this.$http
           .post('/submit/submitProblem', params)
           .catch(() => {
             this.$message({
@@ -363,6 +364,7 @@ export default {
               type: 'error'
             })
           })
+        this.logger.i(dataSubmitProblem.data[0])
         this.tableTabValue = '3'
       } else {
         this.$message({ message: '提交长度过少！', type: 'error' })
