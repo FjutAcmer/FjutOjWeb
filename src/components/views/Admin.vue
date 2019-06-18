@@ -247,52 +247,52 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      ojvalue: "",
-      oj: "",
-      ojList: [{ id: 0, name: "HDU" }, { id: 1, name: "PKU" }],
-      contestLevelValue: "",
-      contestLevel: "",
+      ojvalue: '',
+      oj: '',
+      ojList: [{ id: 0, name: 'HDU' }, { id: 1, name: 'PKU' }],
+      contestLevelValue: '',
+      contestLevel: '',
       contestLevelList: [
-        { id: 0, name: "其他" },
-        { id: 1, name: "ACM省赛" },
-        { id: 2, name: "ACM/ICPC区域赛" },
-        { id: 3, name: "EC-Final" },
-        { id: 4, name: "世界总决赛" },
-        { id: 5, name: "全国蓝桥杯大赛" },
-        { id: 6, name: "ACM全国邀请赛" },
-        { id: 7, name: "全国大学生程序设计竞赛" }
+        { id: 0, name: '其他' },
+        { id: 1, name: 'ACM省赛' },
+        { id: 2, name: 'ACM/ICPC区域赛' },
+        { id: 3, name: 'EC-Final' },
+        { id: 4, name: '世界总决赛' },
+        { id: 5, name: '全国蓝桥杯大赛' },
+        { id: 6, name: 'ACM全国邀请赛' },
+        { id: 7, name: '全国大学生程序设计竞赛' }
       ],
-      rewardValue: "",
-      reward: "",
+      rewardValue: '',
+      reward: '',
       rewardList: [
-        { id: 0, name: "顽强拼搏奖" },
-        { id: 1, name: "优秀奖/鼓励奖" },
-        { id: 2, name: "铜奖" },
-        { id: 3, name: "银奖" },
-        { id: 4, name: "金奖" },
-        { id: 5, name: "三等奖" },
-        { id: 6, name: "二等奖" },
-        { id: 7, name: "一等奖" },
-        { id: 8, name: "其他" }
+        { id: 0, name: '顽强拼搏奖' },
+        { id: 1, name: '优秀奖/鼓励奖' },
+        { id: 2, name: '铜奖' },
+        { id: 3, name: '银奖' },
+        { id: 4, name: '金奖' },
+        { id: 5, name: '三等奖' },
+        { id: 6, name: '二等奖' },
+        { id: 7, name: '一等奖' },
+        { id: 8, name: '其他' }
       ],
-      title: "",
-      pid: "",
-      dateTime: "",
-      username1: "",
-      name1: "",
-      username2: "",
-      name2: "",
-      username3: "",
-      name3: "",
-      remark: "",
-      id: "",
-      contestName: "",
-      startTime: "",
-      startTime2: "",
-      endTime: "",
-      endTime2: "",
+      title: '',
+      pid: '',
+      dateTime: '',
+      username1: '',
+      name1: '',
+      username2: '',
+      name2: '',
+      username3: '',
+      name3: '',
+      remark: '',
+      id: '',
+      contestName: '',
+      startTime: '',
+      startTime2: '',
+      endTime: '',
+      endTime2: '',
       // contestTypeList:[
       //     {id:0,name:'公开'},
       //     {id:1,name:'密码'},
@@ -301,87 +301,87 @@ export default {
       //     {id:4,name:'正式'},
       //     {id:4,name:'组队'}
       // ],
-      contestTypeValue: "",
+      contestTypeValue: '',
       // kindList:[
       //     {id:0,name:'练习'}
       // ],
-      kindValue: "",
-      contestPassword: "",
-      pidList: "",
-      discussid: "",
-      cid: "",
-      priority: ""
-    };
+      kindValue: '',
+      contestPassword: '',
+      pidList: '',
+      discussid: '',
+      cid: '',
+      priority: ''
+    }
   },
   methods: {
-    ojChange(val) {
-      let obj = {};
+    ojChange (val) {
+      let obj = {}
       obj = this.ojList.find(item => {
-        return item.id === val;
-      });
-      this.oj = obj.name;
-      this.ojvalue = val;
+        return item.id === val
+      })
+      this.oj = obj.name
+      this.ojvalue = val
     },
-    contestLevelChange(val) {
-      let obj = {};
+    contestLevelChange (val) {
+      let obj = {}
       obj = this.contestLevelList.find(item => {
-        return item.id === val;
-      });
-      this.contestLevel = obj.name;
-      this.contestLevelValue = val;
+        return item.id === val
+      })
+      this.contestLevel = obj.name
+      this.contestLevelValue = val
     },
-    contestTypeChange(val) {
-      this.contestTypeValue = val;
+    contestTypeChange (val) {
+      this.contestTypeValue = val
     },
-    kindChange(val) {
-      this.kindValue = val;
+    kindChange (val) {
+      this.kindValue = val
     },
-    rewardChange(val) {
-      let obj = {};
+    rewardChange (val) {
+      let obj = {}
       obj = this.rewardList.find(item => {
-        return item.id === val;
-      });
-      this.reward = obj.name;
-      this.rewardValue = val;
+        return item.id === val
+      })
+      this.reward = obj.name
+      this.rewardValue = val
     },
-    async getProblemTitle() {
+    async getProblemTitle () {
       if (this.pid !== null) {
-        let params = new URLSearchParams();
-        params.append("pid", this.pid);
-        params.append("ojStr", this.oj);
+        let params = new URLSearchParams()
+        params.append('pid', this.pid)
+        params.append('ojStr', this.oj)
         let { data } = await this.$http
-          .post("/addProblem/GAddProblemTitle", params)
+          .post('/addProblem/GAddProblemTitle', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.title = data.data[0];
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.title = data.data[0]
       }
     },
-    async addProblem() {
+    async addProblem () {
       if (this.pid !== null) {
-        let params = new URLSearchParams();
-        params.append("pid", this.pid);
-        params.append("ojStr", this.oj);
-        let dataAddProblem = await this.$http
-          .post("/addProblem/IAddProblem", params)
-          .catch(() => {
-            this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.$message({ message: "插入题目成功!", type: "success" });
-        //this.title = data.data[0];
+        let params = new URLSearchParams()
+        params.append('pid', this.pid)
+        params.append('ojStr', this.oj)
+        // let dataAddProblem = await this.$http
+        //   .post('/addProblem/IAddProblem', params)
+        //   .catch(() => {
+        //     this.$message({
+        //       message: '服务器繁忙，请稍后再试！',
+        //       type: 'error'
+        //     })
+        //     // return
+        //   })
+        this.$message({ message: '插入题目成功!', type: 'success' })
+        // this.title = data.data[0]
       } else {
-        this.$message({ message: "缺少重要信息!", type: "error" });
+        this.$message({ message: '缺少重要信息!', type: 'error' })
       }
     },
-    async addHonor() {
+    async addHonor () {
       if (
         (this.dateTime !== null &&
           this.contestLevelValue !== null &&
@@ -390,32 +390,32 @@ export default {
         (this.name2 !== null && this.username2 !== null) ||
         (this.username3 !== null && this.name3 !== null)
       ) {
-        let params = new URLSearchParams();
-        params.append("time", this.dateTime);
-        params.append("username1", this.username1);
-        params.append("username2", this.username2);
-        params.append("username3", this.username3);
-        params.append("name1", this.name1);
-        params.append("name2", this.name2);
-        params.append("name3", this.name3);
-        params.append("contestLevel", this.contestLevel);
-        params.append("awardsLevel", this.reward);
-        params.append("text", this.remark);
+        let params = new URLSearchParams()
+        params.append('time', this.dateTime)
+        params.append('username1', this.username1)
+        params.append('username2', this.username2)
+        params.append('username3', this.username3)
+        params.append('name1', this.name1)
+        params.append('name2', this.name2)
+        params.append('name3', this.name3)
+        params.append('contestLevel', this.contestLevel)
+        params.append('awardsLevel', this.reward)
+        params.append('text', this.remark)
         let dataIContestAward = await this.$http
-          .post("/addContestAward/IContestAward", params)
+          .post('/addContestAward/IContestAward', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.$message({ message: dataIContestAward.data[0], type: "success" });
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.$message({ message: dataIContestAward.data[0], type: 'success' })
       } else {
-        this.$message({ message: "缺少重要信息!", type: "error" });
+        this.$message({ message: '缺少重要信息!', type: 'error' })
       }
     },
-    async updateHonor() {
+    async updateHonor () {
       if (
         (this.id !== null &&
           this.dateTime !== null &&
@@ -425,112 +425,112 @@ export default {
         (this.name2 !== null && this.username2 !== null) ||
         (this.username3 !== null && this.name3 !== null)
       ) {
-        let params = new URLSearchParams();
-        params.append("time", this.dateTime);
-        params.append("username1", this.username1);
-        params.append("username2", this.username2);
-        params.append("username3", this.username3);
-        params.append("name1", this.name1);
-        params.append("name2", this.name2);
-        params.append("name3", this.name3);
-        params.append("contestLevel", this.contestLevel);
-        params.append("awardsLevel", this.reward);
-        params.append("text", this.remark);
-        params.append("id", this.id);
+        let params = new URLSearchParams()
+        params.append('time', this.dateTime)
+        params.append('username1', this.username1)
+        params.append('username2', this.username2)
+        params.append('username3', this.username3)
+        params.append('name1', this.name1)
+        params.append('name2', this.name2)
+        params.append('name3', this.name3)
+        params.append('contestLevel', this.contestLevel)
+        params.append('awardsLevel', this.reward)
+        params.append('text', this.remark)
+        params.append('id', this.id)
         let dataUContestAward = await this.$http
-          .post("/addContestAward/UContestAward", params)
+          .post('/addContestAward/UContestAward', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.$message({ message: dataUContestAward.data[0], type: "success" });
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.$message({ message: dataUContestAward.data[0], type: 'success' })
       } else {
-        this.$message({ message: "缺少重要信息!", type: "error" });
+        this.$message({ message: '缺少重要信息!', type: 'error' })
       }
     },
-    async changeDiscuss() {
+    async changeDiscuss () {
       if (this.discussid !== null && this.priority !== null) {
-        let params = new URLSearchParams();
-        params.append("id", this.discussid);
-        params.append("priority", this.priority);
+        let params = new URLSearchParams()
+        params.append('id', this.discussid)
+        params.append('priority', this.priority)
         let dataUPriority = await this.$http
-          .post("/discuss/UPriority", params)
+          .post('/discuss/UPriority', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.$message({ message: dataUPriority.data[0], type: "success" });
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.$message({ message: dataUPriority.data[0], type: 'success' })
       } else {
-        this.$message({ message: "缺少重要信息!", type: "error" });
+        this.$message({ message: '缺少重要信息!', type: 'error' })
       }
     },
-    async addContest() {
+    async addContest () {
       if (
         this.startTime !== null &&
         this.endTime !== null &&
-        this.contestName !== "" &&
+        this.contestName !== '' &&
         this.startTime2 !== null &&
         this.endTime2 !== null &&
-        this.pidList !== ""
+        this.pidList !== ''
       ) {
-        let params = new URLSearchParams();
-        params.append("name", this.contestName);
-        params.append("beginTime", this.startTime + " " + this.startTime2);
-        params.append("endTime", this.endTime + " " + this.endTime2);
-        params.append("problems", this.pidList);
-        // params.append('rankType',1);
-        // params.append('ctype',this.contestTypeValue);
-        // params.append('password',this.contestPassword);
-        // params.append('kind',this.kindValue);
-        await this.$http.post("/IContest", params).catch(() => {
+        let params = new URLSearchParams()
+        params.append('name', this.contestName)
+        params.append('beginTime', this.startTime + ' ' + this.startTime2)
+        params.append('endTime', this.endTime + ' ' + this.endTime2)
+        params.append('problems', this.pidList)
+        // params.append('rankType',1)
+        // params.append('ctype',this.contestTypeValue)
+        // params.append('password',this.contestPassword)
+        // params.append('kind',this.kindValue)
+        await this.$http.post('/IContest', params).catch(() => {
           this.$message({
-            message: "服务器繁忙，请稍后再试！",
-            type: "error"
-          });
-          return;
-        });
-        //this.addProblems();
-        this.$message({ message: "添加比赛成功!", type: "success" });
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          // return
+        })
+        // this.addProblems()
+        this.$message({ message: '添加比赛成功!', type: 'success' })
       } else {
-        this.$message({ message: "缺少重要信息!", type: "error" });
+        this.$message({ message: '缺少重要信息!', type: 'error' })
       }
     },
-    async deleteContest() {
+    async deleteContest () {
       if (this.cid !== null) {
-        let params = new URLSearchParams();
-        params.append("cid", this.cid);
-        await this.$http.post("/deleteContest", params).catch(() => {
+        let params = new URLSearchParams()
+        params.append('cid', this.cid)
+        await this.$http.post('/deleteContest', params).catch(() => {
           this.$message({
-            message: "服务器繁忙，请稍后再试！",
-            type: "error"
-          });
-          return;
-        });
-        this.$message({ message: "删除比赛成功！", type: "success" });
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          // return
+        })
+        this.$message({ message: '删除比赛成功！', type: 'success' })
       }
     },
-    async deleteDiscuss() {
+    async deleteDiscuss () {
       if (this.discussid !== null) {
-        let params = new URLSearchParams();
-        params.append("discussid", this.discussid);
-        await this.$http.post("/discuss/deleteDiscuss", params).catch(() => {
+        let params = new URLSearchParams()
+        params.append('discussid', this.discussid)
+        await this.$http.post('/discuss/deleteDiscuss', params).catch(() => {
           this.$message({
-            message: "服务器繁忙，请稍后再试！",
-            type: "error"
-          });
-          return;
-        });
-        this.$message({ message: "删除帖子成功！", type: "success" });
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+          // return
+        })
+        this.$message({ message: '删除帖子成功！', type: 'success' })
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 .docker {

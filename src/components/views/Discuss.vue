@@ -48,112 +48,112 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      input: "",
-      loading: "",
+      input: '',
+      loading: '',
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
       isSearch: false,
       isLogin: false
-    };
+    }
   },
   methods: {
-    async getDiscuss(val) {
-      this.tableData = [];
-      this.loading = true;
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      this.currentPage = val;
+    async getDiscuss (val) {
+      this.tableData = []
+      this.loading = true
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      this.currentPage = val
       let dataDiscuss = await this.$http
-        .post("/discuss/GDiscuss", params)
+        .post('/discuss/GDiscuss', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.loading = false;
-      this.currentTotal = dataDiscuss.data[0];
-      // console.log(this.currentTotal);
-      this.tableData = dataDiscuss.data[1];
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.loading = false
+      this.currentTotal = dataDiscuss.data[0]
+      // console.log(this.currentTotal)
+      this.tableData = dataDiscuss.data[1]
     },
-    async getList(val) {
+    async getList (val) {
       if (this.isSearch) {
-        this.getSearch(val);
+        this.getSearch(val)
       } else {
-        this.getDiscuss(val);
+        this.getDiscuss(val)
       }
     },
-    async getSearch(val) {
+    async getSearch (val) {
       if (this.input !== null) {
-        this.tableData = [];
-        this.isSearch = true;
-        this.loading = true;
-        let params = new URLSearchParams();
-        params.append("pagenum", val);
-        params.append("title", this.input);
-        this.currentPage = val;
+        this.tableData = []
+        this.isSearch = true
+        this.loading = true
+        let params = new URLSearchParams()
+        params.append('pagenum', val)
+        params.append('title', this.input)
+        this.currentPage = val
         let dataDiscussByTitle = await this.$http
-          .post("/discuss/GDiscussByTitle", params)
+          .post('/discuss/GDiscussByTitle', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-          });
-        this.loading = false;
-        this.currentTotal = dataDiscussByTitle.data[0];
-        // console.log(this.currentTotal);
-        this.tableData = dataDiscussByTitle.data[1];
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+          })
+        this.loading = false
+        this.currentTotal = dataDiscussByTitle.data[0]
+        // console.log(this.currentTotal)
+        this.tableData = dataDiscussByTitle.data[1]
       }
     },
-    toChat(row) {
+    toChat (row) {
       this.$router.push({
-        path: "Chat",
+        path: 'Chat',
         query: { title: row.title, id: row.discussid }
-      });
+      })
     },
-    toUser(row) {
-      this.$router.push({ path: "/User", query: { username: row.author } });
+    toUser (row) {
+      this.$router.push({ path: '/User', query: { username: row.author } })
     },
-    newDiscuss() {
-      this.$prompt("请输入标题", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+    newDiscuss () {
+      this.$prompt('请输入标题', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
-          this.insertDiscuss(value);
+          this.insertDiscuss(value)
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "取消创建"
-          });
-        });
+            type: 'info',
+            message: '取消创建'
+          })
+        })
     },
-    async insertDiscuss(val) {
-      let params = new URLSearchParams();
-      params.append("title", val);
-      params.append("author", this.$store.getters.getUsername);
+    async insertDiscuss (val) {
+      let params = new URLSearchParams()
+      params.append('title', val)
+      params.append('author', this.$store.getters.getUsername)
       let dataInsertDiscuss = await this.$http
-        .post("/discuss/insertDiscuss", params)
+        .post('/discuss/insertDiscuss', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.$message({ message: dataInsertDiscuss.data[0], type: "success" });
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.$message({ message: dataInsertDiscuss.data[0], type: 'success' })
     },
-    getLoginStatu() {
+    getLoginStatu () {
       if (this.$store.getters.getUsername) {
-        this.isLogin = true;
+        this.isLogin = true
       } else {
-        this.isLogin = false;
+        this.isLogin = false
       }
     }
   },
-  mounted() {
-    this.getLoginStatu();
-    this.getDiscuss(this.currentPage);
+  mounted () {
+    this.getLoginStatu()
+    this.getDiscuss(this.currentPage)
   }
-};
+}
 </script>
 <style scoped>
 .docker {

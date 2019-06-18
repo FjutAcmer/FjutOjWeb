@@ -6,7 +6,7 @@
       </div>
       <div class="functionBar">
         <el-pagination
-          class="pagination"
+          class="bar-pagination"
           layout="prev, pager, next"
           :current-page="currentPage"
           @current-change="getUserMessage"
@@ -36,110 +36,111 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       currentPage: 1,
       Total: 0,
       pagesize: 10,
       tableData: []
-    };
+    }
   },
   methods: {
-    async getUserMessage(pagenum) {
-      this.logger.ms("getUserMessage", "获取当前页的用户消息列表");
-      this.tableData = [];
-      let params = new URLSearchParams();
-      let username = this.$store.getters.getUsername;
-      this.currentPage = pagenum;
-      // this.logger.f(pagenum);
-      params.append("username", username);
-      params.append("pagenum", pagenum);
+    async getUserMessage (pagenum) {
+      this.logger.ms('getUserMessage', '获取当前页的用户消息列表')
+      this.tableData = []
+      let params = new URLSearchParams()
+      let username = this.$store.getters.getUsername
+      this.currentPage = pagenum
+      // this.logger.f(pagenum)
+      params.append('username', username)
+      params.append('pagenum', pagenum)
       let dataMessage = await this.$http
-        .post("/message/getUserMessage", params)
+        .post('/message/getUserMessage', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          this.logger.e("获取消息列表失败");
-        });
-      let dataTempMessage = dataMessage.datas[0];
-      this.Total = dataMessage.datas[1];
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.logger.e('获取消息列表失败')
+        })
+      let dataTempMessage = dataMessage.datas[0]
+      this.Total = dataMessage.datas[1]
       for (let i = 0; i < dataTempMessage.length; i++) {
-        let localeTime = new Date(dataTempMessage[i].time).toLocaleString();
-        let status = (1 === dataTempMessage[i].status) ? "已读" : "未读";
+        let localeTime = new Date(dataTempMessage[i].time).toLocaleString()
+        let status = (dataTempMessage[i].status === 1) ? '已读' : '未读'
         this.tableData.push({
           mid: dataTempMessage[i].mid,
           status: status,
           title: dataTempMessage[i].title,
           text: dataTempMessage[i].text,
           time: localeTime
-        });
+        })
       }
-      this.logger.me("getUserMessage", "获取当前页的用户消息列表");
+      this.logger.me('getUserMessage', '获取当前页的用户消息列表')
     },
-    indexChange(index) {
-      return (this.currentPage - 1) * 10 + index + 1;
+    indexChange (index) {
+      return (this.currentPage - 1) * 10 + index + 1
     },
-    showText(row) {
-      this.logger.ms("showText", "显示详情");
-      this.$alert(row.text, "查看系统消息", {
+    showText (row) {
+      this.logger.ms('showText', '显示详情')
+      this.$alert(row.text, '查看系统消息', {
         dangerouslyUseHTMLString: true,
         callback: action => {
-          if ("未读" === row.status) {
-            this.logger.i("未读设置已读");
-            this.setReaded(row.mid);
-            row.status = "已读";
+          if (row.status === '未读') {
+            this.logger.i('未读设置已读')
+            this.setReaded(row.mid)
+            row.status = '已读'
           }
         }
-      });
-      this.logger.me("showText", "显示详情");
+      })
+      this.logger.me('showText', '显示详情')
     },
-    delMessage(row) {
-      this.logger.ms("delMessage", "删除消息记录");
-      this.$confirm("你确定要删除这条记录吗？", "警告", {
-        cancelButtonText: "取消",
-        confirmButtonText: "确定",
-        type: "warning"
+    delMessage (row) {
+      this.logger.ms('delMessage', '删除消息记录')
+      this.$confirm('你确定要删除这条记录吗？', '警告', {
+        cancelButtonText: '取消',
+        confirmButtonText: '确定',
+        type: 'warning'
       })
         .then(() => {
-          this.delMessageByMid(row.mid);
+          this.delMessageByMid(row.mid)
         })
-        .catch(() => {});
+        .catch(() => {})
     },
-    async setReaded(mid) {
-      let params = new URLSearchParams();
-      params.append("mid", mid);
+    async setReaded (mid) {
+      let params = new URLSearchParams()
+      params.append('mid', mid)
       let dataSetReaded = await this.$http
-        .post("/message/setReadedByMid", params)
+        .post('/message/setReadedByMid', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          this.logger.e("请求失败");
-        });
-      if (100 === dataSetReaded.code) {
-        this.logger.i("设置 mid: " + mid + " 已读成功");
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.logger.e('请求失败')
+        })
+      if (dataSetReaded.code === 100) {
+        this.logger.i('设置 mid: ' + mid + ' 已读成功')
       } else {
-        this.logger.e("设置 mid: " + mid + " 已读失败");
+        this.logger.e('设置 mid: ' + mid + ' 已读失败')
       }
     },
-    async delMessageByMid(mid) {
-      let params = new URLSearchParams();
-      params.append("mid", mid);
+    async delMessageByMid (mid) {
+      let params = new URLSearchParams()
+      params.append('mid', mid)
       let dataSetReaded = await this.$http
-        .post("/message/delMessageByMid", params)
+        .post('/message/delMessageByMid', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          this.logger.e("请求失败");
-        });
-      if (100 === dataSetReaded.code) {
-        this.logger.i("删除成功！");
-        this.getUserMessage(this.currentPage);
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.logger.e('请求失败')
+        })
+      if (dataSetReaded.code === 100) {
+        this.logger.i('删除成功！')
+        this.$message({message: '删除成功!', type: 'success'})
+        this.getUserMessage(this.currentPage)
       } else {
-        this.logger.e("删除失败！");
+        this.logger.e('删除失败！')
       }
     }
   },
-  mounted() {
-    this.getUserMessage(this.currentPage);
+  mounted () {
+    this.getUserMessage(this.currentPage)
   }
-};
+}
 </script>
 
 <style scoped>
@@ -185,6 +186,10 @@ export default {
   padding: 0;
   height: 50px;
   border-bottom: 1px solid silver;
+}
+
+.bar-pagination{
+  float: right;
 }
 
 .table-row-readed {

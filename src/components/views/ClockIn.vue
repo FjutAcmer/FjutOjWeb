@@ -32,7 +32,10 @@
           @current-change="handleCurrentChange"
         ></el-pagination>
         <!--要设置单元格颜色必须设置全局样式，或者使用scope设置v-html，这里暂时不弄-->
-        <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" max-height="600">
+        <el-table
+          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+          max-height="600"
+        >
           <el-table-column prop="username" label="用户名" width="180"></el-table-column>
           <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
           <el-table-column prop="sign" label="状态" width="100">
@@ -49,14 +52,13 @@
   </div>
 </template>
 
-
 <script>
-import Calendar from "vue-calendar-component";
+import Calendar from 'vue-calendar-component'
 
 export default {
-  data() {
+  data () {
     return {
-      username: "",
+      username: '',
       tableData: [],
       clockInDateArr: [],
       today: new Date(),
@@ -64,12 +66,12 @@ export default {
       pagesize: 10,
       currentTotal: 0,
       currentPage: 1
-    };
+    }
   },
-  created() {
-    this.username = this.$store.getters.getUsername;
-    this.getUserAllClockInList();
-    this.getSomedayClockInList();
+  created () {
+    this.username = this.$store.getters.getUsername
+    this.getUserAllClockInList()
+    this.getSomedayClockInList()
   },
   // computed(){},
   // mounted: {},
@@ -77,61 +79,58 @@ export default {
     Calendar
   },
   methods: {
-    handleCurrentChange(currentPage){
-      this.currentPage = currentPage;
-      this.logger.i('currentPage: '+currentPage);
+    handleCurrentChange (currentPage) {
+      this.currentPage = currentPage
+      this.logger.i('currentPage: ' + currentPage)
     },
 
     // add by axiang [20190613] 获取签到列表
-    async getUserAllClockInList() {
-      this.logger.ms("getUserAllClockInList", "获取用户全部签到列表");
-      let params = new URLSearchParams();
-      params.append("username", this.username);
+    async getUserAllClockInList () {
+      this.logger.ms('getUserAllClockInList', '获取用户全部签到列表')
+      let params = new URLSearchParams()
+      params.append('username', this.username)
       let dataGetClockInList = await this.$http
-        .post("/clockin/GUserClockIn", params)
+        .post('/clockin/GUserClockIn', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          this.logger.e("获取用户全部签到列表 失败");
-        });
-      this.logger.i("获取用户签到列表 成功");
-      let data_clockin = dataGetClockInList.data[0];
-      this.logger.p({ currentTotal: this.currentTotal });
-      for (let i = 0; i < data_clockin.length; i++) {
-        let time = data_clockin[i].time;
-        let timeStr = new Date(time).toLocaleString();
-        let className = "";
-        if (
-          data_clockin[i].sign === "日常" ||
-          data_clockin[i].sign === "正常"
-        ) {
-          className = "clockInNormal";
-        } else if ("迟到" === data_clockin[i].sign) {
-          className = "clockInLate";
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.logger.e('获取用户全部签到列表 失败')
+        })
+      this.logger.i('获取用户签到列表 成功')
+      let dataClockIn = dataGetClockInList.data[0]
+      this.logger.p({ currentTotal: this.currentTotal })
+      for (let i = 0; i < dataClockIn.length; i++) {
+        let time = dataClockIn[i].time
+        let timeStr = new Date(time).toLocaleString()
+        let className = ''
+        if (dataClockIn[i].sign === '日常' || dataClockIn[i].sign === '正常') {
+          className = 'clockInNormal'
+        } else if (dataClockIn[i].sign === '迟到') {
+          className = 'clockInLate'
         } else {
-          className = "clockInOther";
+          className = 'clockInOther'
         }
         this.clockInDateArr.push({
-          date: timeStr.split(" ")[0],
+          date: timeStr.split(' ')[0],
           className: className
-        });
+        })
       }
-      for (let i = 0; i < data_clockin.length; i++) {
-        let time = data_clockin[i].time;
-        let timeStr = new Date(time).toLocaleString();
+      for (let i = 0; i < dataClockIn.length; i++) {
+        let time = dataClockIn[i].time
+        let timeStr = new Date(time).toLocaleString()
         this.tableData.push({
-          username: data_clockin[i].username,
+          username: dataClockIn[i].username,
           time: timeStr,
           // add by axiang [20190616] 暂时用这个测试一下，之后需要动态判断
-          sign: '<font color="blue">' + data_clockin[i].sign + "</font>",
-          ip: data_clockin[i].ip,
-          todytimes: data_clockin[i].todytimes
-        });
+          sign: '<font color="blue">' + dataClockIn[i].sign + '</font>',
+          ip: dataClockIn[i].ip,
+          todytimes: dataClockIn[i].todytimes
+        })
       }
-      this.logger.i('tableData.length='+this.tableData.length);
-      this.logger.me("getUserAllClockInList", "获取用户全部签到列表");
+      this.logger.i('tableData.length=' + this.tableData.length)
+      this.logger.me('getUserAllClockInList', '获取用户全部签到列表')
     }
   }
-};
+}
 </script>
 
 <style  scoped>
@@ -192,4 +191,3 @@ export default {
   float: left;
 }
 </style>
-

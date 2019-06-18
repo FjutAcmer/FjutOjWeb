@@ -33,7 +33,7 @@
         <el-table-column prop="id" label="#" width="150"></el-table-column>
         <el-table-column label="名称" width="400">
           <template slot-scope="scope">
-            <div @click="toContestInfo(scope.row)" >{{scope.row.name}}</div>
+            <div @click="toContestInfo(scope.row)">{{scope.row.name}}</div>
           </template>
         </el-table-column>
         <el-table-column prop="beginTime" label="开始时间" style="width:30%"></el-table-column>
@@ -71,139 +71,135 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
-      input: "",
+      input: '',
       isSearch: false
-    };
+    }
   },
   methods: {
-    async getContest(val) {
-      this.tableData = [];
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      this.currentPage = val;
+    async getContest (val) {
+      this.tableData = []
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      this.currentPage = val
       let dataAllContest = await this.$http
-        .post("/GAllContest", params)
+        .post('/GAllContest', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.currentTotal = dataAllContest.data[0];
-      // console.log(this.currentTotal);
-      this.tableData = dataAllContest.data[1];
-      // console.log(this.tableData);
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.currentTotal = dataAllContest.data[0]
+      // console.log(this.currentTotal)
+      this.tableData = dataAllContest.data[1]
+      // console.log(this.tableData)
     },
-    toSignUp(row) {
-      // console.log(row.id);
-      if (this.$store.getters.getUsername == "") {
-        this.$message({ message: "请先登录！", type: "error" });
-        return;
+    toSignUp (row) {
+      // console.log(row.id)
+      if (this.$store.getters.getUsername === '') {
+        this.$message({ message: '请先登录！', type: 'error' })
+        // return
       } else if (row.status === 2) {
-        this.$message({ message: "比赛已经结束，不能报名！", type: "error" });
+        this.$message({ message: '比赛已经结束，不能报名！', type: 'error' })
       } else if (row.status === 0) {
-        this.$message({ message: "比赛已开始，不能报名！", type: "error" });
+        this.$message({ message: '比赛已开始，不能报名！', type: 'error' })
       } else {
-        this.$router.push({ path: "/ContestSignUp", query: { cid: row.id } });
+        this.$router.push({ path: '/ContestSignUp', query: { cid: row.id } })
       }
     },
-    async toContestInfo(row) {
-      // console.log(row.id);
-      if (this.$store.getters.getUsername == "") {
-        this.$message({ message: "请先登录！", type: "error" });
-        return;
+    async toContestInfo (row) {
+      // console.log(row.id)
+      if (this.$store.getters.getUsername === '') {
+        this.$message({ message: '请先登录！', type: 'error' })
       } else if (row.status === 2) {
-        this.$message({ message: "比赛已经结束，不能进入！", type: "error" });
+        this.$message({ message: '比赛已经结束，不能进入！', type: 'error' })
       } else if (row.status === 1) {
-        this.$message({ message: "比赛未开始，不能进入！", type: "error" });
+        this.$message({ message: '比赛未开始，不能进入！', type: 'error' })
       } else if (row.ctype === 3 || row.ctype === 4 || row.ctype === 5) {
-        let params = new URLSearchParams();
-        params.append("cid", row.id);
-        params.append("username", this.$store.getters.getUsername);
+        let params = new URLSearchParams()
+        params.append('cid', row.id)
+        params.append('username', this.$store.getters.getUsername)
         let dataProblemByTitle = await this.$http
-          .post("/problem/GProblemByTitle", params)
+          .post('/problem/GProblemByTitle', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        if (dataProblemByTitle.data[0] === "该用户已报名") {
-          this.$router.push({ path: "/ContestInfo", query: { cid: row.id } });
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        if (dataProblemByTitle.data[0] === '该用户已报名') {
+          this.$router.push({ path: '/ContestInfo', query: { cid: row.id } })
         } else {
-          this.$message({ message: "请先报名才能进入！", type: "error" });
-          return;
+          this.$message({ message: '请先报名才能进入！', type: 'error' })
         }
       } else if (row.ctype === 1 || row.ctype === 2) {
-        this.$prompt("请输入密码", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消"
+        this.$prompt('请输入密码', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
         })
           .then(({ value }) => {
-            this.vertifyPassword(value, row.id);
+            this.vertifyPassword(value, row.id)
           })
           .catch(() => {
             this.$message({
-              type: "info",
-              message: "取消输入"
-            });
-          });
+              type: 'info',
+              message: '取消输入'
+            })
+          })
       } else {
-        this.$router.push({ path: "/ContestInfo", query: { cid: row.id } });
+        this.$router.push({ path: '/ContestInfo', query: { cid: row.id } })
       }
     },
-    async getSearch(val) {
+    async getSearch (val) {
       if (this.input !== null) {
-        this.currentPage = val;
-        this.isSearch = true;
-        let params = new URLSearchParams();
-        params.append("title", this.input);
-        params.append("pagenum", this.currentPage);
+        this.currentPage = val
+        this.isSearch = true
+        let params = new URLSearchParams()
+        params.append('title', this.input)
+        params.append('pagenum', this.currentPage)
         let dataProblemByTitle = await this.$http
-          .post("/problem/GProblemByTitle", params)
+          .post('/problem/GProblemByTitle', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.currentTotal = dataProblemByTitle.data[0];
-        this.tableData = dataProblemByTitle.data[1];
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+          })
+        this.currentTotal = dataProblemByTitle.data[0]
+        this.tableData = dataProblemByTitle.data[1]
       }
     },
-    async vertifyPassword(val, val2) {
-      let params = new URLSearchParams();
-      params.append("password", val);
-      params.append("cid", val2);
+    async vertifyPassword (val, val2) {
+      let params = new URLSearchParams()
+      params.append('password', val)
+      params.append('cid', val2)
       let { data } = await this.$http
-        .post("/CheckContestPassword", params)
+        .post('/CheckContestPassword', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
-      if (data.data[0] == "密码输入错误") {
-        this.$message({ message: data.data[0], type: "error" });
-        return;
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      if (data.data[0] === '密码输入错误') {
+        this.$message({ message: data.data[0], type: 'error' })
       } else {
-        this.$router.push({ path: "/ContestInfo", query: { cid: row.id } });
+        // add by axiang [20190618] 变量定义后从未使用，出错，待修改，先注释掉
+        // this.$router.push({ path: '/ContestInfo', query: { cid: row.id } })
       }
     },
-    getList(val) {
+    getList (val) {
       if (this.isSearch) {
-        this.getSearch(val);
+        this.getSearch(val)
       } else {
-        this.getContest(val);
+        this.getContest(val)
       }
     }
   },
-  mounted() {
-    this.getContest(this.currentPage);
+  mounted () {
+    this.getContest(this.currentPage)
   }
-};
+}
 </script>
 <style scoped>
 .contest {

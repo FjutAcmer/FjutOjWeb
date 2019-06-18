@@ -48,12 +48,12 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       message: []
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped>

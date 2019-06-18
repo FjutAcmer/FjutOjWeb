@@ -37,95 +37,99 @@
 </template>
 
 <script>
-
-import { valid } from "semver";
+// import { valid } from 'semver'
 
 export default {
-  data() {
+  data () {
     // add by axiang [20190609] 规范用户名输入内容，只允许输入字母、数字、下划线
     var validateUsername = (rule, value, callback) => {
-      var reg = /^\w+$/;
-      if (!reg.test(value)) callback(new Error("请输入字母、数字或者下划线"));
-      else callback();
-    };
+      var reg = /^\w+$/
+      if (!reg.test(value)) callback(new Error('请输入字母、数字或者下划线'))
+      else callback()
+    }
 
     return {
       form: {
-        name: "",
-        motto: "",
-        email: "",
-        school: "",
-        nick: "",
-        pwd2: "",
-        pwd: ""
+        name: '',
+        motto: '',
+        email: '',
+        school: '',
+        nick: '',
+        pwd2: '',
+        pwd: ''
       },
       rules: {
         name: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
-          { validator: validateUsername, trigger: "blur" }
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          {
+            min: 1,
+            max: 20,
+            message: '长度在 1 到 20 个字符',
+            trigger: 'blur'
+          },
+          { validator: validateUsername, trigger: 'blur' }
         ],
         pwd: [
-          { required: true, message: "请输入密码", trigger: "change" },
-          { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
+          { required: true, message: '请输入密码', trigger: 'change' },
+          { min: 4, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
         ],
         pwd2: [
-          { required: true, message: "请输入密码", trigger: "change" },
-          { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
+          { required: true, message: '请输入密码', trigger: 'change' },
+          { min: 4, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   methods: {
-    onSubmit(formName) {
-      this.logger.ms('onSubmit','点击注册！');
+    onSubmit (formName) {
+      this.logger.ms('onSubmit', '点击注册！')
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.userInsert();
-          this.logger.i('onsubmit正常');
+          this.userInsert()
+          this.logger.i('onsubmit正常')
         } else {
-          this.logger.e('onsubmit错误');
-          return false;
+          this.logger.e('onsubmit错误')
+          return false
         }
-      });
-      this.logger.me('onSubmit','点击注册！');
+      })
+      this.logger.me('onSubmit', '点击注册！')
     },
-    async userInsert() {
-      this.logger.ms('userInsert','调用userInsert');
-      if (this.$refs.pwd.value != this.$refs.pwd2.value) {
-        this.$message({ message: "两次密码不正确", type: "error" });
-        this.logger.e('两次密码不一致');
+    async userInsert () {
+      this.logger.ms('userInsert', '调用userInsert')
+      if (this.$refs.pwd.value !== this.$refs.pwd2.value) {
+        this.$message({ message: '两次密码不正确', type: 'error' })
+        this.logger.e('两次密码不一致')
       } else {
-        let params = new URLSearchParams();
-        params.append("username", this.$refs.name.value);
-        params.append("password", this.$refs.pwd.value);
-        params.append("nick", this.$refs.nick.value);
-        params.append("email", this.$refs.email.value);
-        params.append("school", this.$refs.school.value);
-        params.append("motto", this.$refs.motto.value);
+        let params = new URLSearchParams()
+        params.append('username', this.$refs.name.value)
+        params.append('password', this.$refs.pwd.value)
+        params.append('nick', this.$refs.nick.value)
+        params.append('email', this.$refs.email.value)
+        params.append('school', this.$refs.school.value)
+        params.append('motto', this.$refs.motto.value)
         let dataInserUser = await this.$http
-          .post("/insertUser", params)
+          .post('/insertUser', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            this.logger.e('userInsert服务器未响应返回');
-            return;
-          });
-        if (dataInserUser.code == 200) {
-          this.$message({ message: '注册未成功，用户已存在', type: "error" });
-          this.logger.e('注册失败 '+dataInserUser.msg);
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            this.logger.e('userInsert服务器未响应返回')
+            // return
+          })
+        if (dataInserUser.code === 200) {
+          this.$message({ message: '注册未成功，用户已存在', type: 'error' })
+          this.logger.e('注册失败 ' + dataInserUser.msg)
         } else {
-          this.$message({ message: "注册成功", type: "success" });
-          this.logger.i('注册成功');
-          this.$router.push({ path: "/Login" });
+          this.$message({ message: '注册成功', type: 'success' })
+          this.logger.i('注册成功')
+          this.$router.push({ path: '/Login' })
         }
       }
-      this.logger.me('userInsert','调用userInsert');
+      this.logger.me('userInsert', '调用userInsert')
     }
   }
-};
+}
 </script>
 
 <style scoped>

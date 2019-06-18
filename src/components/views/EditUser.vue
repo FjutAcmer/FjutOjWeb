@@ -33,53 +33,53 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       form: {
-        name: "",
-        motto: "",
-        email: "",
-        school: "",
-        nick: "",
-        pwd2: "",
-        pwd: ""
+        name: '',
+        motto: '',
+        email: '',
+        school: '',
+        nick: '',
+        pwd2: '',
+        pwd: ''
       }
-    };
+    }
   },
   methods: {
-    async editUser() {
+    async editUser () {
       if (
-        this.$refs.motto.value == "" &&
-        this.$refs.email.value == "" &&
-        this.$refs.school.value == "" &&
-        this.$refs.nick.value == "" &&
-        this.$refs.pwd.value == ""
+        this.$refs.motto.value === '' &&
+        this.$refs.email.value === '' &&
+        this.$refs.school.value === '' &&
+        this.$refs.nick.value === '' &&
+        this.$refs.pwd.value === ''
       ) {
-        this.$message({ message: "修改数据不能为空！", type: "error" });
+        this.$message({ message: '修改数据不能为空！', type: 'error' })
       } else if (this.$refs.pwd.values !== this.$refs.pwd2.values) {
-        this.$message({ message: "两次密码不同！", type: "error" });
+        this.$message({ message: '两次密码不同！', type: 'error' })
       } else {
-        let params = new URLSearchParams();
-        params.append("username", this.$store.getters.getUsername);
-        params.append("password", this.$refs.pwd.value);
-        params.append("nick", this.$refs.nick.value);
-        params.append("school", this.$refs.school.value);
-        params.append("motto", this.$refs.motto.value);
-        params.append("Email", this.$refs.email.value);
+        let params = new URLSearchParams()
+        params.append('username', this.$store.getters.getUsername)
+        params.append('password', this.$refs.pwd.value)
+        params.append('nick', this.$refs.nick.value)
+        params.append('school', this.$refs.school.value)
+        params.append('motto', this.$refs.motto.value)
+        params.append('Email', this.$refs.email.value)
         let dataUpdateUser = await this.$http
-          .post("/updateUser", params)
+          .post('/updateUser', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.$message({ message: dataUpdateUser.data[0], type: "success" });
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.$message({ message: dataUpdateUser.data[0], type: 'success' })
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 .docker {

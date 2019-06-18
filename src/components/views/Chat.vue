@@ -63,67 +63,67 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      text: "",
-      data: "",
-      title: "",
+      text: '',
+      data: '',
+      title: '',
       websocket: null,
-      messageList: "",
+      messageList: '',
       currentPage: 1,
       currentTotal: 0,
-      message: "",
+      message: '',
       isLogin: false
-    };
-  },
-  methods: {
-    async getChat(val) {
-      this.tableData = [];
-      this.currentPage = val;
-      let params = new URLSearchParams();
-      params.append("discussid", this.$route.query.id);
-      params.append("pagenum", val);
-      let dataDisuccssReplyById = await this.$http
-        .post("/newdiscussreply/GDiscussReplyById", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      // console.log(data);
-      if (dataDisuccssReplyById.data[0] !== null) {
-        this.currentTotal = dataDisuccssReplyById.data[0];
-        this.messageList = dataDisuccssReplyById.data[1];
-      }
-      // console.log(this.messageList);
-    },
-    isLoginStatu() {
-      // console.log(sessionStorage.getItem('username'));
-      if (this.$store.getters.getUsername) {
-        this.isLogin = true;
-      } else {
-        this.isLogin = false;
-      }
-    },
-    async sendMessage() {
-      let params = new URLSearchParams();
-      params.append("discussid", this.$route.query.id);
-      params.append("author", this.$store.getters.getUsername);
-      params.append("text", this.message);
-      let datainsertDiscussReply = await this.$http
-        .post("/newdiscussreply/insertDiscussReply", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.$router.go({
-        path: "/Chat",
-        query: { title: this.$route.query.title, id: this.$route.query.id }
-      });
     }
   },
-  mounted() {
-    this.isLoginStatu();
-    this.getChat(this.currentPage);
+  methods: {
+    async getChat (val) {
+      this.tableData = []
+      this.currentPage = val
+      let params = new URLSearchParams()
+      params.append('discussid', this.$route.query.id)
+      params.append('pagenum', val)
+      let dataDisuccssReplyById = await this.$http
+        .post('/newdiscussreply/GDiscussReplyById', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      // console.log(data)
+      if (dataDisuccssReplyById.data[0] !== null) {
+        this.currentTotal = dataDisuccssReplyById.data[0]
+        this.messageList = dataDisuccssReplyById.data[1]
+      }
+      // console.log(this.messageList)
+    },
+    isLoginStatu () {
+      // console.log(sessionStorage.getItem('username'))
+      if (this.$store.getters.getUsername) {
+        this.isLogin = true
+      } else {
+        this.isLogin = false
+      }
+    },
+    async sendMessage () {
+      let params = new URLSearchParams()
+      params.append('discussid', this.$route.query.id)
+      params.append('author', this.$store.getters.getUsername)
+      params.append('text', this.message)
+      // let datainsertDiscussReply = await this.$http
+      //   .post('/newdiscussreply/insertDiscussReply', params)
+      //   .catch(() => {
+      //     this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+      //   })
+      this.$router.go({
+        path: '/Chat',
+        query: { title: this.$route.query.title, id: this.$route.query.id }
+      })
+    }
+  },
+  mounted () {
+    this.isLoginStatu()
+    this.getChat(this.currentPage)
   }
-};
+}
 </script>
 <style scoped>
 .docker {

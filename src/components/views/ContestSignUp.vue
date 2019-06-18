@@ -104,47 +104,47 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       // ctype:2,
       isadmin: true,
       tableData: [],
       currentPage: 1,
       currentTotal: 0
-    };
-  },
-  methods: {
-    async getContestUsers(val) {
-      this.tableData = [];
-      let params = new URLSearchParams();
-      params.append("cid", this.$route.query.cid);
-      params.append("pagenum", val);
-      this.currentPage = val;
-      let dataContestUsers = await this.$http
-        .post("/GContestUsers", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.currentTotal = dataContestUsers.data[0];
-      this.tableData = dataContestUsers.data[1];
-      // console.log(this.tableData);
-    },
-    async addContestUser() {
-      let params = new URLSearchParams();
-      params.append("cid", this.$route.query.cid);
-      params.append("username", this.$store.getters.getUsername);
-      let dataContestuser = await this.$http
-        .post("/IContestuser", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.$message({ message: dataContestuser.data[0], type: "success" });
     }
   },
-  mounted() {
-    this.getContestUsers(this.currentPage);
+  methods: {
+    async getContestUsers (val) {
+      this.tableData = []
+      let params = new URLSearchParams()
+      params.append('cid', this.$route.query.cid)
+      params.append('pagenum', val)
+      this.currentPage = val
+      let dataContestUsers = await this.$http
+        .post('/GContestUsers', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.currentTotal = dataContestUsers.data[0]
+      this.tableData = dataContestUsers.data[1]
+      // console.log(this.tableData)
+    },
+    async addContestUser () {
+      let params = new URLSearchParams()
+      params.append('cid', this.$route.query.cid)
+      params.append('username', this.$store.getters.getUsername)
+      let dataContestuser = await this.$http
+        .post('/IContestuser', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.$message({ message: dataContestuser.data[0], type: 'success' })
+    }
+  },
+  mounted () {
+    this.getContestUsers(this.currentPage)
   }
-};
+}
 </script>
 <style scoped>
 .contestSignUp {

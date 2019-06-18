@@ -26,34 +26,34 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
       isSearch: false
-    };
-  },
-  methods: {
-    async getHonorRank(val) {
-      this.tableData = [];
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      this.currentPage = val;
-      let dataTeamMemberInfo = await this.$http
-        .post("/addContestAward/GAllTeamMemberInfo", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.currentTotal = dataTeamMemberInfo.data[0];
-      // console.log(this.currentTotal);
-      this.tableData = dataTeamMemberInfo.data[1];
     }
   },
-  mounted() {
-    this.getHonorRank(this.currentPage);
+  methods: {
+    async getHonorRank (val) {
+      this.tableData = []
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      this.currentPage = val
+      let dataTeamMemberInfo = await this.$http
+        .post('/addContestAward/GAllTeamMemberInfo', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.currentTotal = dataTeamMemberInfo.data[0]
+      // console.log(this.currentTotal)
+      this.tableData = dataTeamMemberInfo.data[1]
+    }
+  },
+  mounted () {
+    this.getHonorRank(this.currentPage)
   }
-};
+}
 </script>
 <style scoped>
 .docker {

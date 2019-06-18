@@ -47,99 +47,99 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
-      input: "",
+      input: '',
       isSearch: false,
       loading: true
-    };
+    }
   },
   methods: {
-    async getProlem(val) {
-      this.tableData = [];
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      this.currentPage = val;
+    async getProlem (val) {
+      this.tableData = []
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      this.currentPage = val
       let dataProblemsByPage = await this.$http
-        .post("/problem/GProblemsByPage", params)
+        .post('/problem/GProblemsByPage', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.loading = false;
-      this.currentTotal = dataProblemsByPage.data[0];
-      // console.log(this.currentTotal);
-      let tableData_2 = dataProblemsByPage.data[1];
-      for (let i = 0; i < tableData_2.length; i++) {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.loading = false
+      this.currentTotal = dataProblemsByPage.data[0]
+      // console.log(this.currentTotal)
+      let tableDataTemp = dataProblemsByPage.data[1]
+      for (let i = 0; i < tableDataTemp.length; i++) {
         this.tableData.push({
-          id: tableData_2[i].pid,
-          Title: tableData_2[i].title,
+          id: tableDataTemp[i].pid,
+          Title: tableDataTemp[i].title,
           Ratio:
-            tableData_2[i].strRadio +
-            "(" +
-            tableData_2[i].totalAcUser +
-            "/" +
-            tableData_2[i].totalSubmit +
-            ")"
-        });
+            tableDataTemp[i].strRadio +
+            '(' +
+            tableDataTemp[i].totalAcUser +
+            '/' +
+            tableDataTemp[i].totalSubmit +
+            ')'
+        })
       }
-      // console.log(this.tableData);
+      // console.log(this.tableData)
     },
-    toSubmit(row) {
-      // console.log(row.id);
-      this.$router.push({ path: "/Submit", query: { pid: row.id } });
+    toSubmit (row) {
+      // console.log(row.id)
+      this.$router.push({ path: '/Submit', query: { pid: row.id } })
     },
-    async getSearch(val) {
+    async getSearch (val) {
       if (this.input !== null) {
-        this.currentPage = val;
-        this.isSearch = true;
-        let params = new URLSearchParams();
-        params.append("title", this.input);
-        params.append("pagenum", this.currentPage);
+        this.currentPage = val
+        this.isSearch = true
+        let params = new URLSearchParams()
+        params.append('title', this.input)
+        params.append('pagenum', this.currentPage)
         let dataProblemByTitle = await this.$http
-          .post("/problem/GProblemByTitle", params)
+          .post('/problem/GProblemByTitle', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.loading = false;
-        this.tableData = [];
-        this.currentTotal = dataProblemByTitle.data[0];
-        let tableData_2 = dataProblemByTitle.data[1];
-        for (let i = 0; i < tableData_2.length; i++) {
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            // return
+          })
+        this.loading = false
+        this.tableData = []
+        this.currentTotal = dataProblemByTitle.data[0]
+        let tableDataTemp = dataProblemByTitle.data[1]
+        for (let i = 0; i < tableDataTemp.length; i++) {
           this.tableData.push({
-            id: tableData_2[i].pid,
-            Title: tableData_2[i].title,
+            id: tableDataTemp[i].pid,
+            Title: tableDataTemp[i].title,
             Ratio:
-              tableData_2[i].strRadio +
-              "(" +
-              tableData_2[i].totalAcUser +
-              "/" +
-              tableData_2[i].totalSubmit +
-              ")"
-          });
+              tableDataTemp[i].strRadio +
+              '(' +
+              tableDataTemp[i].totalAcUser +
+              '/' +
+              tableDataTemp[i].totalSubmit +
+              ')'
+          })
         }
       }
     },
-    getList(val) {
+    getList (val) {
       if (this.isSearch) {
-        this.loading = true;
-        this.getSearch(val);
+        this.loading = true
+        this.getSearch(val)
       } else {
-        this.loading = true;
-        this.getProlem(val);
+        this.loading = true
+        this.getProlem(val)
       }
     }
   },
-  mounted() {
-    this.getProlem(this.currentPage);
+  mounted () {
+    this.getProlem(this.currentPage)
   }
-};
+}
 </script>
 
 <style>

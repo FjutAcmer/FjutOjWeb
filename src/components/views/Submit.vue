@@ -162,77 +162,76 @@
 </template>
 
 <script>
-import { getUser } from "../../api";
 
 export default {
-  data() {
+  data () {
     return {
       options: [
         {
-          value: "G++",
-          label: "G++"
+          value: 'G++',
+          label: 'G++'
         },
         {
-          value: "GCC",
-          label: "GCC"
+          value: 'GCC',
+          label: 'GCC'
         },
         {
-          value: "JAVA",
-          label: "JAVA"
+          value: 'JAVA',
+          label: 'JAVA'
         }
       ],
-      code: "",
-      islogin: "",
+      code: '',
+      islogin: '',
       maindata: [],
       carddata: [],
       simpledata: [],
-      compileLanguage: "G++",
-      isAc: "false"
-    };
+      compileLanguage: 'G++',
+      isAc: 'false'
+    }
   },
   methods: {
-    async getProblem() {
-      this.islogin = this.$store.getters.getUsername;
-      let params = new URLSearchParams();
-      params.append("pid", this.$route.query.pid);
-      params.append("user", this.$store.getters.getUsername);
+    async getProblem () {
+      this.islogin = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('pid', this.$route.query.pid)
+      params.append('user', this.$store.getters.getUsername)
       let dataProblemView = await this.$http
-        .post("/problemview/Gproblemview", params)
+        .post('/problemview/Gproblemview', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      // console.log(data);
-      this.maindata = dataProblemView.data[0];
-      this.carddata = dataProblemView.data[1];
-      this.simpledata = dataProblemView.data[2];
-      this.isAc = dataProblemView.data[3];
-      //console.log(isAc);
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      // console.log(data)
+      this.maindata = dataProblemView.data[0]
+      this.carddata = dataProblemView.data[1]
+      this.simpledata = dataProblemView.data[2]
+      this.isAc = dataProblemView.data[3]
+      // console.log(isAc)
     },
-    async onSubmit() {
+    async onSubmit () {
       if (this.code.length > 50) {
-        let params = new URLSearchParams();
-        params.append("pid", this.$route.query.pid);
-        params.append("user", this.$store.getters.getUsername);
-        params.append("code", this.code);
-        params.append("language", this.compileLanguage);
-        let dataSubmitProblem = await this.$http
-          .post("/submit/submitProblem", params)
-          .catch(() => {
-            this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-          });
-        this.$router.push({ path: "/Status" });
+        let params = new URLSearchParams()
+        params.append('pid', this.$route.query.pid)
+        params.append('user', this.$store.getters.getUsername)
+        params.append('code', this.code)
+        params.append('language', this.compileLanguage)
+        // let dataSubmitProblem = await this.$http
+        //   .post('/submit/submitProblem', params)
+        //   .catch(() => {
+        //     this.$message({
+        //       message: '服务器繁忙，请稍后再试！',
+        //       type: 'error'
+        //     })
+        //   })
+        this.$router.push({ path: '/Status' })
       } else {
-        this.$message({ message: "提交长度过少！", type: "error" });
+        this.$message({ message: '提交长度过少！', type: 'error' })
       }
     }
   },
-  mounted() {
-    this.getProblem();
+  mounted () {
+    this.getProblem()
   }
-};
+}
 </script>
 
 <style scoped>

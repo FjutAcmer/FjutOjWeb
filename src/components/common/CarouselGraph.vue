@@ -10,16 +10,16 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       newsList: [
-        "大家注意不要对题目进行<strong>过量提交</strong>，以免爬虫被封，如果实在要交很多发，请自行跳转到对应提交。",
-        "目前本OJ只支持HDU和PKU两个OJ的题目，想写其他OJ题目的请自行到对应OJ提交题目",
-        "有意思"
+        '大家注意不要对题目进行<strong>过量提交</strong>，以免爬虫被封，如果实在要交很多发，请自行跳转到对应提交。',
+        '目前本OJ只支持HDU和PKU两个OJ的题目，想写其他OJ题目的请自行到对应OJ提交题目',
+        '有意思'
       ]
-    };
+    }
   }
-};
+}
 </script>
 
 <style scoped>

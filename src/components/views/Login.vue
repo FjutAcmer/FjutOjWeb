@@ -34,120 +34,120 @@
 </template>
 
 <script>
-import { valid } from "semver";
+// import { valid } from 'semver'
 
 export default {
-  data() {
+  data () {
     // add by axiang [20190609] 添加判断是否为管理员逻辑
     var validateUsername = (rule, value, callback) => {
-      var reg = /^\w+$/;
-      if (!reg.test(value)) callback(new Error("请输入字母、数字或者下划线"));
-      else callback();
-    };
+      var reg = /^\w+$/
+      if (!reg.test(value)) callback(new Error('请输入字母、数字或者下划线'))
+      else callback()
+    }
     return {
       form: {
-        name: "",
-        pwd: ""
+        name: '',
+        pwd: ''
       },
       datas: [],
       rules: {
         name: [
-          { required: true, message: "用户名不能为空", trigger: "blur" },
+          { required: true, message: '用户名不能为空', trigger: 'blur' },
           {
             min: 1,
             max: 20,
-            message: "长度在 1 到 20 个字符",
-            trigger: "blur"
+            message: '长度在 1 到 20 个字符',
+            trigger: 'blur'
           },
-          { validator: validateUsername, trigger: "blur" }
+          { validator: validateUsername, trigger: 'blur' }
         ],
         pwd: [
-          { required: true, message: "密码不能为空", trigger: "change" },
-          { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
+          { required: true, message: '密码不能为空', trigger: 'change' },
+          { min: 4, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
 
   methods: {
-    onSubmit(formName) {
-      this.logger.d("点击登录按钮");
+    onSubmit (formName) {
+      this.logger.d('点击登录按钮')
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.userLogin();
+          this.userLogin()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
 
-    async userLogin() {
-      this.logger.ms("userLogin", "用户登录");
-      let params = new URLSearchParams();
-      params.append("username", this.$refs.name.value);
-      params.append("password", this.$refs.pwd.value);
-      let dataGetLogin = await this.$http.post("/dologin", params).catch(() => {
-        this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        this.logger.e("请求失败");
-        return;
-      });
+    async userLogin () {
+      this.logger.ms('userLogin', '用户登录')
+      let params = new URLSearchParams()
+      params.append('username', this.$refs.name.value)
+      params.append('password', this.$refs.pwd.value)
+      let dataGetLogin = await this.$http.post('/dologin', params).catch(() => {
+        this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        this.logger.e('请求失败')
+        // return
+      })
       if (dataGetLogin.code === 200) {
         this.$message({
-          message: "登录失败: " + dataGetLogin.data[0],
-          type: "error"
-        });
-        this.logger.e("登录失败");
+          message: '登录失败: ' + dataGetLogin.data[0],
+          type: 'error'
+        })
+        this.logger.e('登录失败')
       } else {
-        let username = dataGetLogin.data[0].username;
-        this.$store.commit("setUsername", username);
-        this.$store.commit("setIsLogin", true);
-        this.$message({ message: "登录成功！", type: "success" });
-        this.logger.i("登录成功");
+        let username = dataGetLogin.data[0].username
+        this.$store.commit('setUsername', username)
+        this.$store.commit('setIsLogin', true)
+        this.$message({ message: '登录成功！', type: 'success' })
+        this.logger.i('登录成功')
         // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 begin
-        this.logger.ms("isAdmin", "判断是否管理员");
-        let params = new URLSearchParams();
-        params.append("username", username);
+        this.logger.ms('isAdmin', '判断是否管理员')
+        let params = new URLSearchParams()
+        params.append('username', username)
         let dataGetPermission = await this.$http
-          .post("/GUserPermission", params)
+          .post('/GUserPermission', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            this.logger.e("获取用户权限失败");
-          });
-        this.isAdmin = dataGetPermission.data[0];
-        this.$store.commit("setIsAdmin", this.isAdmin);
-        this.logger.p({ isAdmin: this.isAdmin });
-        this.logger.me("isAdmin", "判断是否管理员");
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            this.logger.e('获取用户权限失败')
+          })
+        this.isAdmin = dataGetPermission.data[0]
+        this.$store.commit('setIsAdmin', this.isAdmin)
+        this.logger.p({ isAdmin: this.isAdmin })
+        this.logger.me('isAdmin', '判断是否管理员')
         // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 end
         // add by axiang [20190613] 判断用户当天签到状态 begin
-        this.logger.ms("isClockIn", "判断是否签到");
+        this.logger.ms('isClockIn', '判断是否签到')
         let dataGetTodayClockIn = await this.$http
-          .post("/clockin/GUserTodayClockIn", params)
+          .post('/clockin/GUserTodayClockIn', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            this.logger.e("请求签到信息失败");
-          });
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+            this.logger.e('请求签到信息失败')
+          })
         if (dataGetTodayClockIn.code === 200) {
-          this.$store.commit("setIsClockIn", false);
-          this.logger.p({ 'IsClockIn': false });
+          this.$store.commit('setIsClockIn', false)
+          this.logger.p({ 'IsClockIn': false })
         } else {
-          this.$store.commit("setIsClockIn", true);
-          this.logger.p({ 'IsClockIn': true });
+          this.$store.commit('setIsClockIn', true)
+          this.logger.p({ 'IsClockIn': true })
         }
 
-        this.$router.push({ path: "/" });
-        this.logger.me("isClockIn", "判断是否签到");
+        this.$router.push({ path: '/' })
+        this.logger.me('isClockIn', '判断是否签到')
         // add by axiang [20190613] 判断用户当天签到状态 end
       }
-      this.logger.me("userLogin", "用户登录");
+      this.logger.me('userLogin', '用户登录')
     }
   }
-};
+}
 </script>
 
 <style scoped>

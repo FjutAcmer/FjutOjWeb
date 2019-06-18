@@ -26,39 +26,39 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      code: "",
-      problem: "",
-      jadgeStatu: "",
-      runId: "",
-      languge: "",
-      author: ""
-    };
-  },
-  methods: {
-    async getCode() {
-      let params = new URLSearchParams();
-      params.append("id", this.$route.query.id);
-      params.append("user", this.$store.getters.getUsername);
-      let dataStatusCode = await this.$http
-        .post("/status/GStatusCode", params)
-        .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
-      this.code = dataStatusCode.data[0];
-      this.author = this.$route.query.ruser;
-      this.runId = this.$route.query.id;
-      this.problem = this.$route.query.problem;
-      this.jadgeStatu = this.$route.query.jadgeStatu;
-      this.languge = this.$route.query.languge;
+      code: '',
+      problem: '',
+      jadgeStatu: '',
+      runId: '',
+      languge: '',
+      author: ''
     }
   },
-  mounted() {
-    this.getCode();
+  methods: {
+    async getCode () {
+      let params = new URLSearchParams()
+      params.append('id', this.$route.query.id)
+      params.append('user', this.$store.getters.getUsername)
+      let dataStatusCode = await this.$http
+        .post('/status/GStatusCode', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          // return
+        })
+      this.code = dataStatusCode.data[0]
+      this.author = this.$route.query.ruser
+      this.runId = this.$route.query.id
+      this.problem = this.$route.query.problem
+      this.jadgeStatu = this.$route.query.jadgeStatu
+      this.languge = this.$route.query.languge
+    }
+  },
+  mounted () {
+    this.getCode()
   }
-};
+}
 </script>
 <style scoped>
 .docker {

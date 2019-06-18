@@ -160,40 +160,40 @@
 </template>
 
 <script>
-import Carousel from "@/components/common/CarouselGraph";
-import RCompetition from "@/components/common/RecentCompetition";
+import Carousel from '@/components/common/CarouselGraph'
+import RCompetition from '@/components/common/RecentCompetition'
 
 export default {
   components: {
     Carousel,
     RCompetition
   },
-  data() {
+  data () {
     return {
-      ratingTop: "",
-      acTop: "",
-      acbTop: "",
-      activeTop: ""
-    };
-  },
-  methods: {
-    async getAllTop() {
-      let dataRank = await this.$http.post("/Galltop").catch(() => {
-        this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-      });
-      this.acbTop = dataRank.data[0];
-      this.ratingTop = dataRank.data[1];
-      this.acTop = dataRank.data[2];
-      this.activeTop = dataRank.data[3];
-    },
-    toUser(username) {
-      this.$router.push({ path: "/User", query: { username: username } });
+      ratingTop: '',
+      acTop: '',
+      acbTop: '',
+      activeTop: ''
     }
   },
-  mounted() {
-    this.getAllTop();
+  methods: {
+    async getAllTop () {
+      let dataRank = await this.$http.post('/Galltop').catch(() => {
+        this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+      })
+      this.acbTop = dataRank.data[0]
+      this.ratingTop = dataRank.data[1]
+      this.acTop = dataRank.data[2]
+      this.activeTop = dataRank.data[3]
+    },
+    toUser (username) {
+      this.$router.push({ path: '/User', query: { username: username } })
+    }
+  },
+  mounted () {
+    this.getAllTop()
   }
-};
+}
 </script>
 
 <style>

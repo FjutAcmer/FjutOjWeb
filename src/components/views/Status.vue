@@ -105,101 +105,100 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       loading: true,
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
-      username: "",
-      pid: "",
+      username: '',
+      pid: '',
       isSearch: false,
       resultValue: 0,
-      result: "All",
+      result: 'All',
       langValue: 0,
-      lang: "All",
+      lang: 'All',
       resultList: [
-        { id: 0, name: "All" },
-        { id: 1, name: "Accepted" },
-        { id: 2, name: "Compilation Error" },
-        { id: 3, name: "System Error" },
-        { id: 4, name: "Memory Limit Exceeded" },
-        { id: 5, name: "Output Limit Exceeded" },
-        { id: 6, name: "Presentation Error" },
-        { id: 7, name: "Pendding..." },
-        { id: 8, name: "Judging..." },
-        { id: 9, name: "Runtime Error" },
-        { id: 10, name: "Running......" },
-        { id: 11, name: "Time Limit Exceeded" },
-        { id: 12, name: "Wrong Answer" },
-        { id: 13, name: "Score" }
+        { id: 0, name: 'All' },
+        { id: 1, name: 'Accepted' },
+        { id: 2, name: 'Compilation Error' },
+        { id: 3, name: 'System Error' },
+        { id: 4, name: 'Memory Limit Exceeded' },
+        { id: 5, name: 'Output Limit Exceeded' },
+        { id: 6, name: 'Presentation Error' },
+        { id: 7, name: 'Pendding...' },
+        { id: 8, name: 'Judging...' },
+        { id: 9, name: 'Runtime Error' },
+        { id: 10, name: 'Running......' },
+        { id: 11, name: 'Time Limit Exceeded' },
+        { id: 12, name: 'Wrong Answer' },
+        { id: 13, name: 'Score' }
       ],
       langList: [
-        { id: 0, name: "All" },
-        { id: 1, name: "G++" },
-        { id: 2, name: "GCC" },
-        { id: 3, name: "JAVA" },
-        { id: 4, name: "Python3" },
-        { id: 5, name: "G++11" },
-        { id: 6, name: "GCC11" },
-        { id: 7, name: "VC++" },
-        { id: 8, name: "C#" },
-        { id: 9, name: "GO 1.8" },
-        { id: 10, name: "JavaScript" },
-        { id: 11, name: "Pascal" }
+        { id: 0, name: 'All' },
+        { id: 1, name: 'G++' },
+        { id: 2, name: 'GCC' },
+        { id: 3, name: 'JAVA' },
+        { id: 4, name: 'Python3' },
+        { id: 5, name: 'G++11' },
+        { id: 6, name: 'GCC11' },
+        { id: 7, name: 'VC++' },
+        { id: 8, name: 'C#' },
+        { id: 9, name: 'GO 1.8' },
+        { id: 10, name: 'JavaScript' },
+        { id: 11, name: 'Pascal' }
       ]
-    };
+    }
   },
   methods: {
-    async getStatus(val) {
-      this.tableData = [];
-      this.loading = true;
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      this.currentPage = val;
+    async getStatus (val) {
+      this.tableData = []
+      this.loading = true
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      this.currentPage = val
       let dataAllStatus = await this.$http
-        .post("/status/GAllStatus", params)
+        .post('/status/GAllStatus', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.loading = false;
-      this.tableData = dataAllStatus.data[1];
-      this.currentTotal = dataAllStatus.data[0];
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.loading = false
+      this.tableData = dataAllStatus.data[1]
+      this.currentTotal = dataAllStatus.data[0]
       // console.log(this.tableData);
     },
-    async getSearch(val) {
+    async getSearch (val) {
       // if(this.username!==null||this.pid!==null){
-      this.tableData = [];
-      this.isSearch = true;
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      params.append("ruser", this.username);
-      params.append("pid", this.pid);
-      params.append("result", this.result);
-      params.append("lang", this.lang);
-      this.currentPage = val;
+      this.tableData = []
+      this.isSearch = true
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      params.append('ruser', this.username)
+      params.append('pid', this.pid)
+      params.append('result', this.result)
+      params.append('lang', this.lang)
+      this.currentPage = val
       let dataStatusByConditions = await this.$http
-        .post("/status/GStatusByConditions", params)
+        .post('/status/GStatusByConditions', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
-      this.loading = false;
-      this.tableData = dataStatusByConditions.data[1];
-      this.currentTotal = dataStatusByConditions.data[0];
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.loading = false
+      this.tableData = dataStatusByConditions.data[1]
+      this.currentTotal = dataStatusByConditions.data[0]
       // }
     },
-    toSubmit(row) {
+    toSubmit (row) {
       // console.log(row.id);
-      this.$router.push({ path: "/Submit", query: { pid: row.pid } });
+      this.$router.push({ path: '/Submit', query: { pid: row.pid } })
     },
-    toUser(row) {
-      this.$router.push({ path: "/User", query: { username: row.ruser } });
+    toUser (row) {
+      this.$router.push({ path: '/User', query: { username: row.ruser } })
     },
-    toCodeView(row) {
+    toCodeView (row) {
       // console.log(row.id);
       let { href } = this.$router.resolve({
-        name: "CodeView",
+        name: 'CodeView',
         query: {
           id: row.id,
           ruser: row.ruser,
@@ -207,70 +206,70 @@ export default {
           languge: row.submitlanguage,
           jadgeStatu: row.otherinfo
         }
-      });
-      window.open(href, "_blank");
+      })
+      window.open(href, '_blank')
     },
-    async getInfo(row) {
-      let params = new URLSearchParams();
-      params.append("rid", row.id);
+    async getInfo (row) {
+      let params = new URLSearchParams()
+      params.append('rid', row.id)
       let dataCeinfo = await this.$http
-        .post("/ceinfo/GCeinfo", params)
+        .post('/ceinfo/GCeinfo', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          // return
+        })
       this.$message({
         dangerouslyUseHTMLString: true,
         message:
-          "rid:" + dataCeinfo.data[0].rid + "  info:" + dataCeinfo.data[0].info,
+          'rid:' + dataCeinfo.data[0].rid + '  info:' + dataCeinfo.data[0].info,
         showClose: true,
         duration: 0
-      });
+      })
     },
-    getList(val) {
+    getList (val) {
       if (this.isSearch) {
-        this.loading = true;
-        this.getSearch(val);
+        this.loading = true
+        this.getSearch(val)
       } else {
-        this.loading = false;
-        this.getStatus(val);
+        this.loading = false
+        this.getStatus(val)
       }
     },
-    resultChange(val) {
-      let obj = {};
+    resultChange (val) {
+      let obj = {}
       obj = this.resultList.find(item => {
-        return item.id === val;
-      });
-      this.result = obj.name;
-      this.resultValue = val;
+        return item.id === val
+      })
+      this.result = obj.name
+      this.resultValue = val
     },
-    langChange(val) {
-      let obj = {};
+    langChange (val) {
+      let obj = {}
       obj = this.langList.find(item => {
-        return item.id === val;
-      });
-      this.lang = obj.name;
-      this.langValue = val;
+        return item.id === val
+      })
+      this.lang = obj.name
+      this.langValue = val
     }
   },
-  mounted() {
+  mounted () {
     // var _this = this; //声明一个变量指向vue实例this,保证作用域一致
     // this.timer = setInterval(() => {
     // _this.getStatus(this.currentPage); // 修改数据date
     // }, 1000)
-    this.getStatus(this.currentPage);
+    this.getStatus(this.currentPage)
   },
   computed: {
-    filter_data() {
-      return;
-    }
+    // filter_data() {
+    //   return
+    // }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (this.timer) {
-      clearInterval(this.timer); //在vue实例销毁钱，清除我们的定时器
+      clearInterval(this.timer) // 在vue实例销毁钱，清除我们的定时器
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -319,4 +318,3 @@ export default {
   width: 180px;
 }
 </style>
-

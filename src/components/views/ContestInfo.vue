@@ -217,63 +217,62 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      tableTabValue: "1",
+      tableTabValue: '1',
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
-      contestProblem: "",
-      contestRank: "",
+      contestProblem: '',
+      contestRank: '',
       isAc: false,
       options: [
         {
-          value: "G++",
-          label: "G++"
+          value: 'G++',
+          label: 'G++'
         },
         {
-          value: "GCC",
-          label: "GCC"
+          value: 'GCC',
+          label: 'GCC'
         },
         {
-          value: "Pascal",
-          label: "Pascal"
+          value: 'Pascal',
+          label: 'Pascal'
         },
         {
-          value: "C#",
-          label: "C#"
+          value: 'C#',
+          label: 'C#'
         },
         {
-          value: "JAVA",
-          label: "JAVA"
+          value: 'JAVA',
+          label: 'JAVA'
         }
       ],
-      code: "",
+      code: '',
       maindata: [],
       carddata: [],
       simpledata: [],
-      compileLanguage: "",
-      pid: ""
-    };
+      compileLanguage: '',
+      pid: ''
+    }
   },
   methods: {
-    async getContestProblem() {
-      let params = new URLSearchParams();
-      params.append("cid", this.$route.query.cid);
+    async getContestProblem () {
+      let params = new URLSearchParams()
+      params.append('cid', this.$route.query.cid)
       let dataContestProblem = await this.$http
-        .post("/GContestProblem", params)
+        .post('/GContestProblem', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
-      // console.log(data.data[0]);
-      this.contestProblem = dataContestProblem.data[0];
-      // console.log(this.contestProblem[0].tpid);
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      // console.log(data.data[0])
+      this.contestProblem = dataContestProblem.data[0]
+      // console.log(this.contestProblem[0].tpid)
     },
-    toCodeView(row) {
-      // console.log(row.id);
+    toCodeView (row) {
+      // console.log(row.id)
       let { href } = this.$router.resolve({
-        name: "CodeView",
+        name: 'CodeView',
         query: {
           id: row.id,
           ruser: row.ruser,
@@ -281,110 +280,110 @@ export default {
           languge: row.submitlanguage,
           jadgeStatu: row.otherinfo
         }
-      });
-      window.open(href, "_blank");
+      })
+      window.open(href, '_blank')
     },
-    async getInfo(row) {
-      let params = new URLSearchParams();
-      params.append("rid", row.id);
+    async getInfo (row) {
+      let params = new URLSearchParams()
+      params.append('rid', row.id)
       let dataCeinfo = await this.$http
-        .post("/ceinfo/GCeinfo", params)
+        .post('/ceinfo/GCeinfo', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          // return
+        })
       this.$message({
         dangerouslyUseHTMLString: true,
         message:
-          "rid:" + dataCeinfo.data[0].rid + "  info:" + dataCeinfo.data[0].info,
+          'rid:' + dataCeinfo.data[0].rid + '  info:' + dataCeinfo.data[0].info,
         showClose: true,
         duration: 0
-      });
+      })
     },
-    async getContestStatu(val) {
-      this.tableData = [];
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      params.append("cid", this.$route.query.cid);
-      this.currentPage = val;
+    async getContestStatu (val) {
+      this.tableData = []
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      params.append('cid', this.$route.query.cid)
+      this.currentPage = val
       let dataContestStatus = await this.$http
-        .post("/GContestStatus", params)
+        .post('/GContestStatus', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.tableData = dataContestStatus.data[1];
-      this.currentTotal = dataContestStatus.data[0];
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.tableData = dataContestStatus.data[1]
+      this.currentTotal = dataContestStatus.data[0]
     },
-    async getContestRank() {
-      let params = new URLSearchParams();
-      params.append("cid", this.$route.query.cid);
+    async getContestRank () {
+      let params = new URLSearchParams()
+      params.append('cid', this.$route.query.cid)
       let dataContestRank = await this.$http
-        .post("/GContestRank", params)
+        .post('/GContestRank', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-          return;
-        });
-      // console.log(data.data[0]);
-      if (dataContestRank.data[0] == "") {
-        this.contestRank = [{ username: "没有用户参加", acnum: -1 }];
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          // return
+        })
+      // console.log(data.data[0])
+      if (dataContestRank.data[0] === '') {
+        this.contestRank = [{ username: '没有用户参加', acnum: -1 }]
       } else {
-        this.contestRank = dataContestRank.data[0];
+        this.contestRank = dataContestRank.data[0]
       }
     },
-    async getProblem(val) {
-      let params = new URLSearchParams();
-      params.append("pid", val);
-      params.append("user", this.$store.getters.getUsername);
-      this.pid = val;
+    async getProblem (val) {
+      let params = new URLSearchParams()
+      params.append('pid', val)
+      params.append('user', this.$store.getters.getUsername)
+      this.pid = val
       let dataProblemView = await this.$http
-        .post("/problemview/Gproblemview", params)
+        .post('/problemview/Gproblemview', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      // console.log(data);
-      this.maindata = dataProblemView.data[0];
-      this.carddata = dataProblemView.data[1];
-      this.simpledata = dataProblemView.data[2];
-      this.isAc = dataProblemView.data[3];
-      // console.log(simpledata);
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      // console.log(data)
+      this.maindata = dataProblemView.data[0]
+      this.carddata = dataProblemView.data[1]
+      this.simpledata = dataProblemView.data[2]
+      this.isAc = dataProblemView.data[3]
+      // console.log(simpledata)
     },
-    async onSubmit() {
+    async onSubmit () {
       if (this.code.length > 50) {
-        let params = new URLSearchParams();
-        params.append("pid", this.pid);
-        params.append("user", this.$store.getters.getUsername);
-        params.append("code", this.code);
-        params.append("language", this.compileLanguage);
-        params.append("cid", this.$route.query.cid);
-        let dataSubmitProblem = await this.$http
-          .post("/submit/submitProblem", params)
+        let params = new URLSearchParams()
+        params.append('pid', this.pid)
+        params.append('user', this.$store.getters.getUsername)
+        params.append('code', this.code)
+        params.append('language', this.compileLanguage)
+        params.append('cid', this.$route.query.cid)
+        // let dataSubmitProblem = await this.$http
+          .post('/submit/submitProblem', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-          });
-        this.tableTabValue = "3";
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+          })
+        this.tableTabValue = '3'
       } else {
-        this.$message({ message: "提交长度过少！", type: "error" });
+        this.$message({ message: '提交长度过少！', type: 'error' })
       }
     },
-    handleClick(tab) {
-      if (tab.name == "1") {
-        this.getContestProblem();
-      } else if (tab.name == "2") {
-        this.getProblem(this.contestProblem[0].tpid);
-      } else if (tab.name == "3") {
-        this.getContestStatu(this.currentPage);
-      } else if (tab.name == "4") {
-        this.getContestRank();
+    handleClick (tab) {
+      if (tab.name === '1') {
+        this.getContestProblem()
+      } else if (tab.name === '2') {
+        this.getProblem(this.contestProblem[0].tpid)
+      } else if (tab.name === '3') {
+        this.getContestStatu(this.currentPage)
+      } else if (tab.name === '4') {
+        this.getContestRank()
       }
     }
   },
-  mounted() {
-    this.getContestProblem();
+  mounted () {
+    this.getContestProblem()
   }
-};
+}
 </script>
 <style scoped>
 .docker {

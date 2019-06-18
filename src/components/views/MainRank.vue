@@ -100,76 +100,75 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
-      loading: "",
-      input: "",
+      loading: '',
+      input: '',
       Rank: 0,
       currentPage: 1,
       currentTotal: 0,
       tableData: [],
       isSearch: false
-    };
+    }
   },
-  mounted() {
-    this.getAcRank(this.currentPage);
+  mounted () {
+    this.getAcRank(this.currentPage)
   },
   methods: {
-    async getAcRank(val) {
-      this.tableData = [];
-      this.loading = true;
-      let params = new URLSearchParams();
-      params.append("pagenum", val);
-      this.currentPage = val;
+    async getAcRank (val) {
+      this.tableData = []
+      this.loading = true
+      let params = new URLSearchParams()
+      params.append('pagenum', val)
+      this.currentPage = val
       let dataUserRank = await this.$http
-        .post("/rank/GUserRank", params)
+        .post('/rank/GUserRank', params)
         .catch(() => {
-          this.$message({ message: "服务器繁忙，请稍后再试！", type: "error" });
-        });
-      this.loading = false;
-      this.currentTotal = dataUserRank.data[0];
-      // console.log(this.currentTotal);
-      this.tableData = dataUserRank.data[1];
-      this.Rank = 0;
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.loading = false
+      this.currentTotal = dataUserRank.data[0]
+      // console.log(this.currentTotal)
+      this.tableData = dataUserRank.data[1]
+      this.Rank = 0
     },
-    async getSearch(val) {
+    async getSearch (val) {
       if (this.input !== null) {
-        this.loading = true;
-        this.currentPage = val;
-        this.isSearch = true;
-        let params = new URLSearchParams();
-        params.append("username", this.input);
-        params.append("pagenum", this.currentPage);
+        this.loading = true
+        this.currentPage = val
+        this.isSearch = true
+        let params = new URLSearchParams()
+        params.append('username', this.input)
+        params.append('pagenum', this.currentPage)
         let dataUserRankByName = await this.$http
-          .post("/rank/GUserRankByName", params)
+          .post('/rank/GUserRankByName', params)
           .catch(() => {
             this.$message({
-              message: "服务器繁忙，请稍后再试！",
-              type: "error"
-            });
-            return;
-          });
-        this.loading = false;
-        this.tableData = [];
-        this.currentTotal = dataUserRankByName.data[0];
-        this.tableData = dataUserRankByName.data[1];
+              message: '服务器繁忙，请稍后再试！',
+              type: 'error'
+            })
+          })
+        this.loading = false
+        this.tableData = []
+        this.currentTotal = dataUserRankByName.data[0]
+        this.tableData = dataUserRankByName.data[1]
       }
     },
-    getList(val) {
+    getList (val) {
       if (this.isSearch) {
-        this.getSearch(val);
+        this.getSearch(val)
       } else {
-        this.getAcRank(val);
+        this.getAcRank(val)
       }
     },
-    indexMethod(index) {
-      return index + (this.currentPage - 1) * 50 + 1;
+    indexMethod (index) {
+      return index + (this.currentPage - 1) * 50 + 1
     },
-    toUser(row) {
-      this.$router.push({ path: "/User", query: { username: row.username } });
+    toUser (row) {
+      this.$router.push({ path: '/User', query: { username: row.username } })
     }
   }
-};
+}
 </script>
 <style scoped>
 .docker {

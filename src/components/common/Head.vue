@@ -105,74 +105,74 @@
 
 <script>
 export default {
-  name: "Head",
-  data() {
+  name: 'Head',
+  data () {
     return {
       type: false,
       datas: []
-    };
+    }
   },
   // mounted: {},
   computed: {
-    isLogin() {
-      return this.$store.getters.getIsLogin;
+    isLogin () {
+      return this.$store.getters.getIsLogin
     },
-    isAdmin() {
-      return this.$store.getters.getIsAdmin;
+    isAdmin () {
+      return this.$store.getters.getIsAdmin
     },
-    isClockIn() {
-      return this.$store.getters.getIsClockIn;
+    isClockIn () {
+      return this.$store.getters.getIsClockIn
     }
   },
   methods: {
-    logout() {
-      this.$store.commit("LOGOUT");
-      this.$router.push({ path: "/" });
+    logout () {
+      this.$store.commit('LOGOUT')
+      this.$router.push({ path: '/' })
     },
-    admin() {
-      this.$router.push({ path: "Admin" });
+    admin () {
+      this.$router.push({ path: 'Admin' })
     },
-    honorRank() {
-      this.$router.push({ path: "HonorRank" });
+    honorRank () {
+      this.$router.push({ path: 'HonorRank' })
     },
-    toEditUser() {
-      this.$router.push({ path: "EditUser" });
+    toEditUser () {
+      this.$router.push({ path: 'EditUser' })
     },
-    toClockIn() {
-      this.$router.push({ path: "ClockIn" });
+    toClockIn () {
+      this.$router.push({ path: 'ClockIn' })
     },
-    toMessage() {
-      this.$router.push({ path: "Message" });
+    toMessage () {
+      this.$router.push({ path: 'Message' })
     },
 
     // add by axiang [20190613]
-    async clockin() {
-      let username = this.$store.getters.getUsername;
+    async clockin () {
+      let username = this.$store.getters.getUsername
 
-      let params = new URLSearchParams();
-      params.append("username", username);
+      let params = new URLSearchParams()
+      params.append('username', username)
       let dataSetClockIn = await this.$http
-        .post("/clockin/UserClockIn", params)
+        .post('/clockin/UserClockIn', params)
         .catch(() => {
           this.$message({
-            message: "服务器繁忙，请稍后再试！",
-            type: "error"
-          });
-        });
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+        })
       if (dataSetClockIn.code === 200) {
         this.$message({
-          message: "签到失败:" + dataSetClockIn.data[0],
-          type: "error"
-        });
-        this.$store.commit("setIsClockIn", false);
+          message: '签到失败:' + dataSetClockIn.data[0],
+          type: 'error'
+        })
+        this.$store.commit('setIsClockIn', false)
       } else {
-        this.$message({ message: "签到成功！", type: "success" });
-        this.$store.commit("setIsClockIn", true);
-        this.$router.push({ path: "ClockIn" });
+        this.$message({ message: '签到成功！', type: 'success' })
+        this.$store.commit('setIsClockIn', true)
+        this.$router.push({ path: 'ClockIn' })
       }
     }
   }
-};
+}
 </script>
 
 <style>
