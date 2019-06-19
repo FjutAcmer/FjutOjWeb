@@ -24,7 +24,7 @@
       </li>
       <el-dropdown class="head-box-title-item">
         <li>
-          <router-link to="Contest" class="head-box-title-router">比赛</router-link>
+          <router-link to="Contest" class="head-box-title-router">比赛 <i class="el-icon-arrow-down"></i></router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
@@ -38,7 +38,7 @@
       </el-dropdown>
       <el-dropdown class="head-box-title-item">
         <li>
-          <router-link to="MainRank" class="head-box-title-router">排名</router-link>
+          <router-link to="MainRank" class="head-box-title-router">排名 <i class="el-icon-arrow-down"></i></router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
@@ -80,20 +80,21 @@
         <li class="head-box-list-name">
           <router-link to="User" class="head-box-title-router">
             <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
-              <i class="el-icon-user">{{$store.getters.getUsername}}</i>
+              <i class="el-icon-user">{{$store.getters.getUsername}}</i><i class="el-icon-arrow-down"></i>
             </el-badge>
-            <i class="el-icon-user" v-else>{{$store.getters.getUsername}}</i>
+            <i class="el-icon-user" v-else>{{$store.getters.getUsername}}<i class="el-icon-arrow-down"></i></i>
           </router-link>
         </li>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
+            <!-- TODO: 可以修改为动态判断 -->
             <el-badge :value="unReadMsgCount" :max="99" class="mark" v-if="this.unReadMsgCount > 0">
-              <span @click="toMessage">消息</span>
+              <span @click="toMessage"><i class="el-icon-message"> 消息</i></span>
             </el-badge>
-            <span @click="toMessage" v-else>消息</span>
+            <span @click="toMessage" v-else><i class="el-icon-message"> 消息</i></span>
           </el-dropdown-item>
           <el-dropdown-item divided>
-            <span @click="toEditUser">编辑</span>
+            <span @click="toEditUser"><i class="el-icon-edit"> 编辑</i></span>
           </el-dropdown-item>
           <!-- <el-dropdown-item divided>认证</el-dropdown-item> -->
           <!-- <el-dropdown-item divided>
@@ -101,7 +102,7 @@
           </el-dropdown-item>-->
           <!-- <el-dropdown-item divided>称号</el-dropdown-item> -->
           <el-dropdown-item divided>
-            <span @click="logout">退出</span>
+            <span @click="logout"><i class="el-icon-circle-close"> 退出</i></span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

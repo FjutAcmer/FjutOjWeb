@@ -19,7 +19,7 @@
     <div class="ClockInList">
       <div class="ClockInList-head">
         <div class="clockin-title">
-          <font color="blue">{{username}}</font> 的签到记录
+          <font color="blue" >{{username}}</font> 的签到记录
         </div>
       </div>
       <div class="ClockInList-table">
@@ -40,11 +40,17 @@
           <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
           <el-table-column prop="sign" label="状态" width="100">
             <template slot-scope="scope">
-              <div v-html="scope.row.sign"></div>
+              <div
+                :class="('日常'===scope.row.sign)?'table-row-normal':('迟到'===scope.row.sign?'table-row-late':'table-row-other')"
+              >{{scope.row.sign}}</div>
             </template>
           </el-table-column>
           <el-table-column prop="ip" label="签到IP"></el-table-column>
-          <el-table-column prop="#" label="奖励ACB"></el-table-column>
+          <el-table-column prop="#" label="奖励ACB">
+            <template>
+              <!-- TODO: 暂时留空 -->
+            </template>
+          </el-table-column>
           <!-- <el-table-column prop='todytimes' label='当天第几次签到'></el-table-column> -->
         </el-table>
       </div>
@@ -71,7 +77,7 @@ export default {
   created () {
     this.username = this.$store.getters.getUsername
     this.getUserAllClockInList()
-    this.getSomedayClockInList()
+    // this.getSomedayClockInList()
   },
   // computed(){},
   // mounted: {},
@@ -100,7 +106,9 @@ export default {
       this.logger.p({ currentTotal: this.currentTotal })
       for (let i = 0; i < dataClockIn.length; i++) {
         let time = dataClockIn[i].time
-        let timeStr = new Date(time).toLocaleString('chinese', {hour12: false})
+        let timeStr = new Date(time).toLocaleString('chinese', {
+          hour12: false
+        })
         let className = ''
         if (dataClockIn[i].sign === '日常' || dataClockIn[i].sign === '正常') {
           className = 'clockInNormal'
@@ -116,12 +124,13 @@ export default {
       }
       for (let i = 0; i < dataClockIn.length; i++) {
         let time = dataClockIn[i].time
-        let timeStr = new Date(time).toLocaleString('chinese', {hour12: false})
+        let timeStr = new Date(time).toLocaleString('chinese', {
+          hour12: false
+        })
         this.tableData.push({
           username: dataClockIn[i].username,
           time: timeStr,
-          // add by axiang [20190616] 暂时用这个测试一下，之后需要动态判断
-          sign: '<font color="blue">' + dataClockIn[i].sign + '</font>',
+          sign: dataClockIn[i].sign,
           ip: dataClockIn[i].ip,
           todytimes: dataClockIn[i].todytimes
         })
@@ -161,7 +170,7 @@ export default {
   background-color: orange;
 }
 .wh_container >>> .clockInLate {
-  background-color: plum;
+  background-color: red;
 }
 
 .wh_content_item >>> .clockInOther {
@@ -189,5 +198,17 @@ export default {
 
 .ClockInList-table {
   float: left;
+}
+
+.table-row-normal {
+  color: orange;
+}
+
+.table-row-late {
+  color: red;
+}
+
+.table-row-other {
+  color: blue;
 }
 </style>

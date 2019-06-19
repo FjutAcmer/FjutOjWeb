@@ -25,7 +25,7 @@
       </div>
       <el-pagination
         style="float:left"
-        layout="prev, pager, next"
+        layout="total, prev, pager, next, jumper"
         :current-page="currentPage"
         @current-change="getList"
         :total="this.currentTotal*10"

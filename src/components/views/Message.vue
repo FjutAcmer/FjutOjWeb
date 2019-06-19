@@ -7,9 +7,9 @@
       <div class="functionBar">
         <el-pagination
           class="bar-pagination"
-          layout="prev, pager, next"
+          layout="total, prev, pager, next, jumper"
           :current-page="currentPage"
-          @current-change="getUserMessage"
+          @current-change="getList"
           :total="Total"
         ></el-pagination>
         <!-- <el-button
@@ -21,21 +21,36 @@
         >清空消息</el-button>-->
         <el-button
           class="button-readAll"
+          type="primary"
+          size="medium"
+          plain
+          @click="handleUnReadMessage"
+          v-if="!isSearch"
+        >查看未读</el-button>
+        <el-button
+          class="button-readAll"
+          type="info"
+          size="medium"
+          plain
+          @click="handleBackToList"
+          v-else
+        >查看全部</el-button>
+        <el-button
+          class="button-readAll"
           type="warning"
           size="medium"
           plain
           @click="handleAllMessageRead"
         >全部已读</el-button>
-        <el-table :data="this.tableData" highlight-current-row max-height="700">
+        <el-table :data="this.tableData" max-height="600">
           <el-table-column type="index" :index="indexChange" label="#" width="100"></el-table-column>
           <el-table-column prop="status" label="状态" width="100">
             <template slot-scope="scope">
-              <div v-if="'已读'===scope.row.status" class="table-row-readed">{{scope.row.status}}</div>
-              <div v-else class="table-row-unread">{{scope.row.status}}</div>
+              <div :class="('已读'===scope.row.status)?'table-row-readed':'table-row-unread'">{{scope.row.status}}</div>
             </template>
           </el-table-column>
           <el-table-column prop="time" label="时间" width="240"></el-table-column>
-          <el-table-column prop="title" label="标题" width="300">
+          <el-table-column prop="title" label="标题" width="500">
             <template slot-scope="scope">
               <el-link type="info" @click="showText(scope.row)">
                 <strong>{{scope.row.title}}</strong>
@@ -61,7 +76,8 @@ export default {
       currentPage: 1,
       Total: 0,
       pagesize: 10,
-      tableData: []
+      tableData: [],
+      isSearch: false
     }
   },
   computed: {
@@ -74,6 +90,13 @@ export default {
     }
   },
   methods: {
+    getList (val) {
+      if (this.isSearch) {
+        this.getUserUnReadMessage(val)
+      } else {
+        this.getUserMessage(val)
+      }
+    },
     indexChange (index) {
       return (this.currentPage - 1) * 10 + index + 1
     },
@@ -101,11 +124,9 @@ export default {
         cancelButtonText: '取消',
         confirmButtonText: '确定',
         type: 'warning'
+      }).then(() => {
+        this.delMessageByMid(row.mid)
       })
-        .then(() => {
-          this.delMessageByMid(row.mid)
-        })
-        .catch(() => {})
     },
     handleAllMessageRead () {
       let unReadMsgCount = this.$store.getters.getUnReadMsgCount
@@ -118,8 +139,21 @@ export default {
           this.setMessageAllRead()
         })
       } else {
-        this.$message({message: '已经全部已读！', type: 'warning'})
+        this.$message({ message: '已经全部已读！', type: 'warning' })
       }
+    },
+    // FIXME: 暂时没做好搜索状态的固定
+    handleUnReadMessage () {
+      if (!this.isSearch) {
+        this.currentPage = 1
+      }
+      this.isSearch = true
+      // this.tableData = []
+      this.getUserUnReadMessage(this.currentPage)
+    },
+    handleBackToList () {
+      this.isSearch = false
+      this.getUserMessage(1)
     },
     // handleDelAllMessage () {
     //   this.$confirm('你确定要清空你的消息列表吗？这个操作不能恢复', '警告', {
@@ -136,6 +170,7 @@ export default {
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       this.currentPage = pagenum
+
       // this.logger.f(pagenum)
       params.append('username', username)
       params.append('pagenum', pagenum)
@@ -147,10 +182,12 @@ export default {
         })
       let dataTempMessage = dataMessage.datas[0]
       this.Total = dataMessage.datas[1]
-
       if (typeof dataTempMessage !== 'undefined') {
         for (let i = 0; i < dataTempMessage.length; i++) {
-          let localeTime = new Date(dataTempMessage[i].time).toLocaleString('chinese', {hour12: false})
+          let localeTime = new Date(dataTempMessage[i].time).toLocaleString(
+            'chinese',
+            { hour12: false }
+          )
           let status = dataTempMessage[i].status === 1 ? '已读' : '未读'
           this.tableData.push({
             mid: dataTempMessage[i].mid,
@@ -162,6 +199,42 @@ export default {
         }
       } else {
         this.$message({ message: '没有系统消息', type: 'warning' })
+      }
+      this.logger.me('getUserMessage', '获取当前页的用户消息列表')
+    },
+    async getUserUnReadMessage (pagenum) {
+      this.logger.ms('getUserMessage', '获取当前页的用户消息列表')
+      this.tableData = []
+      let params = new URLSearchParams()
+      let username = this.$store.getters.getUsername
+      this.currentPage = pagenum
+      // this.logger.f(pagenum)
+      params.append('username', username)
+      params.append('pagenum', pagenum)
+      let dataUnReadMessage = await this.$http
+        .post('/message/getUnReadMessageByUser', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.logger.e('获取消息列表失败')
+        })
+      let dataTempUnReadMessage = dataUnReadMessage.datas[0]
+      this.Total = dataUnReadMessage.datas[1]
+      if (typeof dataTempUnReadMessage !== 'undefined') {
+        for (let i = 0; i < dataTempUnReadMessage.length; i++) {
+          let localeTime = new Date(
+            dataTempUnReadMessage[i].time
+          ).toLocaleString('chinese', { hour12: false })
+          let status = dataTempUnReadMessage[i].status === 1 ? '已读' : '未读'
+          this.tableData.push({
+            mid: dataTempUnReadMessage[i].mid,
+            status: status,
+            title: dataTempUnReadMessage[i].title,
+            text: dataTempUnReadMessage[i].text,
+            time: localeTime
+          })
+        }
+      } else {
+        this.$message({ message: '没有未读消息', type: 'warning' })
       }
       this.logger.me('getUserMessage', '获取当前页的用户消息列表')
     },
@@ -213,7 +286,7 @@ export default {
           '设置全部消息已读成功! 设置成功条数：' + dataSetMsgAllRead.datas[0]
         )
         this.$store.commit('setUnReadMsgCount', 0)
-        this.getUserMessage(this.currentPage)
+        this.getList(this.currentPage)
       } else {
         this.$message({ message: '消息已经全部已读', type: 'warning' })
         this.logger.w(
@@ -221,7 +294,7 @@ export default {
         )
       }
     },
-    async checkUnReadMsgCount () {
+    async setUnReadMsgCount () {
       this.logger.ms('UnReadMsgCount', '未读消息数量')
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
@@ -235,7 +308,6 @@ export default {
           })
           this.logger.e('请求签到信息失败')
         })
-
       if (dataUnReadMsgCount.code === 100) {
         let unReadMsgCount = dataUnReadMsgCount.datas[0]
         this.$store.commit('setUnReadMsgCount', unReadMsgCount)
@@ -265,8 +337,14 @@ export default {
     // }
   },
   mounted () {
-    this.getUserMessage(this.currentPage)
-    this.checkUnReadMsgCount()
+    this.logger.ms('mounted', '渲染后查看')
+    if (this.isSearch) {
+      this.getUserUnReadMessage(this.currentPage)
+    } else {
+      this.getUserMessage(this.currentPage)
+    }
+    this.setUnReadMsgCount()
+    this.logger.me('mounted', '渲染后查看')
   }
 }
 </script>
@@ -323,6 +401,7 @@ export default {
 }
 
 .bar-pagination {
+  margin-top: 10px;
   float: left;
 }
 

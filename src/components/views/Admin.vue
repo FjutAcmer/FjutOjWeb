@@ -4,17 +4,17 @@
       <el-tab-pane label="新增题目">
         <div class="title">新增题目</div>
         <div class="form">
-          <div class="info">pid:</div>
+          <div class="info">题目ID:</div>
           <el-input class="input" v-model="pid"></el-input>
         </div>
         <div class="form">
-          <div class="info">oj:</div>
+          <div class="info">评测系统:</div>
           <el-select v-model="ojvalue" @change="ojChange">
             <el-option v-for="item in ojList" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </div>
         <div class="form">
-          <div class="info">title:</div>
+          <div class="info">标题:</div>
           <div class="input" style="line-height:50px;">{{title}}</div>
         </div>
         <div style="margin-top:5%">
