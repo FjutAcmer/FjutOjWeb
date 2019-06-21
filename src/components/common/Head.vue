@@ -120,7 +120,9 @@ export default {
     }
   },
   mounted () {
-    this.checkUnReadMsgCount()
+    if (this.isLogin) {
+      this.checkUnReadMsgCount()
+    }
   },
   computed: {
     isLogin () {

@@ -350,6 +350,7 @@ export default {
 </script>
 
 <style scoped>
+
 .message-box {
   margin: 2% 10% 2% 10%;
   width: 80%;

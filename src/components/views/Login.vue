@@ -123,6 +123,7 @@ export default {
             message: '服务器繁忙，请稍后再试！',
             type: 'error'
           })
+          this.isAdmin = false
           this.logger.e('获取用户权限失败')
         })
       this.isAdmin = dataGetPermission.data[0]
@@ -144,6 +145,7 @@ export default {
             message: '服务器繁忙，请稍后再试！',
             type: 'error'
           })
+          this.IsClockIn = true
           this.logger.e('请求签到信息失败')
         })
       if (dataGetTodayClockIn.code === 200) {

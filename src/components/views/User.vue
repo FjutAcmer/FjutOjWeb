@@ -3,7 +3,7 @@
     <el-card class="box-card-userInfo" style="min-height:800px;">
       <!-- <div class="head">
                 <img :src="img">
-      </div>-->
+      </div> -->
       <div class="name">
         <h1>{{user.nick}}</h1>
         <h2>{{user.motto}}</h2>
