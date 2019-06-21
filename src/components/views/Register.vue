@@ -117,8 +117,8 @@ export default {
             this.logger.e('userInsert服务器未响应返回')
             // return
           })
-        if (dataInserUser.code === 200) {
-          this.$message({ message: '注册未成功，用户已存在', type: 'error' })
+        if (dataInserUser.code !== 100) {
+          this.$message({ message: '注册未成功！' + dataInserUser.msg, type: 'error' })
           this.logger.e('注册失败 ' + dataInserUser.msg)
         } else {
           this.$message({ message: '注册成功', type: 'success' })

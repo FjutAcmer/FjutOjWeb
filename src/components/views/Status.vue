@@ -163,8 +163,8 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       this.loading = false
-      this.tableData = dataAllStatus.data[1]
-      this.currentTotal = dataAllStatus.data[0]
+      this.tableData = dataAllStatus.datas[1]
+      this.currentTotal = dataAllStatus.datas[0]
       // console.log(this.tableData);
     },
     async getSearch (val) {

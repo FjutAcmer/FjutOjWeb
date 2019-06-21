@@ -124,13 +124,7 @@ export default {
       this.$router.push({ path: '/Submit', query: { pid: val } })
     },
     async getRadarData () {
-      // console.log('调用getRadarData')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserRadar = await this.$http
@@ -138,27 +132,19 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.radar = dataUserRadar.data[0]
-      // console.log(this.radar)
+      this.radar = dataUserRadar.datas[0]
       this.leida()
     },
     // async getPutTagNum(){
-    //     // console.log('调用getPutTagNum')
     //     let params = new URLSearchParams()
     //     params.append('username', sessionStorage.getItem('username'))
-    //     let {data} = await this.$http.post('/GPutTagNum',params).catch(()=>{
+    //     let dataTagNum = await this.$http.post('/GPutTagNum',params).catch(()=>{
     //         this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'})
     //     })
-    //     this.puttagnum = data.data[0]
+    //     this.puttagnum = dataTagNum.datas[0]
     // },
     async getUserInfo () {
-      // console.log('调用getUserInfo')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserInfo = await this.$http
@@ -166,17 +152,11 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.user = dataUserInfo.data[0]
+      this.user = dataUserInfo.datas[0]
       // this.img = this.img + username+'.jpg'
     },
     async getawardinfo () {
-      // console.log('调用getawardinfo')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataAwardInfo = await this.$http
@@ -184,16 +164,11 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.rewordinfo = dataAwardInfo.data[0]
+      this.rewordinfo = dataAwardInfo.datas[0]
     },
     async getStatusProblems2 () {
       // console.log('调用getStatusProblems')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       params.append('status', 0)
@@ -202,15 +177,10 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.statusproblems2 = dataStatusProblems.data[0]
+      this.statusproblems2 = dataStatusProblems.datas[0]
     },
     async getStatusProblems1 () {
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       params.append('status', 1)
@@ -219,16 +189,11 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.statusproblems1 = dataStatusProblems.data[0]
+      this.statusproblems1 = dataStatusProblems.datas[0]
     },
     async getCanViewCodeProblems () {
       // console.log('调用getCanViewCodeProblems')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataCanViewCodeProblems = await this.$http
@@ -236,16 +201,11 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.canviewcodeproblems = dataCanViewCodeProblems.data[0]
+      this.canviewcodeproblems = dataCanViewCodeProblems.datas[0]
     },
     async getSubmitRecord () {
       // console.log('调用getSubmitRecord')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataAllStatusByUsername = await this.$http
@@ -253,18 +213,11 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.submitrecord = dataAllStatusByUsername.data[0]
-      // console.log(this.submitrecord)
+      this.submitrecord = dataAllStatusByUsername.datas[0]
       this.zhexian1()
     },
     async getRatingRecord () {
-      // console.log('调用getRatingRecord')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataRatingGraph = await this.$http
@@ -272,35 +225,21 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.ratingrecord = dataRatingGraph.data[0]
-      // console.log(this.submitrecord)
+      this.ratingrecord = dataRatingGraph.datas[0]
       this.zhexian2()
     },
     async getAcRecord () {
-      // console.log('调用getRatingRecord')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataAcGraph = await this.$http.post('/GAcGraph', params).catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
       })
-      this.acrecord = dataAcGraph.data[0]
-      // console.log(this.acrecord)
+      this.acrecord = dataAcGraph.datas[0]
       this.quxian()
     },
     async getUserPermission () {
-      // console.log('调用getRatingRecord')
-      let username
-      if (this.$route.query.username) {
-        username = this.$route.query.username
-      } else {
-        username = this.$store.getters.getUsername
-      }
+      let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserPermission = await this.$http
@@ -309,7 +248,6 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       this.isAdmin = dataUserPermission.data[0]
-      // console.log(this.acrecord)
     },
     toAdmin () {
       this.$router.push({ path: '/Admin' })

@@ -181,10 +181,10 @@ export default {
       let dataRank = await this.$http.post('/Galltop').catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
       })
-      this.acbTop = dataRank.data[0]
-      this.ratingTop = dataRank.data[1]
-      this.acTop = dataRank.data[2]
-      this.activeTop = dataRank.data[3]
+      this.acbTop = dataRank.datas[0]
+      this.ratingTop = dataRank.datas[1]
+      this.acTop = dataRank.datas[2]
+      this.activeTop = dataRank.datas[3]
     },
     toUser (username) {
       this.$router.push({ path: '/User', query: { username: username } })

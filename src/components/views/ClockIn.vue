@@ -201,14 +201,17 @@ export default {
 }
 
 .table-row-normal {
-  color: orange;
+  color: green;
+  font-weight: bold
 }
 
 .table-row-late {
   color: red;
+  font-weight: bold
 }
 
 .table-row-other {
   color: blue;
+  font-weight: bold
 }
 </style>

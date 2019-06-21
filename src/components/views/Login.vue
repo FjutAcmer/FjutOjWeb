@@ -81,23 +81,22 @@ export default {
       })
     },
     async userLogin () {
-      this.logger.ms('userLogin', '用户登录')
+      this.logger.ms('userLogin', '')
       let params = new URLSearchParams()
       params.append('username', this.$refs.name.value)
       params.append('password', this.$refs.pwd.value)
       let dataGetLogin = await this.$http.post('/dologin', params).catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         this.logger.e('请求失败')
-        // return
       })
-      if (dataGetLogin.code === 200) {
+      if (dataGetLogin.code !== 100) {
         this.$message({
-          message: '登录失败: ' + dataGetLogin.data[0],
+          message: '登录失败: ' + dataGetLogin.msg,
           type: 'error'
         })
         this.logger.e('登录失败')
       } else {
-        let username = dataGetLogin.data[0].username
+        let username = dataGetLogin.datas[0].username
         this.$store.commit('setUsername', username)
         this.$store.commit('setIsLogin', true)
         this.$message({ message: '登录成功！', type: 'success' })
@@ -107,7 +106,7 @@ export default {
         this.checkUnReadMsgCount()
         this.$router.push({ path: '/' })
       }
-      this.logger.me('userLogin', '用户登录')
+      this.logger.me('userLogin', '')
     },
     async checkIsAdmin () {
       // TODO: 目前还没做API，只判断是不是‘admin’账号

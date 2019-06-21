@@ -1,3 +1,4 @@
+TODO: 添加判断先前密码输入框
 <template>
   <div class="docker">
     <el-card class="box-card" :body-style="{ padding: '0px' }">
@@ -75,7 +76,7 @@ export default {
             })
             // return
           })
-        this.$message({ message: dataUpdateUser.data[0], type: 'success' })
+        this.$message({ message: dataUpdateUser.msg, type: 'success' })
       }
     }
   }
