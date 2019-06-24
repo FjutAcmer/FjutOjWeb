@@ -1,152 +1,160 @@
 <template>
-  <div id="guanxi" style="width:100%;height:800px"></div>
+  <div id="showCallengeView" style="width:100%;height:800px"></div>
 </template>
 
 <script>
 import echarts from 'echarts'
 
 export default {
+  data () {
+    return {
+      dataBlock: [],
+      series: [],
+      // 全局图形样式
+      dataStyle: {
+        normal: {
+          label: {
+            show: false
+          },
+          labelLine: {
+            show: false
+          }
+        }
+      },
+      // 解锁模块的得分 绿色环
+      itemStyleUnlockGreen: {
+        normal: {
+          color: 'green'
+        }
+      },
+      // 解锁模块的未得分 灰色环
+      itemStyleUnlockGray: {
+        normal: {
+          color: 'gray'
+        }
+      },
+      // 未解锁模块的黑色字体
+      itemStyleLockBlack: {
+        normal: {
+          color: 'black'
+        }
+      },
+      // 未解锁模块的 红色环
+      itemStyleLockRed: {
+        normal: {
+          color: 'red'
+        }
+      },
+      // 所有圆环的坐标
+      coordinates: [
+        [500, 500],
+        [560, 108],
+        [410, 370]
+      ]
+    }
+  },
   mounted () {
-    this.guanxi()
+    this.getBlocksData()
+    this.loadBlocksData()
+    this.showCallengeView()
   },
   methods: {
-    guanxi () {
-      let myChart = echarts.init(document.getElementById('guanxi'))
-      let nodes = [
+    getBlocksData () {
+      // TODO:从数据库获取模块信息，装入dataBlock[] 内
+      let dataTest = [
         {
-          color: '#4f19c7',
-          label: '基础题',
-          attributes: {},
-          y: -734.4221,
-          x: -75.53079,
-          id: '基础题',
-          size: 100.0
+          id: 1,
+          name: '入门',
+          isLock: false,
+          lockScore: 60,
+          unlockScore: 40
         },
         {
-          color: '#c71969',
-          label: '二分',
-          attributes: {},
-          y: -682.1726,
-          x: -479.44443,
-          id: '二分',
-          size: 43.21858
+          id: 2,
+          name: '基础题',
+          isLock: false,
+          lockScore: 100,
+          unlockScore: 80
         },
         {
-          color: '#c71919',
-          label: '三分',
-          attributes: {},
-          y: 294.88266,
-          x: -933.4234,
-          id: '三分',
-          size: 19.818306
-        },
-        {
-          color: '#8419c7',
-          label: '优化',
-          attributes: {},
-          y: 858.8598,
-          x: 313.5104,
-          id: '优化',
-          size: 43.21858
-        },
-        {
-          color: '#1984c7',
-          label: 'KMP',
-          attributes: {},
-          y: -400.4116,
-          x: 864.7834,
-          id: 'KMP',
-          size: 43.21858
-        },
-        {
-          color: '#c79f19',
-          label: '字符串',
-          attributes: {},
-          y: -542.05096,
-          x: 502.02698,
-          id: '字符串',
-          size: 19.818306
-        },
-        {
-          color: '#19c719',
-          label: '入门',
-          attributes: {},
-          y: -1302.119,
-          x: 501.15656,
-          id: '入门',
-          size: 43.21858
-        },
-        {
-          color: '#c719b9',
-          label: '模拟',
-          attributes: {},
-          y: 263.6715,
-          x: 880.9455,
-          id: '模拟',
-          size: 19.818306
-        },
-        {
-          color: '#3419c7',
-          label: '马拉车',
-          attributes: {},
-          y: -328.63486,
-          x: 600.7924,
-          id: '马拉车',
-          size: 19.818306
-        },
-        {
-          color: '#c78419',
-          label: 'ac自动机',
-          attributes: {},
-          y: 463.22067,
-          x: -290.9267,
-          id: 'ac自动机',
-          size: 43.21858
-        },
-        {
-          color: '#b9c719',
-          label: '后缀数组',
-          attributes: {},
-          y: -216.35048,
-          x: 23.50861,
-          id: '后缀数组',
-          size: 19.818306
-        },
-        {
-          color: '#c78419',
-          label: '排序',
-          attributes: {},
-          y: 174.10605,
-          x: 1250.3047,
-          id: '排序',
-          size: 43.21858
-        },
-        {
-          color: '#1934c7',
-          label: '高级排序',
-          attributes: {},
-          y: -150.56572,
-          x: -237.81726,
-          id: '高级排序',
-          size: 19.818306
+          id: 3,
+          name: '概率论入门啊',
+          isLock: true,
+          lockScore: 100,
+          unlockScore: 25
         }
       ]
-      let edges = [
-        { sourceID: '基础题', attributes: {}, targetID: '入门', size: 1 },
-        { sourceID: '入门', attributes: {}, targetID: '二分', size: 1 },
-        { sourceID: '二分', attributes: {}, targetID: '三分', size: 1 },
-        { sourceID: '入门', attributes: {}, targetID: '优化', size: 1 },
-        { sourceID: '入门', attributes: {}, targetID: 'KMP', size: 1 },
-        { sourceID: 'KMP', attributes: {}, targetID: '字符串', size: 1 },
-        { sourceID: '入门', attributes: {}, targetID: '模拟', size: 1 },
-        { sourceID: '模拟', attributes: {}, targetID: '马拉车', size: 1 },
-        { sourceID: '入门', attributes: {}, targetID: 'ac自动机', size: 1 },
-        { sourceID: 'ac自动机', attributes: {}, targetID: '后缀数组', size: 1 },
-        { sourceID: '入门', attributes: {}, targetID: '排序', size: 1 },
-        { sourceID: '排序', attributes: {}, targetID: '高级排序', size: 1 }
-      ]
-      let jsondata = { nodes: nodes, edges: edges }
+      this.dataBlock = dataTest
+    },
+    loadBlocksData () {
+      for (let i = 0; i < this.dataBlock.length; i++) {
+        let cycData = []
+        if (this.dataBlock[i].isLock) {
+          cycData.push({
+            value: 0,
+            name: '未解锁得分',
+            label: {
+              normal: {
+                formatter: this.dataBlock[i].name,
+                position: 'center',
+                show: true,
+                textStyle: {
+                  fontSize: '16',
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            itemStyle: this.itemStyleLockBlack
+          })
+          cycData.push({
+            value: 100,
+            name: '未解锁得分',
+            itemStyle: this.itemStyleLockRed
+          })
+        } else {
+          cycData.push({
+            value: this.dataBlock[i].unlockScore,
+            name: '已解锁得分',
+            label: {
+              normal: {
+                formatter: this.dataBlock[i].name,
+                position: 'center',
+                show: true,
+                textStyle: {
+                  fontSize: '16',
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            itemStyle: this.itemStyleUnlockGreen
+          })
+          cycData.push({
+            value: this.dataBlock[i].lockScore,
+            name: '未解锁得分',
+            itemStyle: this.itemStyleUnlockGray
+          })
+        }
+        this.series.push(
+          {
+            name: this.dataBlock[i].name,
+            type: 'pie',
+            radius: [42, 50],
+            itemStyle: this.dataStyle,
+            hoverAnimation: false,
+            center: this.coordinates[i],
+            data: cycData
+          }
+        )
+      }
+    },
+    showCallengeView () {
+      let myChart = echarts.init(document.getElementById('showCallengeView'))
+      myChart.showLoading()
       let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '模块：【{a}】：<br/> {b} {c} ({d}%)'
+        },
         title: {
           text: '挑战关系图',
           top: 50,
@@ -154,54 +162,10 @@ export default {
         },
         animationDuration: 2000,
         animationEasingUpdate: 'quinticInOut',
-        series: [
-          {
-            type: 'graph',
-            layout: 'none',
-            data: jsondata.nodes.map(function (node) {
-              return {
-                x: node.x,
-                y: node.y,
-                id: node.id,
-                name: node.label,
-                symbolSize: node.size,
-                itemStyle: {
-                  normal: {
-                    color: node.color
-                  }
-                }
-              }
-            }),
-            edges: jsondata.edges.map(function (edge) {
-              return {
-                source: edge.sourceID,
-                target: edge.targetID
-              }
-            }),
-            roam: true,
-            focusNodeAdjacency: true,
-            itemStyle: {
-              normal: {
-                borderColor: '#fff',
-                borderWidth: 1,
-                shadowBlur: 10,
-                shadowColor: 'rgba(0, 0, 0, 0.3)'
-              }
-            },
-            label: {
-              emphasis: {
-                position: 'right',
-                show: true
-              }
-            },
-            lineStyle: {
-              color: 'source',
-              curveness: 0.3
-            }
-          }
-        ]
+        series: this.series
       }
       myChart.setOption(option)
+      myChart.hideLoading()
     }
   }
 }
