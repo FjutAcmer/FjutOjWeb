@@ -37,7 +37,7 @@ export default new Router({
     }, {
       path: '/Callenge',
       name: 'Callenge',
-      component: () => import('@/components/views/Challenge')
+      component: () => import('@/components/views/Challenge1')
     }, {
       path: '/Status',
       name: 'Status',

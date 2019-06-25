@@ -124,8 +124,8 @@ export default {
         this.$message({message: '未找到挑战模块！', type: 'error'})
         return
       }
-      // FIXME:后端传来的数据不正确，需要修改！！！
       let dataTempBlocks = dataGetBlocks.datas[0]
+      // FIXME:后端传来的数据不正确，需要修改！！！
       let dataTempBlockScores = dataGetBlocks.datas[1]
       console.log(dataTempBlocks.length + '--' + dataTempBlockScores.length)
       console.log(dataTempBlockScores)
