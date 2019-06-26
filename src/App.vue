@@ -11,13 +11,15 @@
 </template>
 
 <script>
-import Head from '@/components/common/Head'
+// import Head from '@/components/common/Head'
+import Head from '@/components/common/NewHead'
 import Foot from '@/components/common/Foot'
 
 export default {
   name: 'App',
   components: {
     Head,
+    // NewHead,
     Foot
   },
   data () {

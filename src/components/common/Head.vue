@@ -14,7 +14,7 @@
         <router-link to="Discuss" class="head-box-title-router">讨论</router-link>
       </li>
       <li class="head-box-title-item">
-        <router-link to="Callenge" class="head-box-title-router">挑战模式</router-link>
+        <router-link to="Challenge" class="head-box-title-router">挑战模式</router-link>
       </li>
       <li class="head-box-title-item">
         <router-link to="Mall" class="head-box-title-router">商城</router-link>
@@ -87,7 +87,6 @@
         </li>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
-            <!-- TODO: 可以修改为动态判断 -->
             <el-badge :value="unReadMsgCount" :max="99" class="mark" v-if="this.unReadMsgCount > 0">
               <span @click="toMessage"><i class="el-icon-message"> 消息</i></span>
             </el-badge>

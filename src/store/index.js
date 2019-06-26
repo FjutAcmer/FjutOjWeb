@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isLogin: false,
     isAdmin: false,
     isClockIn: false,
+    index: '',
     unReadMsgCount: 0,
     token: ''
   },
@@ -20,6 +21,7 @@ export default new Vuex.Store({
       state.isLogin = false
       state.isAdmin = false
       state.isClockIn = false
+      state.index = ''
       state.unReadMsgCount = 0
       state.token = ''
     },
@@ -35,6 +37,9 @@ export default new Vuex.Store({
     setIsClockIn (state, isClockIn) {
       state.isClockIn = isClockIn
     },
+    setIndex (state, index) {
+      state.index = index
+    },
     setUnReadMsgCount (state, unReadMsgCount) {
       state.unReadMsgCount = unReadMsgCount
     }
@@ -46,6 +51,7 @@ export default new Vuex.Store({
     getToken: state => state.token,
     getIsAdmin: state => state.isAdmin,
     getIsClockIn: state => state.isClockIn,
+    getIndex: state => state.index,
     getUnReadMsgCount: state => state.unReadMsgCount
   }
 })

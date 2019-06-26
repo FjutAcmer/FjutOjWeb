@@ -7,7 +7,8 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/Index',
+      alias: '/',
       name: 'Home',
       component: () => import('@/components/views/Home')
     }, {
@@ -35,9 +36,9 @@ export default new Router({
       name: 'User',
       component: () => import('@/components/views/User')
     }, {
-      path: '/Callenge',
-      name: 'Callenge',
-      component: () => import('@/components/views/Challenge1')
+      path: '/Challenge',
+      name: 'Challenge',
+      component: () => import('@/components/views/Challenge')
     }, {
       path: '/Status',
       name: 'Status',
