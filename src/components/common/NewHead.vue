@@ -39,8 +39,22 @@
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
       <!-- TODO: 将dropdown的事件设置为commond默认 -->
       <!-- TODO: 把签到按钮搬过来 -->
-
-      <el-dropdown class="el-menu-item-userinfo" v-if="this.isLogin">
+      <div class="menu-rightside">
+      <el-button
+        class="clockin-button"
+        type="primary"
+        v-if="this.isLogin && !this.isClockIn"
+        size="medium"
+        @click="clockin"
+      >点我签到</el-button>
+      <el-button
+        class="clockin-button"
+        type="info"
+        v-if="this.isLogin && this.isClockIn"
+        size="medium"
+        @click="toClockIn"
+      >你已签到</el-button>
+      <el-dropdown class="el-menu-item-userinfo" v-if="this.isLogin" @command="handleCommand">
         <router-link to="User" class="router-link">
           <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
             <i class="el-icon-user">{{$store.getters.getUsername}}</i>
@@ -52,43 +66,29 @@
           </i>
         </router-link>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <el-dropdown-item command="toMessage">
             <el-badge :value="unReadMsgCount" :max="99" class="mark" v-if="this.unReadMsgCount > 0">
-              <span @click="toMessage">
+              <span>
                 <i class="el-icon-message">消息</i>
               </span>
             </el-badge>
-            <span @click="toMessage" v-else>
+            <span v-else>
               <i class="el-icon-message">消息</i>
             </span>
           </el-dropdown-item>
-          <el-dropdown-item divided >
-            <span @click="toEditUser">
+          <el-dropdown-item command="toEditUser" divided>
+            <span>
               <i class="el-icon-edit">编辑</i>
             </span>
           </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span @click="logout">
+          <el-dropdown-item command="logout" divided>
+            <span>
               <i class="el-icon-circle-close">退出</i>
             </span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
-      <!-- <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
-          <i class="el-icon-user">{{$store.getters.getUsername}}</i>
-          <i class="el-icon-arrow-down"></i>
-        </el-badge>
-        <i class="el-icon-user" v-else>
-          {{$store.getters.getUsername}}
-          <i class="el-icon-arrow-down"></i>
-        </i>
-      </el-menu-item>-->
-
-      <!-- <el-menu-item index="10">消息中心</el-menu-item> -->
-      <!-- <el-menu-item index="4">
-        <a href="https://www.ele.me" target="_blank">订单管理</a>
-      </el-menu-item>-->
+        </div>
     </el-menu>
   </div>
 </template>
@@ -99,17 +99,24 @@ export default {
   data () {
     return {
       type: false,
-      activeIndex: '',
       datas: []
     }
   },
+  created () {
+    this.activeIndex = this.$store.getters.getIndex
+  },
   mounted () {
     this.activeIndex = this.$store.getters.getIndex
+    this.logger.f(this.activeIndex)
     if (this.isLogin) {
       this.checkUnReadMsgCount()
     }
   },
   computed: {
+    activeIndex: {
+      get () { return this.$store.getters.getIndex },
+      set (val) { this.$store.commit('setIndex', val) }
+    },
     isLogin () {
       return this.$store.getters.getIsLogin
     },
@@ -127,16 +134,23 @@ export default {
     handleSelect (key) {
       this.$store.commit('setIndex', key)
     },
+    handleCommand (command) {
+      if (command === 'toEditUser') {
+        this.toEditUser()
+      } else if (command === 'toMessage') {
+        this.toMessage()
+      } else if (command === 'logout') {
+        this.logout()
+      }
+    },
     logout () {
       this.$store.commit('LOGOUT')
+      this.handleSelect('Index')
+      this.$router.push({ path: '/' })
       this.$message({
         message: '您已退出登录！',
         type: 'info'
       })
-      this.$router.push({ path: '/' })
-    },
-    admin () {
-      this.$router.push({ path: 'Admin' })
     },
     honorRank () {
       this.$router.push({ path: 'HonorRank' })
@@ -202,7 +216,23 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+/* FIXME: 全局引入有BUG暂时先这样 */
+
+/* 水平菜单的子菜单 */
+.el-menu--horizontal > .el-submenu .el-submenu__title {
+  width: 110px;
+  border-right: 1px solid #eeeeee;
+  font-size: 15px;
+}
+
+/* 水平菜单的子菜单的菜单项 */
+.el-menu--horizontal .el-menu .el-menu-item {
+  font-size: 14px;
+  width: auto;
+}
+</style>
+<style scoped >
 .head-box {
   line-height: 56px;
   float: left;
@@ -210,44 +240,32 @@ export default {
   margin: 0;
   height: auto;
   width: 100%;
-  min-width: 1250px;
+  min-width: 1450px;
 }
 
 .el-menu {
   width: 100%;
   float: left;
   font-size: 16px;
-  /* left: 100px; */
-  /* height: 50px; */
-  /* border-bottom: 10px red; */
 }
 
 .el-menu-item {
   width: 110px;
-  color: gray;
-  /* font-size: 16px; */
-  /* border-right: 10px red; */
-  /* font-size: 16px; */
-  /* background-color: red */
+  font-size: 15px;
+  /* color: gray; */
+  border-right: #eeeeee 1px solid;
 }
 
 .el-menu-item:hover {
   font-weight: bolder;
   width: 110px;
-  /* font-size: 16px; */
-  /* border-right: 10px red; */
-  /* font-size: 16px; */
-  /* background-color: red */
 }
 
 .el-menu-item-right {
   float: right;
   width: 110px;
-}
-
-.el-submenu {
-  width: 110px;
-  /* font-size: 16px; */
+  border-right: 0;
+  border-left: #eeeeee 1px solid;
 }
 
 .router-link {
@@ -257,8 +275,7 @@ export default {
 }
 
 .el-menu-item-userinfo {
-  float: right;
-  min-width: 100px;
+  min-width: 120px;
   width: auto;
   /* font-size: 15px;
   display: block;
@@ -267,10 +284,16 @@ export default {
   border-left: 1px solid #eeeeee;
 }
 
-.el-menu-item-useri {
-  width: auto;
+.menu-rightside{
+  float: right;
 }
 
+.el-menu-item-userinfo {
+  width: auto;
+}
+.clockin-button{
+ margin-right: 20px;
+}
 .badge-dot {
   line-height: 0px;
   margin-right: 10px;

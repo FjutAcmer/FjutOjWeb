@@ -1,5 +1,5 @@
 <template>
-  <div id="blockView" ></div>
+  <div id="blockView"></div>
 </template>
 
 <script>
@@ -10,14 +10,17 @@ export default {
     return {
       myChart: '',
       dataBlocks: '',
+      conditions: '',
       myTextStyle: {
-        fontSize: '17',
-        color: 'white'
-        // fontWeight: 'bold'
+        fontSize: '15',
+        color: 'white',
+        fontWeight: 'bold'
       },
-      myItemStyle: {
-        Solved: {
-          normal: {
+      myCategories: [
+        {
+          name: '全部完成',
+          symbol: 'circle',
+          itemStyle: {
             borderColor: 'rgb(116, 207, 18)',
             borderWidth: 4,
             shadowBlur: 40,
@@ -25,17 +28,21 @@ export default {
             color: 'rgb(116, 207, 18)'
           }
         },
-        Solving: {
-          normal: {
-            borderColor: 'rgb(206, 188, 11)',
+        {
+          name: '部分完成',
+          symbol: 'rect',
+          itemStyle: {
+            borderColor: '#FFC125',
             borderWidth: 4,
             shadowBlur: 40,
             shadowColor: '#eeeeee',
-            color: 'rgb(206, 188, 11)'
+            color: '#FFC125'
           }
         },
-        Locked: {
-          normal: {
+        {
+          name: '未解锁',
+          symbol: 'diamond',
+          itemStyle: {
             borderColor: 'rgb(213,43,43)',
             borderWidth: 4,
             shadowBlur: 40,
@@ -43,7 +50,7 @@ export default {
             color: 'rgb(213,43,43)'
           }
         }
-      }
+      ]
     }
   },
   mounted () {
@@ -59,17 +66,39 @@ export default {
       this.myChart.showLoading()
     },
     // TODO:获取解锁的前置条件内容
-    getPerCondition () {
-      return '在入门中得到 10分'
+    async getPerCondition (blockId) {
+      let res = ''
+      let params = new URLSearchParams()
+      params.append('blockId', blockId)
+      let dataBlockCondition = await this.$http
+        .post('/challenge/getConditionByBlockId', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      if (dataBlockCondition.code === 100) {
+        let dataTemp = dataBlockCondition.datas[0]
+        if (typeof dataTemp === 'undefined') {
+          res = '无条件解锁\n'
+        } else {
+          for (let i = 0; i < dataTemp.length; i++) {
+            res += `在模块【${dataTemp[i].name}】中获得【${
+              dataTemp[i].num
+            } 分】<br>`
+          }
+        }
+      } else {
+        res = '获取解锁条件错误！'
+      }
+      return res
     },
     async getBlocks () {
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       if (username === '') {
-        this.$message({message: '登录后重试！', type: 'error'})
+        this.$message({ message: '登录后重试！', type: 'error' })
         return
       }
-      this.logger.p({'username': username})
+      this.logger.p({ username: username })
       params.append('username', username)
       let dataGetBlocks = await this.$http
         .post('/challenge/getAllChallengeBlocks', params)
@@ -80,15 +109,17 @@ export default {
         // TODO:
         // this.$message({message: '获取挑战模块成功!', type: 'success'})
       } else {
-        this.$message({message: '未找到挑战模块！', type: 'error'})
+        this.$message({ message: '未找到挑战模块！', type: 'error' })
         return
       }
       this.dataBlocks = dataGetBlocks.datas[0]
+      this.conditions = dataGetBlocks.datas[1]
       // console.log(dataGetBlocks)
       this.loadEchartsSeries()
     },
     loadEchartsSeries () {
       let datas = []
+      let myLinks = []
       // for (let i = 0; i < 20; i++) {
       for (let i = 0; i < this.dataBlocks.length; i++) {
         let dataTemp = {
@@ -97,15 +128,20 @@ export default {
           // y: 100,
           // value: 10,
           id: this.dataBlocks[i].id,
-          name: this.dataBlocks[i].name,
+          name: 'n' + this.dataBlocks[i].id,
+          category: this.dataBlocks[i].locked
+            ? 2
+            : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
+              ? 0
+              : 1,
           // 根据模块的分数动态调整圆圈大小
-          symbolSize: Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 10)) * 22,
+          symbolSize:
+            Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
           getScored: this.dataBlocks[i].getScore,
-          notScored: this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
+          notScored:
+            this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
           locked: this.dataBlocks[i].locked,
           // draggable: true,
-          itemStyle: this.dataBlocks[i].locked ? this.myItemStyle.Locked : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
-            ? this.myItemStyle.Solved : this.myItemStyle.Solving,
           label: {
             normal: {
               formatter: this.dataBlocks[i].name,
@@ -117,29 +153,47 @@ export default {
         }
         datas.push(dataTemp)
       }
-      this.showEchartsView(datas)
+      this.logger.i('得到模块数：' + datas.length)
+      for (let i = 0; i < this.conditions.length; i++) {
+        let condTemp = {
+          source: '' + this.conditions[i].belongBlockId + '',
+          target: '' + this.conditions[i].par + ''
+        }
+        myLinks.push(condTemp)
+      }
+
+      // console.log(myLinks)
+      this.showEchartsView(datas, myLinks)
     },
-    showEchartsView (datas) {
+    showEchartsView (datas, myLinks) {
       let _this = this
       let option = {
         title: {
           text: '挑战关系图',
-          top: 50,
-          left: 50
+          top: 20,
+          left: 40
         },
-        legendHoverLink: true,
+        legend: {
+          top: 50,
+          left: 40,
+          selectedMode: 'multiple'
+          // data: this.myCategories.map(function (a) {
+          //   return a.name
+          // })
+        },
+        // legendHoverLink: true,
         // hoverAnimation: true,
         cursor: 'pointer',
-        backgroundColor: '#fff',
+        backgroundColor: '#eeeeee',
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
-            let blockName = params.data.name
+            let blockName = params.data.label.formatter
             let getScored = params.data.getScored
             // let notScored = params.data.notScored
             let totalScore = params.data.getScored + params.data.notScored
             let lockedStr = ''
-            let percent = (getScored / totalScore * 100).toFixed(2) + '%'
+            let percent = ((getScored / totalScore) * 100).toFixed(2) + '%'
             if (params.data.locked === false) {
               lockedStr = '已获得分数：'
               return `模块【${blockName}】<br/>【${lockedStr} ${getScored}/${totalScore} 】，【占比：${percent}】`
@@ -149,6 +203,7 @@ export default {
             }
           }
         },
+
         nodeScaleRatio: 0,
         // animationDelay: 500,
         // animationDelayUpdate: 10000,
@@ -157,57 +212,59 @@ export default {
         animationEasingUpdate: 'bounceIn',
         focusNodeAdjacency: true,
         color: ['#fff', '#fff', '#fff'],
-        series: [{
-          type: 'graph',
-          layout: 'force',
-          force: {
-            initLayout: 'circular',
-            repulsion: 500,
-            edgeLength: 220,
-            edgeSymbol: ['circle', 'arrow']
-          },
-          lineStyle: {
-            width: 6,
-            type: 'solid',
-            curveness: 0
-          },
-          roam: true,
-          label: {
-            normal: {
-              show: true
-            }
-          },
-          // TODO:获取相连节点
-          links: [
-            // {
-            //   source: '1',
-            //   target: '7'
-            // }, {
-            //   source: '9',
-            //   target: '7'
-            // }, {
-            //   source: '8',
-            //   target: '7'
-            // }, {
-            //   source: '3',
-            //   target: '7'
-            // }
-          ],
-          data: datas
-        }]}
-
+        series: [
+          {
+            type: 'graph',
+            layout: 'force',
+            // symbol: 'roundRect',
+            force: {
+              // layoutAnimation: false,
+              initLayout: 'circular',
+              repulsion: 800,
+              edgeLength: 220
+              // edgeSymbol: ['circle', 'arrow']
+            },
+            categories: this.myCategories,
+            roam: true,
+            lineStyle: {
+              width: 0
+              // type: 'solid',
+              // curveness: 0
+            },
+            label: {
+              normal: {
+                show: true
+              }
+            },
+            // TODO:获取相连节点
+            links: myLinks,
+            data: datas
+            // links: [{source: '1', target: '2'},
+            //   {source: '5', target: '9'},
+            //   {source: '253', target: '5'}]
+          }
+        ]
+      }
+      // console.log(option.series[0].links)
       this.myChart.setOption(option)
-      this.myChart.on('click', function (params) {
+      this.myChart.on('click', async function (params) {
         if (params.componentType === 'series') {
           // console.log(params)
           let blockId = params.data.id
           // TODO:获取解锁的前置条件内容
-          let condition = _this.getPerCondition(blockId)
+          let condition = await _this.getPerCondition(blockId)
           if (params.data.locked === true) {
+            _this.logger.i(
+              '\n选择的模块ID为：' +
+                params.data.id +
+                '\n模块名为：' +
+                params.data.label.formatter
+            )
             _this.$alert(
               `${condition}`,
-              `模块【${params.data.name}】的解锁条件`,
+              `模块【${params.data.label.formatter}】的解锁条件`,
               {
+                dangerouslyUseHTMLString: true,
                 confirmButtonText: '确定'
               }
             )
@@ -216,10 +273,10 @@ export default {
               '\n选择的模块ID为：' +
                 params.data.id +
                 '\n模块名为：' +
-                params.data.name
+                params.data.label.formatter
             )
             _this.$router.push({
-              path: '/CallengeBlock',
+              path: '/ChallengeBlock',
               query: { id: params.data.id }
             })
           }
@@ -233,13 +290,11 @@ export default {
 </script>
 
 <style scoped>
-
-#blockView{
+#blockView {
   align-items: center;
   border: 0px;
   width: 100%;
   height: 800px;
-  background-color: #eeeeee
-
+  background-color: #eeeeee;
 }
 </style>

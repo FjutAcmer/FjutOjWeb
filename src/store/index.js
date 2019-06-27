@@ -12,7 +12,9 @@ export default new Vuex.Store({
     isClockIn: false,
     index: '',
     unReadMsgCount: 0,
-    token: ''
+    token: '',
+    // 测试
+    Mychart: ''
   },
   mutations: {
     LOGOUT (state) {
@@ -21,7 +23,7 @@ export default new Vuex.Store({
       state.isLogin = false
       state.isAdmin = false
       state.isClockIn = false
-      state.index = ''
+      // state.index = ''
       state.unReadMsgCount = 0
       state.token = ''
     },
@@ -42,6 +44,10 @@ export default new Vuex.Store({
     },
     setUnReadMsgCount (state, unReadMsgCount) {
       state.unReadMsgCount = unReadMsgCount
+    },
+    //
+    setMyChart (state, Mychart) {
+      state.Mychart = Mychart
     }
   },
   actions,
@@ -52,6 +58,7 @@ export default new Vuex.Store({
     getIsAdmin: state => state.isAdmin,
     getIsClockIn: state => state.isClockIn,
     getIndex: state => state.index,
-    getUnReadMsgCount: state => state.unReadMsgCount
+    getUnReadMsgCount: state => state.unReadMsgCount,
+    getMyChart: state => state.Mychart
   }
 })

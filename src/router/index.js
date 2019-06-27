@@ -40,6 +40,10 @@ export default new Router({
       name: 'Challenge',
       component: () => import('@/components/views/Challenge')
     }, {
+      path: '/ChallengeBlock',
+      name: 'ChallengeBlock',
+      component: () => import('@/components/views/ChallengeBlock')
+    }, {
       path: '/Status',
       name: 'Status',
       component: () => import('@/components/views/Status')
