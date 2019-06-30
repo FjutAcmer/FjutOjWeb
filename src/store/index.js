@@ -14,7 +14,7 @@ export default new Vuex.Store({
     unReadMsgCount: 0,
     token: '',
     // 测试
-    Mychart: ''
+    myChartData: ''
   },
   mutations: {
     LOGOUT (state) {
@@ -26,6 +26,7 @@ export default new Vuex.Store({
       // state.index = ''
       state.unReadMsgCount = 0
       state.token = ''
+      state.myChartData = ''
     },
     setUsername (state, username) {
       state.username = username
@@ -46,8 +47,8 @@ export default new Vuex.Store({
       state.unReadMsgCount = unReadMsgCount
     },
     //
-    setMyChart (state, Mychart) {
-      state.Mychart = Mychart
+    setMyChartData (state, myChartData) {
+      state.myChartData = myChartData
     }
   },
   actions,
@@ -59,6 +60,6 @@ export default new Vuex.Store({
     getIsClockIn: state => state.isClockIn,
     getIndex: state => state.index,
     getUnReadMsgCount: state => state.unReadMsgCount,
-    getMyChart: state => state.Mychart
+    getMyChartData: state => state.myChartData
   }
 })

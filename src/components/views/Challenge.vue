@@ -10,16 +10,17 @@ export default {
     return {
       myChart: '',
       dataBlocks: '',
+      dataForChart: [],
       conditions: '',
       myTextStyle: {
         fontSize: '15',
         color: 'white',
         fontWeight: 'bold'
       },
+      // add by axiang [20190628] 为ECharts的关联图设置全局类别
       myCategories: [
         {
           name: '全部完成',
-          symbol: 'circle',
           itemStyle: {
             borderColor: 'rgb(116, 207, 18)',
             borderWidth: 4,
@@ -30,7 +31,6 @@ export default {
         },
         {
           name: '部分完成',
-          symbol: 'rect',
           itemStyle: {
             borderColor: '#FFC125',
             borderWidth: 4,
@@ -41,7 +41,6 @@ export default {
         },
         {
           name: '未解锁',
-          symbol: 'diamond',
           itemStyle: {
             borderColor: 'rgb(213,43,43)',
             borderWidth: 4,
@@ -59,89 +58,59 @@ export default {
   },
   destroyed () {
     this.myChart.dispose()
+    this.$store.commit('setMyChartData', this.datas)
   },
   methods: {
     init () {
       this.myChart = echarts.init(document.getElementById('blockView'))
       this.myChart.showLoading()
     },
-    // TODO:获取解锁的前置条件内容
-    async getPerCondition (blockId) {
-      let res = ''
-      let params = new URLSearchParams()
-      params.append('blockId', blockId)
-      let dataBlockCondition = await this.$http
-        .post('/challenge/getConditionByBlockId', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      if (dataBlockCondition.code === 100) {
-        let dataTemp = dataBlockCondition.datas[0]
-        if (typeof dataTemp === 'undefined') {
-          res = '无条件解锁\n'
-        } else {
-          for (let i = 0; i < dataTemp.length; i++) {
-            res += `在模块【${dataTemp[i].name}】中获得【${
-              dataTemp[i].num
-            } 分】<br>`
-          }
-        }
-      } else {
-        res = '获取解锁条件错误！'
-      }
-      return res
-    },
+    // add by axiang [20190628] 获取所有挑战模式模块的内容
     async getBlocks () {
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       if (username === '') {
         this.$message({ message: '登录后重试！', type: 'error' })
+        this.myChart.hideLoading()
         return
       }
       this.logger.p({ username: username })
       params.append('username', username)
       let dataGetBlocks = await this.$http
-        .post('/challenge/getAllChallengeBlocks', params)
+        .post('/challenge/getAllChallengeBlocksByUsername', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.myChart.hideLoading()
         })
       if (dataGetBlocks.code === 100) {
-        // TODO:
-        // this.$message({message: '获取挑战模块成功!', type: 'success'})
+        //
       } else {
         this.$message({ message: '未找到挑战模块！', type: 'error' })
         return
       }
       this.dataBlocks = dataGetBlocks.datas[0]
       this.conditions = dataGetBlocks.datas[1]
-      // console.log(dataGetBlocks)
       this.loadEchartsSeries()
     },
+    // add by axiang [20190628] 对后台获取的数据进行处理以适应前端Echarts，包括节点，关联关系
     loadEchartsSeries () {
-      let datas = []
       let myLinks = []
-      // for (let i = 0; i < 20; i++) {
       for (let i = 0; i < this.dataBlocks.length; i++) {
         let dataTemp = {
-          // TODO:力动态模式在显示模块多的时候略卡，有需要的到时候做一个坐标系布局的
-          // x: 100,
-          // y: 100,
-          // value: 10,
           id: this.dataBlocks[i].id,
-          name: 'n' + this.dataBlocks[i].id,
           category: this.dataBlocks[i].locked
             ? 2
             : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
               ? 0
               : 1,
-          // 根据模块的分数动态调整圆圈大小
+          // 根据模块的分值大小调整圆圈大小 目前公式为 ((总分+20)^(1/2))*15
           symbolSize:
             Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
           getScored: this.dataBlocks[i].getScore,
           notScored:
             this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
           locked: this.dataBlocks[i].locked,
-          // draggable: true,
+
           label: {
             normal: {
               formatter: this.dataBlocks[i].name,
@@ -149,11 +118,12 @@ export default {
               show: true,
               textStyle: this.myTextStyle
             }
-          }
+          },
+          draggable: true
         }
-        datas.push(dataTemp)
+        this.dataForChart.push(dataTemp)
       }
-      this.logger.i('得到模块数：' + datas.length)
+      // this.logger.i('得到模块数：' + this.dataForChart.length)
       for (let i = 0; i < this.conditions.length; i++) {
         let condTemp = {
           source: '' + this.conditions[i].belongBlockId + '',
@@ -163,8 +133,9 @@ export default {
       }
 
       // console.log(myLinks)
-      this.showEchartsView(datas, myLinks)
+      this.showEchartsView(this.dataForChart, myLinks)
     },
+    // add by axiang [20190628] 配置ECharts，并把处理过的节点和关联关系的数据装载入ECharts中
     showEchartsView (datas, myLinks) {
       let _this = this
       let option = {
@@ -177,9 +148,6 @@ export default {
           top: 50,
           left: 40,
           selectedMode: 'multiple'
-          // data: this.myCategories.map(function (a) {
-          //   return a.name
-          // })
         },
         // legendHoverLink: true,
         // hoverAnimation: true,
@@ -188,9 +156,8 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
-            let blockName = params.data.label.formatter
+            let blockName = (typeof params.data.label === 'undefined') ? '【名字出错了】' : params.data.label.formatter
             let getScored = params.data.getScored
-            // let notScored = params.data.notScored
             let totalScore = params.data.getScored + params.data.notScored
             let lockedStr = ''
             let percent = ((getScored / totalScore) * 100).toFixed(2) + '%'
@@ -203,7 +170,6 @@ export default {
             }
           }
         },
-
         nodeScaleRatio: 0,
         // animationDelay: 500,
         // animationDelayUpdate: 10000,
@@ -216,7 +182,6 @@ export default {
           {
             type: 'graph',
             layout: 'force',
-            // symbol: 'roundRect',
             force: {
               // layoutAnimation: false,
               initLayout: 'circular',
@@ -226,9 +191,11 @@ export default {
             },
             categories: this.myCategories,
             roam: true,
+            // FIXME: 鼠标放在线段上出问题了
+
             lineStyle: {
-              width: 0
-              // type: 'solid',
+              width: 1,
+              type: 'solid'
               // curveness: 0
             },
             label: {
@@ -236,22 +203,17 @@ export default {
                 show: true
               }
             },
-            // TODO:获取相连节点
             links: myLinks,
             data: datas
-            // links: [{source: '1', target: '2'},
-            //   {source: '5', target: '9'},
-            //   {source: '253', target: '5'}]
           }
         ]
       }
-      // console.log(option.series[0].links)
       this.myChart.setOption(option)
+      // 对ECharts的节点设置点击监听器
       this.myChart.on('click', async function (params) {
         if (params.componentType === 'series') {
-          // console.log(params)
           let blockId = params.data.id
-          // TODO:获取解锁的前置条件内容
+          // 获取解锁的前置条件内容
           let condition = await _this.getPerCondition(blockId)
           if (params.data.locked === true) {
             _this.logger.i(
@@ -280,10 +242,35 @@ export default {
               query: { id: params.data.id }
             })
           }
-          // console.log(params)
         }
       })
       this.myChart.hideLoading()
+    },
+    // add by axiang [20190628] 获取解锁的前置条件内容
+    async getPerCondition (blockId) {
+      let res = ''
+      let params = new URLSearchParams()
+      params.append('blockId', blockId)
+      let dataBlockCondition = await this.$http
+        .post('/challenge/getConditionByBlockId', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      if (dataBlockCondition.code === 100) {
+        let dataTemp = dataBlockCondition.datas[0]
+        if (typeof dataTemp === 'undefined') {
+          res = '无条件解锁\n'
+        } else {
+          for (let i = 0; i < dataTemp.length; i++) {
+            res += `在模块【${dataTemp[i].name}】中获得【${
+              dataTemp[i].num
+            } 分】<br>`
+          }
+        }
+      } else {
+        res = '获取解锁条件错误！'
+      }
+      return res
     }
   }
 }

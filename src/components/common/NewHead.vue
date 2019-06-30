@@ -102,6 +102,7 @@ export default {
       datas: []
     }
   },
+  // FIXME:对激活Index的固定，但是重新登录后还有对不齐的情况
   created () {
     this.activeIndex = this.$store.getters.getIndex
   },
@@ -134,6 +135,7 @@ export default {
     handleSelect (key) {
       this.$store.commit('setIndex', key)
     },
+    // add by axiang [20190628] 统一处理用户名的下拉选项
     handleCommand (command) {
       if (command === 'toEditUser') {
         this.toEditUser()
@@ -165,7 +167,7 @@ export default {
       this.$router.push({ path: 'Message' })
     },
 
-    // add by axiang [20190613]
+    // add by axiang [20190613] 签到
     async clockin () {
       let username = this.$store.getters.getUsername
 
@@ -217,7 +219,7 @@ export default {
 </script>
 
 <style>
-/* FIXME: 全局引入有BUG暂时先这样 */
+/* FIXME: add by axiang [20190628] 全局引入有BUG暂时先这样 */
 
 /* 水平菜单的子菜单 */
 .el-menu--horizontal > .el-submenu .el-submenu__title {
@@ -277,10 +279,6 @@ export default {
 .el-menu-item-userinfo {
   min-width: 120px;
   width: auto;
-  /* font-size: 15px;
-  display: block;
-  width: auto;
-  line-height: 50px; */
   border-left: 1px solid #eeeeee;
 }
 

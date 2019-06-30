@@ -12,13 +12,6 @@
           @current-change="getList"
           :total="Total"
         ></el-pagination>
-        <!-- <el-button
-          class="button-readAll"
-          type="danger"
-          size="medium"
-          plain
-          @click="handleDelAllMessage"
-        >清空消息</el-button>-->
         <el-button
           class="button-readAll"
           type="primary"
@@ -59,7 +52,6 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <!-- <el-button type="primary" size="mini" @click="">查看</el-button> -->
               <el-button type="danger" size="mini" @click="delMessage(scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -101,7 +93,7 @@ export default {
       return (this.currentPage - 1) * 10 + index + 1
     },
     showText (row) {
-      this.logger.ms('showText', '显示详情')
+      this.logger.ms(this.showText.name, '')
       this.$alert(row.text, '查看系统消息', {
         dangerouslyUseHTMLString: true,
         callback: action => {
@@ -116,7 +108,7 @@ export default {
           }
         }
       })
-      this.logger.me('showText', '显示详情')
+      this.logger.me(this.showText.name, '')
     },
     delMessage (row) {
       this.logger.ms('delMessage', '删除消息记录')
@@ -142,43 +134,32 @@ export default {
         this.$message({ message: '已经全部已读！', type: 'warning' })
       }
     },
-    // FIXME: 暂时没做好搜索状态的固定
+
+    // add by axiang [20190628] 对筛选状态进行了固定
     handleUnReadMessage () {
       if (!this.isSearch) {
         this.currentPage = 1
       }
       this.isSearch = true
-      // this.tableData = []
       this.getUserUnReadMessage(this.currentPage)
     },
+    // add by axiang [20190628] 返回全部内容模式
     handleBackToList () {
       this.isSearch = false
       this.getUserMessage(1)
     },
-    // handleDelAllMessage () {
-    //   this.$confirm('你确定要清空你的消息列表吗？这个操作不能恢复', '警告', {
-    //     cancelButtonText: '取消',
-    //     confirmButtonText: '确定',
-    //     type: 'warning'
-    //   }).then(() => {
-    //     this.delAllMessage()
-    //   })
-    // },
     async getUserMessage (pagenum) {
-      this.logger.ms('getUserMessage', '获取当前页的用户消息列表')
+      this.logger.ms(this.getUserMessage.name, '')
       this.tableData = []
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       this.currentPage = pagenum
-
-      // this.logger.f(pagenum)
       params.append('username', username)
       params.append('pagenum', pagenum)
       let dataMessage = await this.$http
         .post('/message/getUserMessage', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-          this.logger.e('获取消息列表失败')
         })
       let dataTempMessage = dataMessage.datas[0]
       this.Total = dataMessage.datas[1]
@@ -200,15 +181,13 @@ export default {
       } else {
         this.$message({ message: '没有系统消息', type: 'warning' })
       }
-      this.logger.me('getUserMessage', '获取当前页的用户消息列表')
+      this.logger.me(this.getUserMessage.name, '')
     },
     async getUserUnReadMessage (pagenum) {
-      this.logger.ms('getUserMessage', '获取当前页的用户消息列表')
       this.tableData = []
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       this.currentPage = pagenum
-      // this.logger.f(pagenum)
       params.append('username', username)
       params.append('pagenum', pagenum)
       let dataUnReadMessage = await this.$http
@@ -236,7 +215,6 @@ export default {
       } else {
         this.$message({ message: '没有未读消息', type: 'warning' })
       }
-      this.logger.me('getUserMessage', '获取当前页的用户消息列表')
     },
     async setReaded (mid) {
       let params = new URLSearchParams()
@@ -314,37 +292,14 @@ export default {
       }
       this.logger.me('UnReadMsgCount', '未读消息数量')
     }
-    // FIXME: 这里与服务端交互失败，需要修改
-    // async delAllMessage () {
-    //   let username = this.$store.getters.getUsername
-    //   this.logger.i(username)
-    //   let params = new URLSearchParams()
-    //   params.append('username', username)
-    //   let dataDelAllMsg = await this.$http
-    //     .post('/message/delAllMessageByUser', params)
-    //     .catch(() => {
-    //       this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-    //       this.logger.e('请求失败')
-    //     })
-    //   if (dataDelAllMsg.code === 100) {
-    //     this.$message({ message: '消息已清空！', type: 'success' })
-    //     this.logger.i('消息已清空！ 删除条数：' + dataDelAllMsg.datas[0])
-    //     this.getUserMessage(this.currentPage)
-    //   } else {
-    //     this.$message({ message: '消息列表为空！', type: 'warning' })
-    //     this.logger.w('消息清空失败！ 删除条数：' + dataDelAllMsg.datas[0])
-    //   }
-    // }
   },
   mounted () {
-    this.logger.ms('mounted', '渲染后查看')
     if (this.isSearch) {
       this.getUserUnReadMessage(this.currentPage)
     } else {
       this.getUserMessage(this.currentPage)
     }
     this.setUnReadMsgCount()
-    this.logger.me('mounted', '渲染后查看')
   }
 }
 </script>
@@ -368,19 +323,12 @@ export default {
   padding: 0;
   margin-top: 2%;
   margin-bottom: 2%;
-  /* background-color: #eeeeee; */
 }
-
-/* .table-message{
-  min-height: 500px;
-  width: 100%;
-  height: auto;
-} */
 
 .clearfix {
   margin: 0px;
   padding: 0px;
-  /* background-color: #eeeeee; */
+
 }
 
 .clearfix:before,
