@@ -1,113 +1,95 @@
-FIXME:旧式的头部组件，暂时废弃
-
 <template>
   <div class="head-box">
-    <ul class="head-box-title">
-      <li class="head-box-title-item">
-        <router-link to="/" class="head-box-title-router">主页</router-link>
-      </li>
-      <li class="head-box-title-item">
-        <router-link to="Problem" class="head-box-title-router">题目</router-link>
-      </li>
-      <li class="head-box-title-item">
-        <router-link to="Status" class="head-box-title-router">评测</router-link>
-      </li>
-      <li class="head-box-title-item">
-        <router-link to="Discuss" class="head-box-title-router">讨论</router-link>
-      </li>
-      <li class="head-box-title-item">
-        <router-link to="Challenge" class="head-box-title-router">挑战模式</router-link>
-      </li>
-      <li class="head-box-title-item">
-        <router-link to="Mall" class="head-box-title-router">商城</router-link>
-      </li>
-      <li class="head-box-title-item">
-        <router-link to="HonorRank" class="head-box-title-router">荣誉榜</router-link>
-      </li>
-      <el-dropdown class="head-box-title-item">
-        <li>
-          <router-link to="Contest" class="head-box-title-router">比赛 <i class="el-icon-arrow-down"></i></router-link>
-        </li>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-            <span>练习</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided>积分</el-dropdown-item>
-          <el-dropdown-item divided>正式</el-dropdown-item>
-          <el-dropdown-item divided>趣味</el-dropdown-item>
-          <el-dropdown-item divided>自定义</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-dropdown class="head-box-title-item">
-        <li>
-          <router-link to="MainRank" class="head-box-title-router">排名 <i class="el-icon-arrow-down"></i></router-link>
-        </li>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-            <span @click="honorRank">荣誉榜</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided>活跃榜</el-dropdown-item>
-          <el-dropdown-item divided>现役榜</el-dropdown-item>
-          <el-dropdown-item divided>组队榜</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <li v-if="this.isAdmin" class="head-box-title-item">
-        <router-link to="Admin" class="head-box-title-router">管理员</router-link>
-      </li>
-    </ul>
-    <ul class="head-box-login-register" v-if="!this.isLogin">
-      <li class="head-box-login-register-item">
-        <router-link to="Register" class="head-box-title-router">注册</router-link>
-      </li>
-      <li class="head-box-login-register-item">
-        <router-link to="Login" class="head-box-title-router">登录</router-link>
-      </li>
-    </ul>
-    <ul class="head-box-login-register" v-if="this.isLogin">
+    <el-menu
+      :default-active="activeIndex"
+      class="el-menu"
+      mode="horizontal"
+      active-text-color="#409EFF"
+      text-color="black"
+      @select="handleSelect"
+      router
+    >
+      <el-menu-item index="Index">主 页</el-menu-item>
+      <el-menu-item index="Problem">题 目</el-menu-item>
+      <el-menu-item index="Status">评 测</el-menu-item>
+      <el-menu-item index="Discuss">
+        <span>讨论</span>
+      </el-menu-item>
+      <el-menu-item index="Challenge">挑战模式</el-menu-item>
+      <el-menu-item index="Mall">商 城</el-menu-item>
+      <el-menu-item index="HonorRank">荣誉榜</el-menu-item>
+      <el-submenu index="ContestSub">
+        <template slot="title">比 赛</template>
+        <el-menu-item index="Contest">全部</el-menu-item>
+        <el-menu-item index="8-1">练习</el-menu-item>
+        <el-menu-item index="8-2">积分</el-menu-item>
+        <el-menu-item index="8-3">正式</el-menu-item>
+        <el-menu-item index="8-4">自定义</el-menu-item>
+      </el-submenu>
+      <el-submenu index="RankSub">
+        <template slot="title">排 名</template>
+        <el-menu-item index="MainRank">积分榜</el-menu-item>
+        <el-menu-item index="9-1">荣誉榜</el-menu-item>
+        <el-menu-item index="9-2">活跃榜</el-menu-item>
+        <el-menu-item index="9-3">现役榜</el-menu-item>
+        <el-menu-item index="9-4">组队榜</el-menu-item>
+      </el-submenu>
+      <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
+      <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
+      <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
+      <!-- TODO: 将dropdown的事件设置为commond默认 -->
+      <!-- TODO: 把签到按钮搬过来 -->
+      <div class="menu-rightside">
       <el-button
-        class="head-box-clockin-button"
+        class="clockin-button"
         type="primary"
-        v-if="!this.isClockIn"
+        v-if="this.isLogin && !this.isClockIn"
         size="medium"
         @click="clockin"
       >点我签到</el-button>
       <el-button
-        class="head-box-clockin-button"
+        class="clockin-button"
         type="info"
-        v-if="this.isClockIn"
+        v-if="this.isLogin && this.isClockIn"
         size="medium"
         @click="toClockIn"
       >你已签到</el-button>
-      <el-dropdown class="head-box-dropdown-name">
-        <li class="head-box-list-name">
-          <router-link to="User" class="head-box-title-router">
-            <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
-              <i class="el-icon-user">{{$store.getters.getUsername}}</i><i class="el-icon-arrow-down"></i>
-            </el-badge>
-            <i class="el-icon-user" v-else>{{$store.getters.getUsername}}<i class="el-icon-arrow-down"></i></i>
-          </router-link>
-        </li>
+      <el-dropdown class="el-menu-item-userinfo" v-if="this.isLogin" @command="handleCommand">
+        <router-link to="User" class="router-link">
+          <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
+            <i class="el-icon-user">{{$store.getters.getUsername}}</i>
+            <i class="el-icon-arrow-down"></i>
+          </el-badge>
+          <i class="el-icon-user" v-else>
+            {{$store.getters.getUsername}}
+            <i class="el-icon-arrow-down"></i>
+          </i>
+        </router-link>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <el-dropdown-item command="toMessage">
             <el-badge :value="unReadMsgCount" :max="99" class="mark" v-if="this.unReadMsgCount > 0">
-              <span @click="toMessage"><i class="el-icon-message"> 消息</i></span>
+              <span>
+                <i class="el-icon-message">消息</i>
+              </span>
             </el-badge>
-            <span @click="toMessage" v-else><i class="el-icon-message"> 消息</i></span>
+            <span v-else>
+              <i class="el-icon-message">消息</i>
+            </span>
           </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span @click="toEditUser"><i class="el-icon-edit"> 编辑</i></span>
+          <el-dropdown-item command="toEditUser" divided>
+            <span>
+              <i class="el-icon-edit">编辑</i>
+            </span>
           </el-dropdown-item>
-          <!-- <el-dropdown-item divided>认证</el-dropdown-item> -->
-          <!-- <el-dropdown-item divided>
-            <span @click="toClockIn">签到</span>
-          </el-dropdown-item>-->
-          <!-- <el-dropdown-item divided>称号</el-dropdown-item> -->
-          <el-dropdown-item divided>
-            <span @click="logout"><i class="el-icon-circle-close"> 退出</i></span>
+          <el-dropdown-item command="logout" divided>
+            <span>
+              <i class="el-icon-circle-close">退出</i>
+            </span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-    </ul>
+        </div>
+    </el-menu>
   </div>
 </template>
 
@@ -120,12 +102,22 @@ export default {
       datas: []
     }
   },
+  // FIXME:对激活Index的固定，但是重新登录后还有对不齐的情况
+  created () {
+    this.activeIndex = this.$store.getters.getIndex
+  },
   mounted () {
+    this.activeIndex = this.$store.getters.getIndex
+    // this.logger.f(this.activeIndex)
     if (this.isLogin) {
       this.checkUnReadMsgCount()
     }
   },
   computed: {
+    activeIndex: {
+      get () { return this.$store.getters.getIndex },
+      set (val) { this.$store.commit('setIndex', val) }
+    },
     isLogin () {
       return this.$store.getters.getIsLogin
     },
@@ -140,16 +132,28 @@ export default {
     }
   },
   methods: {
+    handleSelect (key) {
+      this.$store.commit('setIndex', key)
+    },
+    // add by axiang [20190628] 统一处理用户名的下拉选项
+    handleCommand (command) {
+      this.$store.commit('setIndex', '')
+      if (command === 'toEditUser') {
+        this.toEditUser()
+      } else if (command === 'toMessage') {
+        this.toMessage()
+      } else if (command === 'logout') {
+        this.logout()
+      }
+    },
     logout () {
       this.$store.commit('LOGOUT')
+      this.handleSelect('Index')
+      this.$router.push({ path: '/' })
       this.$message({
         message: '您已退出登录！',
         type: 'info'
       })
-      this.$router.push({ path: '/' })
-    },
-    admin () {
-      this.$router.push({ path: 'Admin' })
     },
     honorRank () {
       this.$router.push({ path: 'HonorRank' })
@@ -158,16 +162,16 @@ export default {
       this.$router.push({ path: 'EditUser' })
     },
     toClockIn () {
+      this.$store.commit('setIndex', '')
       this.$router.push({ path: 'ClockIn' })
     },
     toMessage () {
       this.$router.push({ path: 'Message' })
     },
 
-    // add by axiang [20190613]
+    // add by axiang [20190613] 签到
     async clockin () {
       let username = this.$store.getters.getUsername
-
       let params = new URLSearchParams()
       params.append('username', username)
       let dataSetClockIn = await this.$http
@@ -187,7 +191,7 @@ export default {
       } else {
         this.$message({ message: '签到成功！', type: 'success' })
         this.$store.commit('setIsClockIn', true)
-        this.$router.push({ path: 'ClockIn' })
+        this.toClockIn()
       }
     },
     async checkUnReadMsgCount () {
@@ -216,92 +220,81 @@ export default {
 </script>
 
 <style>
-.head-box {
-  padding: 0;
-  margin: 0;
-  background: white;
-  height: 50px;
-  width: 100%;
-  min-width: 1250px;
-  position: relative;
-  font-size: 16px;
-  border-bottom: 2px solid #eeeeee;
-  box-sizing: border-box;
-  display: block;
-}
+/* FIXME: add by axiang [20190628] 全局引入有BUG暂时先这样 */
 
-.head-box-title {
-  padding: 0;
-  margin: 0;
-  float: left;
-  list-style: none;
-  height: 40px;
-  /* background-color: blue; */
-}
-
-.head-box-title-item {
-  font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
-  font-size: 15px;
-  float: left;
-  display: block;
-  width: 100px;
-  line-height: 50px;
+/* 水平菜单的子菜单 */
+.el-menu--horizontal > .el-submenu .el-submenu__title {
+  width: 110px;
   border-right: 1px solid #eeeeee;
-  /* background-color: blue; */
+  font-size: 15px;
 }
 
-.head-box-dropdown-name {
+/* 水平菜单的子菜单的菜单项 */
+.el-menu--horizontal .el-menu .el-menu-item {
+  font-size: 14px;
   width: auto;
 }
+</style>
 
-.head-box-title-router {
+<style scoped >
+.head-box {
+  line-height: 58px;
+  float: left;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  width: 100%;
+  min-width: 1380px;
+}
+
+.el-menu {
+  width: 100%;
+  float: left;
+  font-size: 16px;
+}
+
+.el-menu-item {
+  width: 110px;
+  font-size: 15px;
+  /* color: gray; */
+  border-right: #eeeeee 1px solid;
+}
+
+.el-menu-item:hover {
+  font-weight: bolder;
+  width: 110px;
+}
+
+.el-menu-item-right {
+  float: right;
+  width: 110px;
+  border-right: 0;
+  border-left: #eeeeee 1px solid;
+}
+
+.router-link {
   text-decoration: none;
   color: black;
+  font-size: 16px;
 }
 
-.head-box-title-router:hover {
-  color: lightblue;
-}
-
-.head-box-login-register {
-  padding: 0;
-  margin: 0;
-  float: right;
-  list-style: none;
-  height: 40px;
-  /* background-color: blue; */
-}
-
-.head-box-login-register-item {
-  font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
-  font-size: 15px;
-  float: left;
-  display: block;
-  width: 100px;
-  line-height: 50px;
-  border-left: 1px solid #eeeeee;
-  /* background-color: blue; */
-}
-
-.head-box-list-name {
-  font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
-  font-size: 15px;
-  float: left;
-  display: block;
+.el-menu-item-userinfo {
+  min-width: 120px;
   width: auto;
-  min-width: 100px;
-  line-height: 50px;
   border-left: 1px solid #eeeeee;
 }
 
-.head-box-clockin-button {
-  text-decoration: none;
-  float: left;
-  margin-top: 7px;
-  margin-right: 5px;
+.menu-rightside{
+  float: right;
 }
 
-.badge-dot{
+.el-menu-item-userinfo {
+  width: auto;
+}
+.clockin-button{
+ margin-right: 20px;
+}
+.badge-dot {
   line-height: 0px;
   margin-right: 10px;
 }

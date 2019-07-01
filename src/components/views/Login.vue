@@ -109,8 +109,7 @@ export default {
       this.logger.me('userLogin', '')
     },
     async checkIsAdmin () {
-      // TODO: 目前还没做API，只判断是不是‘admin’账号
-      // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 begin
+      // TODO: add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号
       this.logger.ms('isAdmin', '判断是否管理员')
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
@@ -129,10 +128,9 @@ export default {
       this.$store.commit('setIsAdmin', this.isAdmin)
       this.logger.p({ isAdmin: this.isAdmin })
       this.logger.me('isAdmin', '判断是否管理员')
-      // add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号 end
     },
     async checkIsClockIn () {
-      // add by axiang [20190613] 判断用户当天签到状态 begin
+      // add by axiang [20190613] 判断用户当天签到状态
       this.logger.ms('isClockIn', '判断是否签到')
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
@@ -155,7 +153,6 @@ export default {
         this.logger.p({ 'IsClockIn': true })
       }
       this.logger.me('isClockIn', '判断是否签到')
-      // add by axiang [20190613] 判断用户当天签到状态 end
     },
     async checkUnReadMsgCount () {
       this.logger.ms('UnReadMsgCount', '未读消息数量')

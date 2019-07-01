@@ -1,9 +1,10 @@
 <template>
   <div class="container">
     <el-card class="box-card-userInfo" style="min-height:800px;">
-      <!-- <div class="head">
-                <img :src="img">
-      </div> -->
+      <div class="user-avatar">
+        <img class="avatar-img" :src="circleUrl" />
+        <img class="avatar-title" :src="titleImgTest" />
+      </div>
       <div class="name">
         <h1>{{user.nick}}</h1>
         <h2>{{user.motto}}</h2>
@@ -19,9 +20,9 @@
           <!--<br>
           &emsp;&emsp;截止目前共参加了{{user.ratingnum}}场积分赛，当前rating达到{{user.rating}}了已经出神入化，-->
           在所有人中排名第{{user.rank}}。已经在OJ上AC过{{user.acnum}}道题目。
-          <br>&emsp;&emsp;
+          <br />&emsp;&emsp;
           <!-- 一共给{{puttagnum}}道题目贴过标签，当前有{{user.acb}}ACB。-->
-          <br>
+          <br />
           <div class="detail" style="width:200%;text-align: left;">
             <p>正式队员经历：</p>
             <div :key="item" v-for="item in rewordinfo">
@@ -87,12 +88,13 @@
 
 <script>
 import echarts from 'echarts'
-// import { setInterval } from 'timers'
 
 export default {
   data () {
     return {
-      img: 'http://120.78.128.11/pic/head/',
+      circleUrl: require('../../../pic/Head/2.jpg'),
+      titleImg: require('../../../pic/Title/1.png'),
+      titleImgTest: 'http://www.fjutacm.com/syspic/Title/9001.png',
       name: '',
       rewordinfo: '',
       user: '',
@@ -427,6 +429,37 @@ export default {
   width: 100%;
   margin: 0 0 10px 0;
   min-height: 500px;
+}
+
+.user-avatar {
+  text-align: center;
+  /* background-color: lightblue; */
+  width: 400px;
+  height: 250px;
+  margin-left: 34%;
+}
+
+.avatar-img {
+  position: absolute;
+  border: 8px solid #eeeeee;
+  border-radius:220px;
+  width: 220px;
+  height: 220px;
+  margin-top: 20px;
+}
+
+.avatar-title {
+  text-align: center;
+  width: 180px;
+  height: 60px;
+  border: 2px solid red;
+  border-radius: 18px;
+  /* background-color: aquamarine; */
+  margin-top: 170px;
+  margin-left: 75px;
+
+  z-index: 999;
+  transform: rotate(-30deg);
 }
 
 .head {

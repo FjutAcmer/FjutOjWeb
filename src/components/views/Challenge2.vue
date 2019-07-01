@@ -1,5 +1,5 @@
 FIXME: 后端传输的语句更新，这里还没改
-TODO:已经更换新的组件，这个组件暂时废弃
+TODO:已经更换新的组件，这个组件里的挑战模式还未完成，作为替代方案。【暂时废弃】
 
 <template>
   <div id="showCallengeView" style="width:1200px;height:1000px;"></div>
@@ -110,21 +110,21 @@ export default {
       }
     },
     async getBlocksData () {
-      // TODO:从数据库获取模块信息，装入dataBlocks[] 内
+      // 从数据库获取模块信息，装入dataBlocks[] 内
       let dataGetBlocks = await this.$http
         .post('/challenge/getAllChallengeBlocks')
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       if (dataGetBlocks.code === 100) {
-        // TODO:
+        //
         this.$message({message: '获取挑战模块成功!', type: 'success'})
       } else {
         this.$message({message: '未找到挑战模块！', type: 'error'})
         return
       }
       let dataTempBlocks = dataGetBlocks.datas[0]
-      // FIXME:后端传来的数据不正确，需要修改！！！
+      // 后端传来的数据不正确，需要修改！！！
       let dataTempBlockScores = dataGetBlocks.datas[1]
       console.log(dataTempBlocks.length + '--' + dataTempBlockScores.length)
       console.log(dataTempBlockScores)

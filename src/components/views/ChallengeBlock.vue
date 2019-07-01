@@ -34,7 +34,7 @@
             </template>
             <div class="des-detail">
               <div class="solving-progress">
-                完成进度：({{this.blockDetail.getScore}} 分/{{this.blockDetail.totalScore}} 分)：
+                完成进度：( {{this.blockDetail.getScore}} 分/ {{this.blockDetail.totalScore}} 分 )：
                 <el-progress
                   :text-inside="true"
                   :stroke-width="20"
@@ -48,7 +48,7 @@
             <template slot="title">
               <div class="des-title">题目列表</div>
             </template>
-            <div>
+            <div class="des-problem-list">
               <el-pagination
                 class="bar-pagination"
                 layout="total, prev, pager, next, jumper"
@@ -152,8 +152,7 @@ export default {
         this.$message({ message: '获取本模块详情失败！ ', type: 'error' })
       }
       this.percent =
-        (this.blockDetail.getScore / this.blockDetail.totalScore).toFixed(4) *
-        100
+        (this.blockDetail.getScore / this.blockDetail.totalScore * 100).toFixed(2)
     },
     async getPerCondition (blockId) {
       let res = ''
@@ -261,8 +260,15 @@ export default {
   padding-right: 80px;
 }
 
+.des-problem-list{
+  /* font-size: 16px; */
+  /* text-align: left; */
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 .solving-progress {
-  width: 50%;
+  width: 40%;
 }
 
 .bar-pagination {

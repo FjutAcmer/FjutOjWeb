@@ -51,7 +51,7 @@
 </template>
 
 <script>
-// TODO: 需要添加功能
+// FIXME: 商店界面不完整，VUE会在开发环境中报错，需要添加功能修改BUG
 export default {
   data () {
     return {

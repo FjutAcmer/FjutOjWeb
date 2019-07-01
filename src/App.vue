@@ -12,7 +12,7 @@
 
 <script>
 // import Head from '@/components/common/Head'
-import Head from '@/components/common/NewHead'
+import Head from '@/components/common/Head'
 import Foot from '@/components/common/Foot'
 
 export default {

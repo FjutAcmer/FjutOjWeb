@@ -2,6 +2,10 @@ TODO: 添加判断先前密码输入框
 <template>
   <div class="docker">
     <el-card class="box-card" :body-style="{ padding: '0px' }">
+      <div slot="header">
+        <span>编辑个人信息</span>
+        <!-- <el-button  type="text">操作按钮</el-button> -->
+      </div>
       <el-form :model="form" class="el-form">
         <el-form-item prop="pwd">
           <el-input show-password v-model="form.pwd" class="el-input" ref="pwd" placeholder="新密码"></el-input>
@@ -90,7 +94,15 @@ export default {
   padding: 0;
 }
 
+.clearfix{
+  /* float: left; */
+  display: block;
+  background-color: white
+}
+
 .box-card {
+  background: url(../../assets/editUser_card_bg.jpg) no-repeat;
+  background-size: 100% 100%;
   width: 550px;
   height: 700px;
   display: block;

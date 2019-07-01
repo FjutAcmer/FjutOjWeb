@@ -24,29 +24,29 @@ export default {
           itemStyle: {
             borderColor: 'rgb(116, 207, 18)',
             borderWidth: 4,
-            shadowBlur: 40,
-            shadowColor: '#eeeeee',
+            // shadowBlur: 40,
+            // shadowColor: '#eeeeee',
             color: 'rgb(116, 207, 18)'
           }
         },
         {
           name: '部分完成',
           itemStyle: {
-            borderColor: '#FFC125',
+            borderColor: '#ffcc00',
             borderWidth: 4,
-            shadowBlur: 40,
-            shadowColor: '#eeeeee',
-            color: '#FFC125'
+            // shadowBlur: 40,
+            // shadowColor: '#eeeeee',
+            color: '#ffcc00'
           }
         },
         {
           name: '未解锁',
           itemStyle: {
-            borderColor: 'rgb(213,43,43)',
+            borderColor: '#EE3B3B',
             borderWidth: 4,
-            shadowBlur: 40,
-            shadowColor: '#eeeeee',
-            color: 'rgb(213,43,43)'
+            // shadowBlur: 40,
+            // shadowColor: '#eeeeee',
+            color: '#EE3B3B'
           }
         }
       ]
@@ -57,6 +57,7 @@ export default {
     this.getBlocks()
   },
   destroyed () {
+    // 离开这个组件销毁一次ECharts实例，如果不手动销毁，ECharts内部有一个计时器会永久存在，切换界面切换回去后会越来越卡
     this.myChart.dispose()
     this.$store.commit('setMyChartData', this.datas)
   },
@@ -131,7 +132,6 @@ export default {
         }
         myLinks.push(condTemp)
       }
-
       // console.log(myLinks)
       this.showEchartsView(this.dataForChart, myLinks)
     },
@@ -194,8 +194,6 @@ export default {
             },
             categories: this.myCategories,
             roam: true,
-            // FIXME: 鼠标放在线段上出问题了
-
             lineStyle: {
               width: 1,
               type: 'solid'
@@ -212,10 +210,11 @@ export default {
         ]
       }
       this.myChart.setOption(option)
-      // 对ECharts的节点设置点击监听器
+      // add by axiang [20190701] 对ECharts的节点设置点击监听器
       this.myChart.on('click', async function (params) {
         if (params.componentType === 'series') {
           if (params.seriesType === 'graph') {
+            // 鼠标点击到节点上才会执行以下内容
             if (params.dataType === 'node') {
               let blockId = params.data.id
               // 获取解锁的前置条件内容
@@ -236,12 +235,12 @@ export default {
                   }
                 )
               } else {
-                // _this.logger.i(
-                //   '\n选择的模块ID为：' +
-                // params.data.id +
-                // '\n模块名为：' +
-                // params.data.label.formatter
-                // )
+                _this.logger.i(
+                  '\n选择的模块ID为：' +
+                params.data.id +
+                '\n模块名为：' +
+                params.data.label.formatter
+                )
                 _this.$router.push({
                   path: '/ChallengeBlock',
                   query: { id: params.data.id }
@@ -269,9 +268,7 @@ export default {
           res = '无条件解锁\n'
         } else {
           for (let i = 0; i < dataTemp.length; i++) {
-            res += `在模块【${dataTemp[i].name}】中获得【${
-              dataTemp[i].num
-            } 分】<br>`
+            res += `在模块【${dataTemp[i].name}】中获得【${dataTemp[i].num} 分】<br>`
           }
         }
       } else {
@@ -286,7 +283,7 @@ export default {
 <style scoped>
 #blockView {
   align-items: center;
-  border: 0px;
+  border: 1px solid gray;
   width: 100%;
   height: 800px;
   background-color: #eeeeee;
