@@ -34,7 +34,13 @@
             </template>
             <div class="des-detail">
               <div class="solving-progress">
-                完成进度：({{this.blockDetail.getScore}}/{{this.blockDetail.totalScore}})：<el-progress :text-inside="true" :stroke-width="20" :percentage="10" :color="this.customColorMethod"></el-progress>
+                完成进度：({{this.blockDetail.getScore}} 分/{{this.blockDetail.totalScore}} 分)：
+                <el-progress
+                  :text-inside="true"
+                  :stroke-width="20"
+                  :percentage="this.percent"
+                  :color="this.customColorMethod"
+                ></el-progress>
               </div>
             </div>
           </el-collapse-item>
@@ -47,17 +53,32 @@
                 class="bar-pagination"
                 layout="total, prev, pager, next, jumper"
                 :total="this.totalCol"
+                :page-size="this.pageSize"
+                @current-change="getList"
+                :current-page="this.currentPage"
               ></el-pagination>
-              <el-table style="width:100%;" :data="this.tableData">
-                <el-table-column prop="solved" label="是否解决" :formatter="formatBoolean" width="150"></el-table-column>
-                <!-- <el-table-column prop="pid" label="模块题号" width="150"></el-table-column> -->
-                <el-table-column prop="trueProblemId" label="#" width="150"></el-table-column>
-                <el-table-column prop="title" label="标题" width="750">
+              <el-table style="width:100%;" :data="this.tableData" v-loading="this.loading">
+                <el-table-column label="是否解决" width="150">
                   <template slot-scope="scope">
-                    <div style="cursor:pointer;color:blue">{{scope.row.title}}</div>
+                    <div
+                      :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'"
+                    >{{scope.row.solved}}</div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="score" label="积分"></el-table-column>
+                <!-- <el-table-column prop="pid" label="模块题号" width="150"></el-table-column> -->
+                <el-table-column prop="trueProblemId" label="#" width="150"></el-table-column>
+                <el-table-column prop="title" label="题目" width="750">
+                  <template slot-scope="scope">
+                    <div style="cursor:pointer;color:blue" @click="toSubmit(scope.row.trueProblemId)">{{scope.row.title}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="积分">
+                  <template slot-scope="scope">
+                    <div
+                      :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'"
+                    >{{scope.row.score}}</div>
+                  </template>
+                </el-table-column>
               </el-table>
             </div>
           </el-collapse-item>
@@ -72,7 +93,6 @@ export default {
   data () {
     return {
       tableData: [],
-      // FIXME:后端还没做好，拿的计数数据是错误的
       totalCol: 0,
       defopen: ['1', '2', '3', '4', '5'],
       blockDetail: {
@@ -84,7 +104,10 @@ export default {
         totalScore: 0,
         getScore: 0
       },
-      currentPage: 1
+      pageSize: 15,
+      currentPage: 1,
+      percent: 0,
+      loading: true
     }
   },
   mounted () {
@@ -93,6 +116,9 @@ export default {
     this.getBlockProblems(this.$route.query.id, this.currentPage)
   },
   methods: {
+    getList (val) {
+      this.getBlockProblems(this.$route.query.id, val)
+    },
     customColorMethod (percentage) {
       if (percentage < 30) {
         return '#909399'
@@ -102,9 +128,11 @@ export default {
         return '#67c23a'
       }
     },
+    toSubmit (pid) {
+      this.$router.push({ path: '/Submit', query: { pid: pid } })
+    },
     async getBlockDetail (blockId) {
       let params = new URLSearchParams()
-      this.logger.p({ blockId: blockId })
       params.append('blockId', blockId)
       params.append('username', this.$store.getters.getUsername)
       let dataBlockDetail = await this.$http
@@ -112,7 +140,6 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      console.log(dataBlockDetail)
       if (dataBlockDetail.code === 100) {
         let dataBlockTemp = dataBlockDetail.datas[0]
         this.blockDetail.getScore = dataBlockDetail.datas[1]
@@ -124,7 +151,9 @@ export default {
       } else {
         this.$message({ message: '获取本模块详情失败！ ', type: 'error' })
       }
-      console.log(this.blockDetail)
+      this.percent =
+        (this.blockDetail.getScore / this.blockDetail.totalScore).toFixed(4) *
+        100
     },
     async getPerCondition (blockId) {
       let res = ''
@@ -141,9 +170,7 @@ export default {
           res = '无条件解锁<br>'
         } else {
           for (let i = 0; i < dataTemp.length; i++) {
-            res += `在模块【${dataTemp[i].name}】中获得【${
-              dataTemp[i].num
-            } 分】<br>`
+            res += `在模块【${dataTemp[i].name}】中获得【${dataTemp[i].num} 分】<br>`
           }
         }
       } else {
@@ -152,7 +179,9 @@ export default {
       this.blockDetail.condition = res
     },
     async getBlockProblems (blockId, pageNum) {
+      this.loading = true
       let params = new URLSearchParams()
+      params.append('username', this.$store.getters.getUsername)
       params.append('blockId', blockId)
       params.append('pageNum', pageNum)
       let dataBlockProblems = await this.$http
@@ -163,29 +192,23 @@ export default {
       if (dataBlockProblems.code === 100) {
         this.tableData = dataBlockProblems.datas[0]
         this.totalCol = dataBlockProblems.datas[1]
-        // console.log(this.tableData)
-        let total = 0
         for (let i = 0; i < this.tableData.length; i++) {
-          total += this.tableData[i].score
+          let showSolvedIcon = ''
+          if (this.tableData[i].solved === 1) {
+            showSolvedIcon = '✔'
+          } else if (this.tableData[i].solved === 0) {
+            showSolvedIcon = ''
+          } else {
+            showSolvedIcon = '✘'
+          }
+          this.tableData[i].solved = showSolvedIcon
         }
-        this.blockDetail.totalScore = total
-        this.logger.i(this.totalScore)
       } else if (dataBlockProblems.code === 200) {
         this.$message({ message: '本模块没有题目！', type: 'warning' })
       } else {
         this.$message({ message: '获取题目失败！', type: 'error' })
       }
-    },
-
-    // add by axiang [20190628] 布尔值格式化：cellValue为后台返回的值
-    formatBoolean: function (row, column, cellValue) {
-      let ret = '' // 你想在页面展示的值
-      if (cellValue) {
-        ret = '✔' // 根据自己的需求设定
-      } else {
-        ret = '✘'
-      }
-      return ret
+      this.loading = false
     }
   }
 }
@@ -238,12 +261,27 @@ export default {
   padding-right: 80px;
 }
 
-.solving-progress{
-  width: 50%
+.solving-progress {
+  width: 50%;
 }
 
 .bar-pagination {
   margin-left: 20px;
   float: left;
+}
+
+.row-solved {
+  color: green;
+  font-weight: bold;
+}
+
+.row-solving {
+  color: red;
+  font-weight: bold;
+}
+
+.row-not-submit {
+  color: black;
+  font-weight: bold;
 }
 </style>

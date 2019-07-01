@@ -363,7 +363,7 @@ export default {
     },
     async addProblem () {
       if (this.pid !== null) {
-        // FIXME: 这里需要修改判断逻辑
+        // FIXME: 这里需要重构！！！
         let params = new URLSearchParams()
         params.append('pid', this.pid)
         params.append('ojStr', this.oj)

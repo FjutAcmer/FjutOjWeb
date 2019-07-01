@@ -108,7 +108,7 @@ export default {
   },
   mounted () {
     this.activeIndex = this.$store.getters.getIndex
-    this.logger.f(this.activeIndex)
+    // this.logger.f(this.activeIndex)
     if (this.isLogin) {
       this.checkUnReadMsgCount()
     }
@@ -137,6 +137,7 @@ export default {
     },
     // add by axiang [20190628] 统一处理用户名的下拉选项
     handleCommand (command) {
+      this.$store.commit('setIndex', '')
       if (command === 'toEditUser') {
         this.toEditUser()
       } else if (command === 'toMessage') {
@@ -161,6 +162,7 @@ export default {
       this.$router.push({ path: 'EditUser' })
     },
     toClockIn () {
+      this.$store.commit('setIndex', '')
       this.$router.push({ path: 'ClockIn' })
     },
     toMessage () {
@@ -170,7 +172,6 @@ export default {
     // add by axiang [20190613] 签到
     async clockin () {
       let username = this.$store.getters.getUsername
-
       let params = new URLSearchParams()
       params.append('username', username)
       let dataSetClockIn = await this.$http
@@ -190,7 +191,7 @@ export default {
       } else {
         this.$message({ message: '签到成功！', type: 'success' })
         this.$store.commit('setIsClockIn', true)
-        this.$router.push({ path: 'ClockIn' })
+        this.toClockIn()
       }
     },
     async checkUnReadMsgCount () {
@@ -234,15 +235,16 @@ export default {
   width: auto;
 }
 </style>
+
 <style scoped >
 .head-box {
-  line-height: 56px;
+  line-height: 58px;
   float: left;
   padding: 0;
   margin: 0;
   height: auto;
   width: 100%;
-  min-width: 1450px;
+  min-width: 1380px;
 }
 
 .el-menu {

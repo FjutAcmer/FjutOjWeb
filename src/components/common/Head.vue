@@ -1,3 +1,5 @@
+FIXME:旧式的头部组件，暂时废弃
+
 <template>
   <div class="head-box">
     <ul class="head-box-title">

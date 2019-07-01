@@ -156,19 +156,22 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
-            let blockName = (typeof params.data.label === 'undefined') ? '【名字出错了】' : params.data.label.formatter
-            let getScored = params.data.getScored
-            let totalScore = params.data.getScored + params.data.notScored
-            let lockedStr = ''
-            let percent = ((getScored / totalScore) * 100).toFixed(2) + '%'
-            if (params.data.locked === false) {
-              lockedStr = '已获得分数：'
-              return `模块【${blockName}】<br/>【${lockedStr} ${getScored}/${totalScore} 】，【占比：${percent}】`
-            } else {
-              lockedStr = '未解锁'
-              return `模块【${blockName}】<br/>【${lockedStr}】`
+            if (params.dataType === 'node') {
+              let blockName = (typeof params.data.label === 'undefined') ? '【名字出错了】' : params.data.label.formatter
+              let getScored = params.data.getScored
+              let totalScore = params.data.getScored + params.data.notScored
+              let lockedStr = ''
+              let percent = ((getScored / totalScore) * 100).toFixed(2) + '%'
+              if (params.data.locked === false) {
+                lockedStr = '已获得分数：'
+                return `模块【${blockName}】<br/>【${lockedStr} ${getScored}/${totalScore} 】，【占比：${percent}】`
+              } else {
+                lockedStr = '未解锁'
+                return `模块【${blockName}】<br/>【${lockedStr}】`
+              }
             }
           }
+
         },
         nodeScaleRatio: 0,
         // animationDelay: 500,
@@ -212,35 +215,39 @@ export default {
       // 对ECharts的节点设置点击监听器
       this.myChart.on('click', async function (params) {
         if (params.componentType === 'series') {
-          let blockId = params.data.id
-          // 获取解锁的前置条件内容
-          let condition = await _this.getPerCondition(blockId)
-          if (params.data.locked === true) {
-            _this.logger.i(
-              '\n选择的模块ID为：' +
+          if (params.seriesType === 'graph') {
+            if (params.dataType === 'node') {
+              let blockId = params.data.id
+              // 获取解锁的前置条件内容
+              let condition = await _this.getPerCondition(blockId)
+              if (params.data.locked === true) {
+                _this.logger.i(
+                  '\n选择的模块ID为：' +
                 params.data.id +
                 '\n模块名为：' +
                 params.data.label.formatter
-            )
-            _this.$alert(
-              `${condition}`,
-              `模块【${params.data.label.formatter}】的解锁条件`,
-              {
-                dangerouslyUseHTMLString: true,
-                confirmButtonText: '确定'
+                )
+                _this.$alert(
+                  `${condition}`,
+                  `模块【${params.data.label.formatter}】的解锁条件`,
+                  {
+                    dangerouslyUseHTMLString: true,
+                    confirmButtonText: '确定'
+                  }
+                )
+              } else {
+                // _this.logger.i(
+                //   '\n选择的模块ID为：' +
+                // params.data.id +
+                // '\n模块名为：' +
+                // params.data.label.formatter
+                // )
+                _this.$router.push({
+                  path: '/ChallengeBlock',
+                  query: { id: params.data.id }
+                })
               }
-            )
-          } else {
-            _this.logger.i(
-              '\n选择的模块ID为：' +
-                params.data.id +
-                '\n模块名为：' +
-                params.data.label.formatter
-            )
-            _this.$router.push({
-              path: '/ChallengeBlock',
-              query: { id: params.data.id }
-            })
+            }
           }
         }
       })
