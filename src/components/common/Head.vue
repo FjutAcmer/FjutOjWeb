@@ -245,6 +245,8 @@ export default {
   height: auto;
   width: 100%;
   min-width: 1380px;
+  /* box-shadow: darkgrey 0px 0px 0px 2px; */
+
 }
 
 .el-menu {

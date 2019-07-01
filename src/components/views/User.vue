@@ -93,7 +93,6 @@ export default {
   data () {
     return {
       circleUrl: require('../../../pic/Head/2.jpg'),
-      titleImg: require('../../../pic/Title/1.png'),
       titleImgTest: 'http://www.fjutacm.com/syspic/Title/9001.png',
       name: '',
       rewordinfo: '',
