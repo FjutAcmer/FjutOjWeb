@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: 完全没功能，需要重新设计 -->
   <div class="docker">
     <el-tabs
       v-model="tableTabValue"
@@ -266,7 +267,7 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       // console.log(data.data[0])
-      this.contestProblem = dataContestProblem.data[0]
+      this.contestProblem = dataContestProblem.datas[0]
       // console.log(this.contestProblem[0].tpid)
     },
     toCodeView (row) {
@@ -295,7 +296,7 @@ export default {
       this.$message({
         dangerouslyUseHTMLString: true,
         message:
-          'rid:' + dataCeinfo.data[0].rid + '  info:' + dataCeinfo.data[0].info,
+          'rid:' + dataCeinfo.datas[0].rid + '  info:' + dataCeinfo.datas[0].info,
         showClose: true,
         duration: 0
       })
@@ -311,8 +312,8 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.tableData = dataContestStatus.data[1]
-      this.currentTotal = dataContestStatus.data[0]
+      this.tableData = dataContestStatus.datas[1]
+      this.currentTotal = dataContestStatus.datas[0]
     },
     async getContestRank () {
       let params = new URLSearchParams()
@@ -324,10 +325,10 @@ export default {
           // return
         })
       // console.log(data.data[0])
-      if (dataContestRank.data[0] === '') {
+      if (dataContestRank.datas[0] === '') {
         this.contestRank = [{ username: '没有用户参加', acnum: -1 }]
       } else {
-        this.contestRank = dataContestRank.data[0]
+        this.contestRank = dataContestRank.datas[0]
       }
     },
     async getProblem (val) {
@@ -341,10 +342,10 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       // console.log(data)
-      this.maindata = dataProblemView.data[0]
-      this.carddata = dataProblemView.data[1]
-      this.simpledata = dataProblemView.data[2]
-      this.isAc = dataProblemView.data[3]
+      this.maindata = dataProblemView.datas[0]
+      this.carddata = dataProblemView.datas[1]
+      this.simpledata = dataProblemView.datas[2]
+      this.isAc = dataProblemView.datas[3]
       // console.log(simpledata)
     },
     async onSubmit () {
@@ -364,7 +365,7 @@ export default {
               type: 'error'
             })
           })
-        this.logger.i(dataSubmitProblem.data[0])
+        this.logger.i(dataSubmitProblem.datas[0])
         this.tableTabValue = '3'
       } else {
         this.$message({ message: '提交长度过少！', type: 'error' })

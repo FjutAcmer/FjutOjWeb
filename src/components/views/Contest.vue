@@ -1,4 +1,5 @@
 <template>
+<!-- FIXME: add by axiang [20190702] 交互性不明确，显示的内容不全面，功能不完整。建议重构，计划中-->
   <div class="contest">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div class="contest-head">
@@ -7,9 +8,9 @@
       <div class="contest-filter">
         <el-row type="flex">
           <!-- <el-col :span="4">
-                        <el-input placeholder="请输入内容" size="mini">
-                            <template slot="prepend">名称</template>
-                        </el-input>
+              <el-input placeholder="请输入内容" size="mini">
+              <template slot="prepend">名称</template>
+              </el-input>
           </el-col>-->
           <el-col style="width:20%">
             <el-select placeholder="请选择权限" size="mini"></el-select>
@@ -39,14 +40,14 @@
         <el-table-column prop="beginTime" label="开始时间" style="width:30%"></el-table-column>
         <el-table-column prop="endTime" label="结束时间" style="width:30%"></el-table-column>
         <!-- <el-table-column label="权限" style="width:30%">
-                        <template slot-scope="scope">
-                            <div style="color:green" v-if="scope.row.ctype==0">公开</div>
-                            <div style="color:green" v-if="scope.row.ctype==1" >密码</div>
-                            <div style="color:purple" v-if="scope.row.ctype==2" >私有</div>
-                            <div style="color:blue" v-if="scope.row.ctype==3" @click="toSignUp(scope.row)">注册</div>
-                            <div style="color:darkorange" v-if="scope.row.ctype==4">正式</div>
-                            <div style="color:darkorange" v-if="scope.row.ctype==5">组队</div>
-                        </template>
+          <template slot-scope="scope">
+              <div style="color:green" v-if="scope.row.ctype==0">公开</div>
+              <div style="color:green" v-if="scope.row.ctype==1" >密码</div>
+              <div style="color:purple" v-if="scope.row.ctype==2" >私有</div>
+              <div style="color:blue" v-if="scope.row.ctype==3" @click="toSignUp(scope.row)">注册</div>
+              <div style="color:darkorange" v-if="scope.row.ctype==4">正式</div>
+              <div style="color:darkorange" v-if="scope.row.ctype==5">组队</div>
+          </template>
         </el-table-column>-->
         <el-table-column label="状态" style="width:30%">
           <template slot-scope="scope">
@@ -56,14 +57,14 @@
           </template>
         </el-table-column>
         <!-- <el-table-column label="类型" style="width:30%">
-                        <template slot-scope="scope">
-                            <div style="color:green" v-if="scope.row.kind==0">练习</div>
-                            <div style="color:blue" v-if="scope.row.kind==1">积分</div>
-                            <div style="color:black" v-if="scope.row.kind==2">趣味</div>
-                            <div style="color:gray" v-if="scope.row.kind==3">正式</div>
-                            <div style="color:red" v-if="scope.row.kind==4">DIY</div>
-                            <div style="color:green" v-if="scope.row.kind==5">练习</div>
-                        </template>
+            <template slot-scope="scope">
+              <div style="color:green" v-if="scope.row.kind==0">练习</div>
+              <div style="color:blue" v-if="scope.row.kind==1">积分</div>
+              <div style="color:black" v-if="scope.row.kind==2">趣味</div>
+              <div style="color:gray" v-if="scope.row.kind==3">正式</div>
+              <div style="color:red" v-if="scope.row.kind==4">DIY</div>
+              <div style="color:green" v-if="scope.row.kind==5">练习</div>
+            </template>
         </el-table-column>-->
       </el-table>
     </el-card>

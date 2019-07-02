@@ -6,16 +6,13 @@
     <div class="foot-box-item">
       <ul>
         <li>
-          [
-          <a href="#">Bug反馈</a>]
+          [<a href="#">Bug反馈</a>]
         </li>
         <li>
-          [
-          <a href="#">FAQ</a>]
+          [<a href="#">FAQ</a>]
         </li>
         <li>
-          [
-          <a href="#">闽ICP备17026590号-1</a>]
+          [<a href="#">闽ICP备17026590号-1</a>]
         </li>
       </ul>
     </div>
@@ -38,13 +35,13 @@
 export default {
   data () {
     return {
-      date: new Date().toLocaleString('chinese', {hour12: false})
+      date: new Date().toLocaleString('chinese', { hour12: false })
     }
   },
   mounted () {
     var _this = this // 声明一个变量指向vue实例this,保证作用域一致
     this.timer = setInterval(() => {
-      _this.date = new Date().toLocaleString('chinese', {hour12: false}) // 修改数据date
+      _this.date = new Date().toLocaleString('chinese', { hour12: false }) // 修改数据date
     }, 1000)
   },
   beforeDestroy () {

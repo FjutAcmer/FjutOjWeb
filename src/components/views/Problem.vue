@@ -171,6 +171,7 @@ export default {
   border-bottom: 1px solid #eeeeee;
   padding: 10px 15px;
   display: block;
+  float: left;
 }
 
 .problem-filter {

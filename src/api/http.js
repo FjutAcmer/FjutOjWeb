@@ -1,9 +1,7 @@
 import axios from 'axios'
 
-// 测试地址
+// 开发后端地址
 axios.defaults.baseURL = 'http://localhost:8080'
-// 上线地址
-// axios.defaults.baseURL = ''
 
 // add by axiang [20190613] 对axios进行了二次封装，方便异步await调用
 var http = {

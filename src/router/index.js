@@ -107,6 +107,11 @@ export default new Router({
       path: '/Message',
       name: 'Message',
       component: () => import('@/components/views/Message')
+    },
+    {
+      path: '/Verify',
+      name: 'Verify',
+      component: () => import('@/components/views/Verify')
     }
   ]
 })

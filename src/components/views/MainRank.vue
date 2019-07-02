@@ -1,4 +1,5 @@
 <template>
+<!--TODO: add by axiang [20190702] 颜色表示的逻辑非常糟糕，等待重构 -->
   <div class="docker">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div slot="header" class="clearfix">用户排名</div>
@@ -67,9 +68,9 @@
             >{{scope.row.nick}}</div>
             <div
               v-if="scope.row.acnum>=700&&scope.row.acnum<=1000"
-              style="color:#FF6A6A"
+              style="color:orange"
             >{{scope.row.nick}}</div>
-            <div v-if="scope.row.acnum>=1000" style="color:orange">{{scope.row.nick}}</div>
+            <div v-if="scope.row.acnum>=1000" style="color:#FFD700">{{scope.row.nick}}</div>
           </template>
         </el-table-column>
         <el-table-column prop="motto" label="Motto" width="500"></el-table-column>
@@ -89,9 +90,9 @@
             >{{scope.row.acnum}}</div>
             <div
               v-if="scope.row.acnum>=700&&scope.row.acnum<=1000"
-              style="color:#FF6A6A"
+              style="color:orange"
             >{{scope.row.acnum}}</div>
-            <div v-if="scope.row.acnum>=1000" style="color:orange">{{scope.row.acnum}}</div>
+            <div v-if="scope.row.acnum>=1000" style="color:#FFD700">{{scope.row.acnum}}</div>
           </template>
         </el-table-column>
       </el-table>

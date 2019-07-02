@@ -50,6 +50,7 @@
       ></el-pagination>
       <el-table style="width:100%;" :data="this.tableData" v-loading="loading">
         <el-table-column prop="id" label="#" width="100"></el-table-column>
+        <!--FIXME: 这里实际上是用户名，要改为昵称，后端处理 -->
         <el-table-column label="昵称" width="140">
           <template slot-scope="scope">
             <div style="cursor:pointer;color:blue" @click="toUser(scope.row)">{{scope.row.ruser}}</div>

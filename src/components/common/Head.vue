@@ -37,8 +37,6 @@
       <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
-      <!-- TODO: 将dropdown的事件设置为commond默认 -->
-      <!-- TODO: 把签到按钮搬过来 -->
       <div class="menu-rightside">
       <el-button
         class="clockin-button"
@@ -77,14 +75,13 @@
             </span>
           </el-dropdown-item>
           <el-dropdown-item command="toEditUser" divided>
-            <span>
               <i class="el-icon-edit">编辑</i>
-            </span>
+          </el-dropdown-item>
+           <el-dropdown-item command="toVerify" divided>
+              <i class="el-icon-document-checked">认证</i>
           </el-dropdown-item>
           <el-dropdown-item command="logout" divided>
-            <span>
               <i class="el-icon-circle-close">退出</i>
-            </span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -102,7 +99,6 @@ export default {
       datas: []
     }
   },
-  // FIXME:对激活Index的固定，但是重新登录后还有对不齐的情况
   created () {
     this.activeIndex = this.$store.getters.getIndex
   },
@@ -135,13 +131,15 @@ export default {
     handleSelect (key) {
       this.$store.commit('setIndex', key)
     },
-    // add by axiang [20190628] 统一处理用户名的下拉选项
+    // add by axiang [20190628] 统一处理用户名下拉框的下拉内容
     handleCommand (command) {
       this.$store.commit('setIndex', '')
       if (command === 'toEditUser') {
         this.toEditUser()
       } else if (command === 'toMessage') {
         this.toMessage()
+      } else if (command === 'toVerify') {
+        this.toVerify()
       } else if (command === 'logout') {
         this.logout()
       }
@@ -168,7 +166,9 @@ export default {
     toMessage () {
       this.$router.push({ path: 'Message' })
     },
-
+    toVerify () {
+      this.$router.push({path: 'Verify'})
+    },
     // add by axiang [20190613] 签到
     async clockin () {
       let username = this.$store.getters.getUsername
@@ -220,7 +220,7 @@ export default {
 </script>
 
 <style>
-/* FIXME: add by axiang [20190628] 全局引入有BUG暂时先这样 */
+/* FIXME: add by axiang [20190628] 外部引入样式文件有BUG，暂时先手动引入全局style */
 
 /* 水平菜单的子菜单 */
 .el-menu--horizontal > .el-submenu .el-submenu__title {
@@ -258,7 +258,6 @@ export default {
 .el-menu-item {
   width: 110px;
   font-size: 15px;
-  /* color: gray; */
   border-right: #eeeeee 1px solid;
 }
 

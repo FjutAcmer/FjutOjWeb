@@ -1,4 +1,6 @@
 <template>
+<!-- FIXME: add by axiang [20190702] 能否查看代码的判断逻辑不清，显示内容不准确，功能不完整。学长挖的坑，记得填-->
+<!-- TODO: 改中文显示，增加更多可视化的图表之类的内容 -->
   <div class="docker">
     <el-card :body-style="{ padding: '0px' }" class="head-card">
       <span class="head-span">

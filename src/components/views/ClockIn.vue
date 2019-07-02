@@ -14,6 +14,7 @@
           <font color="orange">橙■:当天已签到</font>
         </div>
       </div>
+      <!-- TODO: add by axiang [20190613] 日历插件需要更新一个好用一些的 -->
       <Calendar :markDateMore="clockInDateArr"></Calendar>
     </div>
     <div class="ClockInList">
@@ -31,7 +32,6 @@
           :current-page="currentPage"
           @current-change="handleCurrentChange"
         ></el-pagination>
-        <!--要设置单元格颜色必须设置全局样式，或者使用scope设置v-html，这里暂时不弄-->
         <el-table
           :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           max-height="600"
@@ -48,7 +48,7 @@
           <el-table-column prop="ip" label="签到IP"></el-table-column>
           <el-table-column prop="#" label="奖励ACB">
             <template>
-              <!-- TODO: 暂时留空 -->
+              <!-- TODO: 奖励ACB内容暂时留空 -->
             </template>
           </el-table-column>
           <!-- <el-table-column prop='todytimes' label='当天第几次签到'></el-table-column> -->
@@ -62,6 +62,9 @@
 import Calendar from 'vue-calendar-component'
 
 export default {
+  components: {
+    Calendar
+  },
   data () {
     return {
       username: '',
@@ -77,19 +80,14 @@ export default {
   created () {
     this.username = this.$store.getters.getUsername
     this.getUserAllClockInList()
-    // this.getSomedayClockInList()
   },
   // computed(){},
   // mounted: {},
-  components: {
-    Calendar
-  },
   methods: {
     handleCurrentChange (currentPage) {
       this.currentPage = currentPage
       this.logger.i('currentPage: ' + currentPage)
     },
-
     // add by axiang [20190613] 获取签到列表
     async getUserAllClockInList () {
       this.logger.ms('getUserAllClockInList', '获取用户全部签到列表')
@@ -135,7 +133,7 @@ export default {
           todytimes: dataClockIn[i].todytimes
         })
       }
-      this.logger.i('tableData.length=' + this.tableData.length)
+      this.logger.p({'tableData.length': this.tableData.length})
       this.logger.me('getUserAllClockInList', '获取用户全部签到列表')
     }
   }

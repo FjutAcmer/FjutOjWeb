@@ -17,7 +17,7 @@ export default {
         color: 'white',
         fontWeight: 'bold'
       },
-      // add by axiang [20190628] 为ECharts的关联图设置全局类别
+      // add by axiang [20190628] 为ECharts的graph节点设置类别属性
       myCategories: [
         {
           name: '全部完成',
@@ -57,9 +57,8 @@ export default {
     this.getBlocks()
   },
   destroyed () {
-    // 离开这个组件销毁一次ECharts实例，如果不手动销毁，ECharts内部有一个计时器会永久存在，切换界面切换回去后会越来越卡
+    // 离开这个组件销毁一次ECharts实例，如果不手动销毁，ECharts内部有一个计时器会永久存在，切换界面切换回去后会越来越卡。应该是BUG，没有详细研究
     this.myChart.dispose()
-    this.$store.commit('setMyChartData', this.datas)
   },
   methods: {
     init () {
@@ -93,12 +92,13 @@ export default {
       this.conditions = dataGetBlocks.datas[1]
       this.loadEchartsSeries()
     },
-    // add by axiang [20190628] 对后台获取的数据进行处理以适应前端Echarts，包括节点，关联关系
+    // add by axiang [20190628] 对后端获取的数据进行处理以适应前端Echarts，包括节点，关联关系
     loadEchartsSeries () {
       let myLinks = []
       for (let i = 0; i < this.dataBlocks.length; i++) {
         let dataTemp = {
           id: this.dataBlocks[i].id,
+          // 根据锁定与否和是否全部答题设置节点类别
           category: this.dataBlocks[i].locked
             ? 2
             : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
@@ -111,7 +111,6 @@ export default {
           notScored:
             this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
           locked: this.dataBlocks[i].locked,
-
           label: {
             normal: {
               formatter: this.dataBlocks[i].name,
@@ -120,11 +119,12 @@ export default {
               textStyle: this.myTextStyle
             }
           },
+          // 是否可拖动
           draggable: true
         }
         this.dataForChart.push(dataTemp)
       }
-      // this.logger.i('得到模块数：' + this.dataForChart.length)
+      this.logger.p({'得到模块数：': this.dataForChart.length})
       for (let i = 0; i < this.conditions.length; i++) {
         let condTemp = {
           source: '' + this.conditions[i].belongBlockId + '',
@@ -132,10 +132,9 @@ export default {
         }
         myLinks.push(condTemp)
       }
-      // console.log(myLinks)
       this.showEchartsView(this.dataForChart, myLinks)
     },
-    // add by axiang [20190628] 配置ECharts，并把处理过的节点和关联关系的数据装载入ECharts中
+    // add by axiang [20190628] 配置ECharts，并把处理过的节点列表datas和关联关系myLinks的数据装载入ECharts中
     showEchartsView (datas, myLinks) {
       let _this = this
       let option = {
@@ -157,7 +156,7 @@ export default {
           trigger: 'item',
           formatter: function (params) {
             if (params.dataType === 'node') {
-              let blockName = (typeof params.data.label === 'undefined') ? '【名字出错了】' : params.data.label.formatter
+              let blockName = (typeof params.data.label === 'undefined') ? '【出错了】' : params.data.label.formatter
               let getScored = params.data.getScored
               let totalScore = params.data.getScored + params.data.notScored
               let lockedStr = ''
@@ -196,8 +195,8 @@ export default {
             roam: true,
             lineStyle: {
               width: 1,
-              type: 'solid'
-              // curveness: 0
+              type: 'solid',
+              curveness: 0
             },
             label: {
               normal: {
@@ -210,17 +209,17 @@ export default {
         ]
       }
       this.myChart.setOption(option)
-      // add by axiang [20190701] 对ECharts的节点设置点击监听器
+      // add by axiang [20190701] 对ECharts的节点设置单击监听器
       this.myChart.on('click', async function (params) {
         if (params.componentType === 'series') {
           if (params.seriesType === 'graph') {
-            // 鼠标点击到节点上才会执行以下内容
+            // 鼠标点击位置在节点上才会执行以下内容
             if (params.dataType === 'node') {
               let blockId = params.data.id
               // 获取解锁的前置条件内容
               let condition = await _this.getPerCondition(blockId)
               if (params.data.locked === true) {
-                _this.logger.i(
+                _this.logger.p(
                   '\n选择的模块ID为：' +
                 params.data.id +
                 '\n模块名为：' +
@@ -265,14 +264,14 @@ export default {
       if (dataBlockCondition.code === 100) {
         let dataTemp = dataBlockCondition.datas[0]
         if (typeof dataTemp === 'undefined') {
-          res = '无条件解锁\n'
+          res = '无解锁条件\n'
         } else {
           for (let i = 0; i < dataTemp.length; i++) {
             res += `在模块【${dataTemp[i].name}】中获得【${dataTemp[i].num} 分】<br>`
           }
         }
       } else {
-        res = '获取解锁条件错误！'
+        res = '【获取解锁条件错误！】'
       }
       return res
     }

@@ -1,4 +1,5 @@
 <template>
+<!-- FIXME: add by axiang [20190702] 功能错误。讨论界面里没有楼主的贴子信息只有置顶的管理员消息，学长为了答辩演示挖的坑，记得填上 -->
   <div class="docker">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div class="chat-head">

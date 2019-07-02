@@ -111,6 +111,7 @@ export default {
     }
   },
   mounted () {
+    // add by axiang [20190701] 依次进行以下步骤填充界面
     this.getBlockDetail(this.$route.query.id)
     this.getPerCondition(this.$route.query.id)
     this.getBlockProblems(this.$route.query.id, this.currentPage)
@@ -119,6 +120,7 @@ export default {
     getList (val) {
       this.getBlockProblems(this.$route.query.id, val)
     },
+    // TODO: add by axiang [20190701] 根据进度条的进度来改变颜色，现在的颜色不合适，找机会替换掉
     customColorMethod (percentage) {
       if (percentage < 30) {
         return '#909399'
@@ -191,6 +193,7 @@ export default {
       if (dataBlockProblems.code === 100) {
         this.tableData = dataBlockProblems.datas[0]
         this.totalCol = dataBlockProblems.datas[1]
+        // 对是否解答进行处理，把数字替换为'✔'，'✘'和null
         for (let i = 0; i < this.tableData.length; i++) {
           let showSolvedIcon = ''
           if (this.tableData[i].solved === 1) {

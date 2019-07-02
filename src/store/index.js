@@ -26,7 +26,6 @@ export default new Vuex.Store({
       // state.index = ''
       state.unReadMsgCount = 0
       state.token = ''
-      state.myChartData = ''
     },
     setUsername (state, username) {
       state.username = username
@@ -45,10 +44,6 @@ export default new Vuex.Store({
     },
     setUnReadMsgCount (state, unReadMsgCount) {
       state.unReadMsgCount = unReadMsgCount
-    },
-    //
-    setMyChartData (state, myChartData) {
-      state.myChartData = myChartData
     }
   },
   actions,
@@ -59,7 +54,6 @@ export default new Vuex.Store({
     getIsAdmin: state => state.isAdmin,
     getIsClockIn: state => state.isClockIn,
     getIndex: state => state.index,
-    getUnReadMsgCount: state => state.unReadMsgCount,
-    getMyChartData: state => state.myChartData
+    getUnReadMsgCount: state => state.unReadMsgCount
   }
 })
