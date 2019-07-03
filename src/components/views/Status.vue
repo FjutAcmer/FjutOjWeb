@@ -69,16 +69,18 @@
           <template slot-scope="scope">
             <el-tag
               size="medium"
-              type="info"
-              color="green"
+              effect="dark"
+              type="success"
               v-show="scope.row.result==1"
             >{{ scope.row.otherinfo }}</el-tag>
             <el-tag
               size="medium"
+              effect="dark"
               v-show="scope.row.result==0||scope.row.result==10||scope.row.result==12||scope.row.result==13"
             >{{ scope.row.otherinfo }}</el-tag>
             <el-tag
               size="medium"
+              effect="dark"
               @click="getInfo(scope.row)"
               type="danger"
               style="cursor:pointer;"
@@ -87,6 +89,7 @@
             >{{ scope.row.otherinfo }}</el-tag>
             <el-tag
               size="medium"
+              effect="dark"
               type="warning"
               v-show="scope.row.result==9"
             >{{ scope.row.otherinfo }}</el-tag>
