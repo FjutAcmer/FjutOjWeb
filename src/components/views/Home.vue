@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: add by axiang [20190702] 将样式独立出去，动态设置class来改变样式 -->
   <div>
     <div class="carousel">
       <Carousel></Carousel>

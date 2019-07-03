@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: add by axiang [20190702] 交互很难看，需要重新设计 -->
   <div class="docker">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div class="discuss-head">

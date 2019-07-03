@@ -20,11 +20,12 @@
       <el-menu-item index="HonorRank">荣誉榜</el-menu-item>
       <el-submenu index="ContestSub">
         <template slot="title">比 赛</template>
-        <el-menu-item index="Contest">全部</el-menu-item>
-        <el-menu-item index="8-1">练习</el-menu-item>
+        <!-- <el-menu-item index="Contest">全部</el-menu-item> -->
+        <el-menu-item index="Contest">练习</el-menu-item>
         <el-menu-item index="8-2">积分</el-menu-item>
-        <el-menu-item index="8-3">正式</el-menu-item>
-        <el-menu-item index="8-4">自定义</el-menu-item>
+        <el-menu-item index="8-3">趣味</el-menu-item>
+        <el-menu-item index="8-4">正式</el-menu-item>
+        <el-menu-item index="8-5">自定义</el-menu-item>
       </el-submenu>
       <el-submenu index="RankSub">
         <template slot="title">排 名</template>

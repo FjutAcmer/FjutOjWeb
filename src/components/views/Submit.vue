@@ -128,6 +128,7 @@
             <div class="text item">AC率：{{this.carddata.strRadio}}</div>
           </el-card>
         </div>
+        <!-- TODO:  add by axiang [20190702] 提交界面需要重新设计，添加图表更好交互 -->
         <!-- <div style="width:100%;margin-top:5%">
                         <el-card style="width: 100%;height: 300px;">
                             <div slot="header" class="clearfix">

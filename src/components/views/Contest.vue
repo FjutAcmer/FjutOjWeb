@@ -12,6 +12,7 @@
               <template slot="prepend">名称</template>
               </el-input>
           </el-col>-->
+          <!-- FIXME: add by axiang [20190703] 筛选框是假的 -->
           <el-col style="width:20%">
             <el-select placeholder="请选择权限" size="mini"></el-select>
           </el-col>
@@ -51,12 +52,12 @@
         </el-table-column>-->
         <el-table-column label="状态" style="width:30%">
           <template slot-scope="scope">
-            <div style="color:red" v-if="scope.row.status==0">正在进行</div>
-            <div style="color:green" v-if="scope.row.status==1">未开始</div>
-            <div style="color:black" v-if="scope.row.status==2">已结束</div>
+            <div style="color:green" v-if="scope.row.status==0">正在进行</div>
+            <div style="color:blue" v-if="scope.row.status==1">未开始</div>
+            <div style="color:red" v-if="scope.row.status==2">已结束</div>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="类型" style="width:30%">
+        <el-table-column label="类型" style="width:30%">
             <template slot-scope="scope">
               <div style="color:green" v-if="scope.row.kind==0">练习</div>
               <div style="color:blue" v-if="scope.row.kind==1">积分</div>
@@ -65,7 +66,7 @@
               <div style="color:red" v-if="scope.row.kind==4">DIY</div>
               <div style="color:green" v-if="scope.row.kind==5">练习</div>
             </template>
-        </el-table-column>-->
+        </el-table-column>
       </el-table>
     </el-card>
   </div>

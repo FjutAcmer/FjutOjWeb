@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: add by axiang [20190702] 交互很糟糕，没有颜色区分 -->
   <div class="docker">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div slot="header" class="clearfix">校集训队荣誉榜</div>

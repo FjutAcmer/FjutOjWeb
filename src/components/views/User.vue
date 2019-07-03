@@ -1,4 +1,5 @@
 <template>
+<!-- FIXME: add by axiang [20190703] rating 和 AC 图表部分显示有问题，不知道是哪里的错误，等待进一步修复 -->
   <div class="container">
     <el-card class="box-card-userInfo" style="min-height:800px;">
       <div class="user-avatar">

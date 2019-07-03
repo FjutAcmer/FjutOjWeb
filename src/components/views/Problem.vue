@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: add by axiang [20190702] 修改富文本显示，让代码变得有颜色 -->
   <div class="problem">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div class="problem-head">

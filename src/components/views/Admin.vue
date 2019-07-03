@@ -363,7 +363,7 @@ export default {
     },
     async addProblem () {
       if (this.pid !== null) {
-        // FIXME: 这里需要重构！！！
+        // FIXME: add by axiang [20190701] 题目插入功能根本没法用，这里需要重构
         let params = new URLSearchParams()
         params.append('pid', this.pid)
         params.append('ojStr', this.oj)

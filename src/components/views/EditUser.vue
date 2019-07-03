@@ -1,5 +1,6 @@
-TODO: 添加判断先前密码输入框
+
 <template>
+<!--TODO: add by axiang [20190702] 添加确认旧密码输入框  -->
   <div class="docker">
     <el-card class="box-card" :body-style="{ padding: '0px' }">
       <div slot="header">

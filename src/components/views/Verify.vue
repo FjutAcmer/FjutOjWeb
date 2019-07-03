@@ -6,6 +6,7 @@
         <!-- <el-button  type="text">操作按钮</el-button> -->
       </div>
       <div class="card-body">
+        <!-- TODO: add by axiang [20190703] 还未设计后端，而且没有设计验证规则 -->
         <el-form ref="form" :model="formData" label-width="80px">
           <el-form-item label="认证类型">
             <el-select v-model="formData.verifyType" placeholder="请选择认证类型">

@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: add by axiang [20190702] 功能不完整 -->
   <div class="contestSignUp">
     <el-card class="box-card" :body-style="{ padding: '0px' }">
       <div class="contestSignUp-head">

@@ -1,4 +1,8 @@
 <template>
+<!-- FIXME: add by axiang [20190703]
+  筛选搜索慢到不可忍受！明明有代码非要用汉字去查表筛选？？？需重构；
+  题目类型的枚举虽然是搜索用的，但是和数据库定义的完全不对应，需修改
+-->
   <div class="problem">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div class="problem-head">
@@ -50,7 +54,7 @@
       ></el-pagination>
       <el-table style="width:100%;" :data="this.tableData" v-loading="loading">
         <el-table-column prop="id" label="#" width="100"></el-table-column>
-        <!--FIXME: 这里实际上是用户名，要改为昵称，后端处理 -->
+        <!--FIXME: add by axiang [20190702] 这里实际上是用户名，要改为昵称，后端处理 -->
         <el-table-column label="昵称" width="140">
           <template slot-scope="scope">
             <div style="cursor:pointer;color:blue" @click="toUser(scope.row)">{{scope.row.ruser}}</div>
@@ -119,6 +123,7 @@ export default {
       result: 'All',
       langValue: 0,
       lang: 'All',
+      // FIXME: add by axiang [20190703] 特别注意，这里与数据库并不对应！
       resultList: [
         { id: 0, name: 'All' },
         { id: 1, name: 'Accepted' },
@@ -166,10 +171,8 @@ export default {
       this.loading = false
       this.tableData = dataAllStatus.datas[1]
       this.currentTotal = dataAllStatus.datas[0]
-      // console.log(this.tableData);
     },
     async getSearch (val) {
-      // if(this.username!==null||this.pid!==null){
       this.tableData = []
       this.isSearch = true
       let params = new URLSearchParams()
@@ -185,27 +188,22 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       this.loading = false
-      this.tableData = dataStatusByConditions.data[1]
-      this.currentTotal = dataStatusByConditions.data[0]
-      // }
+      this.tableData = dataStatusByConditions.datas[1]
+      this.currentTotal = dataStatusByConditions.datas[0]
     },
     toSubmit (row) {
-      // console.log(row.id);
       this.$router.push({ path: '/Submit', query: { pid: row.pid } })
     },
     toUser (row) {
       this.$router.push({ path: '/User', query: { username: row.ruser } })
     },
     toCodeView (row) {
-      // console.log(row.id);
+      // 解构赋值，将this.$router.resolve对象内的href 返回给 href
       let { href } = this.$router.resolve({
         name: 'CodeView',
         query: {
           id: row.id,
-          ruser: row.ruser,
-          problem: row.pid,
-          languge: row.submitlanguage,
-          jadgeStatu: row.otherinfo
+          ruser: row.ruser
         }
       })
       window.open(href, '_blank')
@@ -217,7 +215,6 @@ export default {
         .post('/ceinfo/GCeinfo', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-          // return
         })
       this.$message({
         dangerouslyUseHTMLString: true,
@@ -258,6 +255,8 @@ export default {
     // this.timer = setInterval(() => {
     // _this.getStatus(this.currentPage); // 修改数据date
     // }, 1000)
+    // this.$store.commit('setIndex', this.$router.name)
+    // this.logger.w(this.$router.name)
     this.getStatus(this.currentPage)
   },
   computed: {

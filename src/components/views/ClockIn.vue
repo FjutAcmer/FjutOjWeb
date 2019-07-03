@@ -48,7 +48,7 @@
           <el-table-column prop="ip" label="签到IP"></el-table-column>
           <el-table-column prop="#" label="奖励ACB">
             <template>
-              <!-- TODO: 奖励ACB内容暂时留空 -->
+              <!-- TODO: add by axiang [20190613] 奖励ACB内容暂时留空 -->
             </template>
           </el-table-column>
           <!-- <el-table-column prop='todytimes' label='当天第几次签到'></el-table-column> -->

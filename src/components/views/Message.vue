@@ -143,7 +143,7 @@ export default {
       this.isSearch = true
       this.getUserUnReadMessage(this.currentPage)
     },
-    // add by axiang [20190628] 返回全部内容模式
+    // add by axiang [20190628] 返回到全部内容列表
     handleBackToList () {
       this.isSearch = false
       this.getUserMessage(1)

@@ -37,7 +37,6 @@
 </template>
 
 <script>
-// import { valid } from 'semver'
 
 export default {
   data () {
@@ -115,7 +114,6 @@ export default {
               type: 'error'
             })
             this.logger.e('userInsert服务器未响应返回')
-            // return
           })
         if (dataInserUser.code !== 100) {
           this.$message({ message: '注册未成功！' + dataInserUser.msg, type: 'error' })
