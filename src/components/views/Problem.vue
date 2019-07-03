@@ -19,7 +19,7 @@
                         <el-select placeholder="请选择标签" size="mini">
                         </el-select>
           </el-col>-->
-          <el-col style="width:10%">
+          <el-col style="width:10%;x">
             <el-button icon="el-icon-search" type="primary" size="mini" @click="getSearch(1)">搜索</el-button>
           </el-col>
         </el-row>
@@ -33,12 +33,12 @@
       ></el-pagination>
       <el-table style="width:100%;" :data="this.tableData" v-loading="loading">
         <el-table-column prop="id" label="#" style="width:10%"></el-table-column>
-        <el-table-column prop="Title" label="Title" style="width:60%">
+        <el-table-column prop="Title" label="标题" style="width:60%">
           <template slot-scope="scope">
             <div style="cursor:pointer;color:blue" @click="toSubmit(scope.row)">{{scope.row.Title}}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="Ratio" label="Ratio" style="width:30%"></el-table-column>
+        <el-table-column prop="Ratio" label="AC状态" style="width:30%"></el-table-column>
       </el-table>
     </el-card>
     <!-- <el-backtop target=".page-component__scroll .el-scrollbar__wrap">
@@ -172,7 +172,7 @@ export default {
   border-bottom: 1px solid #eeeeee;
   padding: 10px 15px;
   display: block;
-  float: left;
+  /* float: left; */
 }
 
 .problem-filter {

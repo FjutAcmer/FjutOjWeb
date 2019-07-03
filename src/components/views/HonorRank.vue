@@ -13,7 +13,7 @@
         ></el-pagination>
       </div>
       <el-table style="width:100%;" :data="this.tableData" highlight-current-row>
-        <el-table-column prop="id" label="Id" width="100"></el-table-column>
+        <el-table-column prop="id" label="#" width="100"></el-table-column>
         <el-table-column prop="time" label="时间" width="150"></el-table-column>
         <el-table-column prop="name1" label="队员1" width="100"></el-table-column>
         <el-table-column prop="name2" label="队员2" width="100"></el-table-column>

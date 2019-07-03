@@ -39,7 +39,7 @@
                   :text-inside="true"
                   :stroke-width="20"
                   :percentage="this.percent"
-                  :color="this.customColorMethod"
+                  :color="this.customColorMethod(this.percent)"
                 ></el-progress>
               </div>
             </div>
@@ -121,10 +121,10 @@ export default {
       this.getBlockProblems(this.$route.query.id, val)
     },
     // TODO: add by axiang [20190701] 根据进度条的进度来改变颜色，现在的颜色不合适，找机会替换掉
-    customColorMethod (percentage) {
-      if (percentage < 30) {
+    customColorMethod (percent) {
+      if (percent < 30) {
         return '#909399'
-      } else if (percentage < 100) {
+      } else if (percent < 100) {
         return '#e6a23c'
       } else {
         return '#67c23a'
@@ -154,7 +154,7 @@ export default {
         this.$message({ message: '获取本模块详情失败！ ', type: 'error' })
       }
       this.percent =
-        (this.blockDetail.getScore / this.blockDetail.totalScore * 100).toFixed(2)
+        parseFloat((this.blockDetail.getScore / this.blockDetail.totalScore * 100).toFixed(2))
     },
     async getPerCondition (blockId) {
       let res = ''

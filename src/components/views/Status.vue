@@ -69,7 +69,8 @@
           <template slot-scope="scope">
             <el-tag
               size="medium"
-              type="success"
+              type="info"
+              color="green"
               v-show="scope.row.result==1"
             >{{ scope.row.otherinfo }}</el-tag>
             <el-tag
@@ -156,6 +157,25 @@ export default {
       ]
     }
   },
+  mounted () {
+    // var _this = this; //声明一个变量指向vue实例this,保证作用域一致
+    // this.timer = setInterval(() => {
+    // _this.getStatus(this.currentPage); // 修改数据date
+    // }, 1000)
+    // this.$store.commit('setIndex', this.$router.name)
+    // this.logger.w(this.$router.name)
+    this.getStatus(this.currentPage)
+  },
+  computed: {
+    // filter_data () {
+    //   return
+    // }
+  },
+  beforeDestroy () {
+    if (this.timer) {
+      clearInterval(this.timer) // 在vue实例销毁钱，清除我们的定时器
+    }
+  },
   methods: {
     async getStatus (val) {
       this.tableData = []
@@ -174,6 +194,7 @@ export default {
     },
     async getSearch (val) {
       this.tableData = []
+      this.loading = true
       this.isSearch = true
       let params = new URLSearchParams()
       params.append('pagenum', val)
@@ -249,26 +270,8 @@ export default {
       this.lang = obj.name
       this.langValue = val
     }
-  },
-  mounted () {
-    // var _this = this; //声明一个变量指向vue实例this,保证作用域一致
-    // this.timer = setInterval(() => {
-    // _this.getStatus(this.currentPage); // 修改数据date
-    // }, 1000)
-    // this.$store.commit('setIndex', this.$router.name)
-    // this.logger.w(this.$router.name)
-    this.getStatus(this.currentPage)
-  },
-  computed: {
-    // filter_data () {
-    //   return
-    // }
-  },
-  beforeDestroy () {
-    if (this.timer) {
-      clearInterval(this.timer) // 在vue实例销毁钱，清除我们的定时器
-    }
   }
+
 }
 </script>
 
