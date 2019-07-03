@@ -48,8 +48,7 @@ export default {
             // shadowColor: '#eeeeee',
             color: '#EE3B3B'
           }
-        }
-      ]
+        }]
     }
   },
   mounted () {
@@ -72,7 +71,6 @@ export default {
       if (username === '') {
         this.$message({ message: '登录后重试！', type: 'error' })
         this.myChart.hideLoading()
-        return
       }
       this.logger.p({ username: username })
       params.append('username', username)
@@ -105,11 +103,9 @@ export default {
               ? 0
               : 1,
           // 根据模块的分值大小调整圆圈大小 目前公式为 ((总分+20)^(1/2))*15
-          symbolSize:
-            Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
+          symbolSize: Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
           getScored: this.dataBlocks[i].getScore,
-          notScored:
-            this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
+          notScored: this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
           locked: this.dataBlocks[i].locked,
           label: {
             normal: {
@@ -124,7 +120,7 @@ export default {
         }
         this.dataForChart.push(dataTemp)
       }
-      this.logger.p({'得到模块数：': this.dataForChart.length})
+      this.logger.p({ '得到模块数：': this.dataForChart.length })
       for (let i = 0; i < this.conditions.length; i++) {
         let condTemp = {
           source: '' + this.conditions[i].belongBlockId + '',
@@ -156,7 +152,10 @@ export default {
           trigger: 'item',
           formatter: function (params) {
             if (params.dataType === 'node') {
-              let blockName = (typeof params.data.label === 'undefined') ? '【出错了】' : params.data.label.formatter
+              let blockName =
+                typeof params.data.label === 'undefined'
+                  ? '【出错了】'
+                  : params.data.label.formatter
               let getScored = params.data.getScored
               let totalScore = params.data.getScored + params.data.notScored
               let lockedStr = ''
@@ -170,7 +169,6 @@ export default {
               }
             }
           }
-
         },
         nodeScaleRatio: 0,
         // animationDelay: 500,
@@ -205,8 +203,7 @@ export default {
             },
             links: myLinks,
             data: datas
-          }
-        ]
+          }]
       }
       this.myChart.setOption(option)
       // add by axiang [20190701] 对ECharts的节点设置单击监听器
@@ -221,9 +218,9 @@ export default {
               if (params.data.locked === true) {
                 _this.logger.p(
                   '\n选择的模块ID为：' +
-                params.data.id +
-                '\n模块名为：' +
-                params.data.label.formatter
+                  params.data.id +
+                  '\n模块名为：' +
+                  params.data.label.formatter
                 )
                 _this.$alert(
                   `${condition}`,
@@ -236,9 +233,9 @@ export default {
               } else {
                 _this.logger.i(
                   '\n选择的模块ID为：' +
-                params.data.id +
-                '\n模块名为：' +
-                params.data.label.formatter
+                  params.data.id +
+                  '\n模块名为：' +
+                  params.data.label.formatter
                 )
                 _this.$router.push({
                   path: '/ChallengeBlock',

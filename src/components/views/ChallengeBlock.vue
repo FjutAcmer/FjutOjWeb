@@ -1,6 +1,9 @@
 <template>
   <div class="block-box">
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
+    <el-card
+      :body-style="{ padding: '0px' }"
+      class="box-card"
+    >
       <div class="block-head">
         <div class="title">挑战模式</div>
         <div class="title">模块：【{{this.blockDetail.name}}】</div>
@@ -11,7 +14,10 @@
             <template slot="title">
               <div class="des-title">模块说明</div>
             </template>
-            <div class="des-detail" v-html="this.blockDetail.des">{{this.blockDetail.des}}</div>
+            <div
+              class="des-detail"
+              v-html="this.blockDetail.des"
+            >{{this.blockDetail.des}}</div>
           </el-collapse-item>
           <el-collapse-item name="2">
             <template slot="title">
@@ -57,26 +63,40 @@
                 @current-change="getList"
                 :current-page="this.currentPage"
               ></el-pagination>
-              <el-table style="width:100%;" :data="this.tableData" v-loading="this.loading">
-                <el-table-column label="是否解决" width="150">
+              <el-table
+                style="width:100%;"
+                :data="this.tableData"
+                v-loading="this.loading"
+              >
+                <el-table-column
+                  label="是否解决"
+                  width="150"
+                >
                   <template slot-scope="scope">
-                    <div
-                      :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'"
-                    >{{scope.row.solved}}</div>
+                    <div :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'">{{scope.row.solved}}</div>
                   </template>
                 </el-table-column>
                 <!-- <el-table-column prop="pid" label="模块题号" width="150"></el-table-column> -->
-                <el-table-column prop="trueProblemId" label="#" width="150"></el-table-column>
-                <el-table-column prop="title" label="题目" width="750">
+                <el-table-column
+                  prop="trueProblemId"
+                  label="#"
+                  width="150"
+                ></el-table-column>
+                <el-table-column
+                  prop="title"
+                  label="题目"
+                  width="750"
+                >
                   <template slot-scope="scope">
-                    <div style="cursor:pointer;color:blue" @click="toSubmit(scope.row.trueProblemId)">{{scope.row.title}}</div>
+                    <div
+                      style="cursor:pointer;color:blue"
+                      @click="toSubmit(scope.row.trueProblemId)"
+                    >{{scope.row.title}}</div>
                   </template>
                 </el-table-column>
                 <el-table-column label="积分">
                   <template slot-scope="scope">
-                    <div
-                      :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'"
-                    >{{scope.row.score}}</div>
+                    <div :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'">{{scope.row.score}}</div>
                   </template>
                 </el-table-column>
               </el-table>
@@ -153,8 +173,12 @@ export default {
       } else {
         this.$message({ message: '获取本模块详情失败！ ', type: 'error' })
       }
-      this.percent =
-        parseFloat((this.blockDetail.getScore / this.blockDetail.totalScore * 100).toFixed(2))
+      this.percent = parseFloat(
+        (
+          (this.blockDetail.getScore / this.blockDetail.totalScore) *
+          100
+        ).toFixed(2)
+      )
     },
     async getPerCondition (blockId) {
       let res = ''
@@ -263,7 +287,7 @@ export default {
   padding-right: 80px;
 }
 
-.des-problem-list{
+.des-problem-list {
   /* font-size: 16px; */
   /* text-align: left; */
   padding-left: 30px;

@@ -105,10 +105,10 @@ export default {
   line-height: 70px;
 }
 
-.code-view{
-  text-align:left;
-  font-size:20px;
-  margin:10px 10px 10px 10px;
-  padding-right:10px
+.code-view {
+  text-align: left;
+  font-size: 20px;
+  margin: 10px 10px 10px 10px;
+  padding-right: 10px;
 }
 </style>

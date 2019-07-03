@@ -1,27 +1,43 @@
 <template>
-<!-- FIXME: add by axiang [20190703]
+  <!-- FIXME: add by axiang [20190703]
   筛选搜索慢到不可忍受！明明有代码非要用汉字去查表筛选？？？需重构；
   题目类型的枚举虽然是搜索用的，但是和数据库定义的完全不对应，需修改
--->
+  -->
   <div class="problem">
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
+    <el-card
+      :body-style="{ padding: '0px' }"
+      class="box-card"
+    >
       <div class="problem-head">
         <div style="float:left">评测列表</div>
       </div>
       <div class="problem-filter">
         <el-row type="flex">
           <el-col :span="4">
-            <el-input placeholder="请输入用户" v-model="username" size="mini">
+            <el-input
+              placeholder="请输入用户"
+              v-model="username"
+              size="mini"
+            >
               <template slot="prepend">用户</template>
             </el-input>
           </el-col>
           <el-col :span="4">
-            <el-input placeholder="请输入内容" v-model="pid" size="mini">
+            <el-input
+              placeholder="请输入内容"
+              v-model="pid"
+              size="mini"
+            >
               <template slot="prepend">题号</template>
             </el-input>
           </el-col>
           <el-col :span="4">
-            <el-select placeholder="请选择结果" size="mini" v-model="resultValue" @change="resultChange">
+            <el-select
+              placeholder="请选择结果"
+              size="mini"
+              v-model="resultValue"
+              @change="resultChange"
+            >
               <el-option
                 v-for="item in resultList"
                 :key="item.id"
@@ -31,7 +47,12 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-select placeholder="请选择语言" size="mini" v-model="langValue" @change="langChange">
+            <el-select
+              placeholder="请选择语言"
+              size="mini"
+              v-model="langValue"
+              @change="langChange"
+            >
               <el-option
                 v-for="item in langList"
                 :key="item.id"
@@ -41,7 +62,12 @@
             </el-select>
           </el-col>
           <el-col :span="1.5">
-            <el-button icon="el-icon-search" type="primary" size="mini" @click="getSearch(1)">筛选</el-button>
+            <el-button
+              icon="el-icon-search"
+              type="primary"
+              size="mini"
+              @click="getSearch(1)"
+            >筛选</el-button>
           </el-col>
         </el-row>
       </div>
@@ -52,20 +78,43 @@
         @current-change="getList"
         :total="currentTotal*10"
       ></el-pagination>
-      <el-table style="width:100%;" :data="this.tableData" v-loading="loading">
-        <el-table-column prop="id" label="#" width="100"></el-table-column>
+      <el-table
+        style="width:100%;"
+        :data="this.tableData"
+        v-loading="loading"
+      >
+        <el-table-column
+          prop="id"
+          label="#"
+          width="100"
+        ></el-table-column>
         <!--FIXME: add by axiang [20190702] 这里实际上是用户名，要改为昵称，后端处理 -->
-        <el-table-column label="昵称" width="140">
+        <el-table-column
+          label="昵称"
+          width="140"
+        >
           <template slot-scope="scope">
-            <div style="cursor:pointer;color:blue" @click="toUser(scope.row)">{{scope.row.ruser}}</div>
+            <div
+              style="cursor:pointer;color:blue"
+              @click="toUser(scope.row)"
+            >{{scope.row.ruser}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="题目" width="100">
+        <el-table-column
+          label="题目"
+          width="100"
+        >
           <template slot-scope="scope">
-            <div style="cursor:pointer;color:blue" @click="toSubmit(scope.row)">{{scope.row.pid}}</div>
+            <div
+              style="cursor:pointer;color:blue"
+              @click="toSubmit(scope.row)"
+            >{{scope.row.pid}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="评测结果" width="200">
+        <el-table-column
+          label="评测结果"
+          width="200"
+        >
           <template slot-scope="scope">
             <el-tag
               size="medium"
@@ -95,7 +144,10 @@
             >{{ scope.row.otherinfo }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="语言" width="150">
+        <el-table-column
+          label="语言"
+          width="150"
+        >
           <template slot-scope="scope">
             <div
               @click="toCodeView(scope.row)"
@@ -103,10 +155,26 @@
             >{{scope.row.submitlanguage}}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="timeUsed" label="耗时" width="150"></el-table-column>
-        <el-table-column prop="memoryUsed" label="使用内存" width="150"></el-table-column>
-        <el-table-column prop="codelen" label="代码长" width="150"></el-table-column>
-        <el-table-column prop="submitTime" label="提交时间" width="300"></el-table-column>
+        <el-table-column
+          prop="timeUsed"
+          label="耗时"
+          width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="memoryUsed"
+          label="使用内存"
+          width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="codelen"
+          label="代码长"
+          width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="submitTime"
+          label="提交时间"
+          width="300"
+        ></el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -242,8 +310,7 @@ export default {
         })
       this.$message({
         dangerouslyUseHTMLString: true,
-        message:
-          'rid:' + dataCeinfo.data[0].rid + '  info:' + dataCeinfo.data[0].info,
+        message: 'rid:' + dataCeinfo.data[0].rid + '  info:' + dataCeinfo.data[0].info,
         showClose: true,
         duration: 0
       })
@@ -274,7 +341,6 @@ export default {
       this.langValue = val
     }
   }
-
 }
 </script>
 

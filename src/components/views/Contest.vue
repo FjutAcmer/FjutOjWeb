@@ -1,5 +1,5 @@
 <template>
-<!-- FIXME: add by axiang [20190702] 交互性不明确，显示的内容不全面，功能不完整。建议重构，计划中-->
+  <!-- FIXME: add by axiang [20190702] 交互性不明确，显示的内容不全面，功能不完整。建议重构，计划中-->
   <div class="contest">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
       <div class="contest-head">
@@ -24,13 +24,8 @@
           </el-col>
         </el-row>
       </div>
-      <el-pagination
-        style="float:left"
-        layout="prev, pager, next"
-        :current-page="currentPage"
-        @current-change="getList"
-        :total="currentTotal/10"
-      ></el-pagination>
+      <el-pagination style="float:left" layout="prev, pager, next" :current-page="currentPage" @current-change="getList"
+        :total="currentTotal/10"></el-pagination>
       <el-table style="width:100%;" :data="tableData">
         <el-table-column prop="id" label="#" width="150"></el-table-column>
         <el-table-column label="名称" width="400">
@@ -58,14 +53,14 @@
           </template>
         </el-table-column>
         <el-table-column label="类型" style="width:30%">
-            <template slot-scope="scope">
-              <div style="color:green" v-if="scope.row.kind==0">练习</div>
-              <div style="color:blue" v-if="scope.row.kind==1">积分</div>
-              <div style="color:black" v-if="scope.row.kind==2">趣味</div>
-              <div style="color:gray" v-if="scope.row.kind==3">正式</div>
-              <div style="color:red" v-if="scope.row.kind==4">DIY</div>
-              <div style="color:green" v-if="scope.row.kind==5">练习</div>
-            </template>
+          <template slot-scope="scope">
+            <div style="color:green" v-if="scope.row.kind==0">练习</div>
+            <div style="color:blue" v-if="scope.row.kind==1">积分</div>
+            <div style="color:black" v-if="scope.row.kind==2">趣味</div>
+            <div style="color:gray" v-if="scope.row.kind==3">正式</div>
+            <div style="color:red" v-if="scope.row.kind==4">DIY</div>
+            <div style="color:green" v-if="scope.row.kind==5">练习</div>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -91,7 +86,10 @@ export default {
       let dataAllContest = await this.$http
         .post('/GAllContest', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
         })
       this.currentTotal = dataAllContest.data[0]
       // console.log(this.currentTotal)
@@ -101,24 +99,47 @@ export default {
     toSignUp (row) {
       // console.log(row.id)
       if (this.$store.getters.getUsername === '') {
-        this.$message({ message: '请先登录！', type: 'error' })
+        this.$message({
+          message: '请先登录！',
+          type: 'error'
+        })
         // return
       } else if (row.status === 2) {
-        this.$message({ message: '比赛已经结束，不能报名！', type: 'error' })
+        this.$message({
+          message: '比赛已经结束，不能报名！',
+          type: 'error'
+        })
       } else if (row.status === 0) {
-        this.$message({ message: '比赛已开始，不能报名！', type: 'error' })
+        this.$message({
+          message: '比赛已开始，不能报名！',
+          type: 'error'
+        })
       } else {
-        this.$router.push({ path: '/ContestSignUp', query: { cid: row.id } })
+        this.$router.push({
+          path: '/ContestSignUp',
+          query: {
+            cid: row.id
+          }
+        })
       }
     },
     async toContestInfo (row) {
       // console.log(row.id)
       if (this.$store.getters.getUsername === '') {
-        this.$message({ message: '请先登录！', type: 'error' })
+        this.$message({
+          message: '请先登录！',
+          type: 'error'
+        })
       } else if (row.status === 2) {
-        this.$message({ message: '比赛已经结束，不能进入！', type: 'error' })
+        this.$message({
+          message: '比赛已经结束，不能进入！',
+          type: 'error'
+        })
       } else if (row.status === 1) {
-        this.$message({ message: '比赛未开始，不能进入！', type: 'error' })
+        this.$message({
+          message: '比赛未开始，不能进入！',
+          type: 'error'
+        })
       } else if (row.ctype === 3 || row.ctype === 4 || row.ctype === 5) {
         let params = new URLSearchParams()
         params.append('cid', row.id)
@@ -133,16 +154,26 @@ export default {
             // return
           })
         if (dataProblemByTitle.data[0] === '该用户已报名') {
-          this.$router.push({ path: '/ContestInfo', query: { cid: row.id } })
+          this.$router.push({
+            path: '/ContestInfo',
+            query: {
+              cid: row.id
+            }
+          })
         } else {
-          this.$message({ message: '请先报名才能进入！', type: 'error' })
+          this.$message({
+            message: '请先报名才能进入！',
+            type: 'error'
+          })
         }
       } else if (row.ctype === 1 || row.ctype === 2) {
         this.$prompt('请输入密码', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         })
-          .then(({ value }) => {
+          .then(({
+            value
+          }) => {
             this.vertifyPassword(value, row.id)
           })
           .catch(() => {
@@ -152,7 +183,12 @@ export default {
             })
           })
       } else {
-        this.$router.push({ path: '/ContestInfo', query: { cid: row.id } })
+        this.$router.push({
+          path: '/ContestInfo',
+          query: {
+            cid: row.id
+          }
+        })
       }
     },
     async getSearch (val) {
@@ -178,13 +214,21 @@ export default {
       let params = new URLSearchParams()
       params.append('password', val)
       params.append('cid', val2)
-      let { data } = await this.$http
+      let {
+        data
+      } = await this.$http
         .post('/CheckContestPassword', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
         })
       if (data.data[0] === '密码输入错误') {
-        this.$message({ message: data.data[0], type: 'error' })
+        this.$message({
+          message: data.data[0],
+          type: 'error'
+        })
       } else {
         // add by axiang [20190618] 变量定义后从未使用，出错，待修改，先注释掉
         // this.$router.push({ path: '/ContestInfo', query: { cid: row.id } })
@@ -202,6 +246,7 @@ export default {
     this.getContest(this.currentPage)
   }
 }
+
 </script>
 <style scoped>
 .contest {

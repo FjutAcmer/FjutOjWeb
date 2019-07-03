@@ -1,8 +1,14 @@
 <template>
-<!-- TODO: add by axiang [20190702] 交互很糟糕，没有颜色区分 -->
+  <!-- TODO: add by axiang [20190702] 交互很糟糕，没有颜色区分 -->
   <div class="docker">
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
-      <div slot="header" class="clearfix">校集训队荣誉榜</div>
+    <el-card
+      :body-style="{ padding: '0px' }"
+      class="box-card"
+    >
+      <div
+        slot="header"
+        class="clearfix"
+      >校集训队荣誉榜</div>
       <div class="functionBar">
         <el-pagination
           class="pagination"
@@ -12,15 +18,50 @@
           :total="this.currentTotal*10"
         ></el-pagination>
       </div>
-      <el-table style="width:100%;" :data="this.tableData" highlight-current-row>
-        <el-table-column prop="id" label="#" width="100"></el-table-column>
-        <el-table-column prop="time" label="时间" width="150"></el-table-column>
-        <el-table-column prop="name1" label="队员1" width="100"></el-table-column>
-        <el-table-column prop="name2" label="队员2" width="100"></el-table-column>
-        <el-table-column prop="name3" label="队员3" width="100"></el-table-column>
-        <el-table-column prop="contestLevelStr" label="级别" width="200"></el-table-column>
-        <el-table-column prop="awardsLevelStr" label="奖项" width="150"></el-table-column>
-        <el-table-column prop="text" label="备注"></el-table-column>
+      <el-table
+        style="width:100%;"
+        :data="this.tableData"
+        highlight-current-row
+      >
+        <el-table-column
+          prop="id"
+          label="#"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="time"
+          label="时间"
+          width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="name1"
+          label="队员1"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="name2"
+          label="队员2"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="name3"
+          label="队员3"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="contestLevelStr"
+          label="级别"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          prop="awardsLevelStr"
+          label="奖项"
+          width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="text"
+          label="备注"
+        ></el-table-column>
       </el-table>
     </el-card>
   </div>
