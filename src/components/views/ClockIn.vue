@@ -90,17 +90,17 @@ export default {
     },
     // add by axiang [20190613] 获取签到列表
     async getUserAllClockInList () {
-      this.logger.ms('getUserAllClockInList', '获取用户全部签到列表')
+      this.logger.ms(this.getUserAllClockInList.className, '')
       let params = new URLSearchParams()
       params.append('username', this.username)
       let dataGetClockInList = await this.$http
-        .post('/clockin/GUserClockIn', params)
+        .get('/clockin/getUserClockIn', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('获取用户全部签到列表 失败')
         })
       this.logger.i('获取用户签到列表 成功')
-      let dataClockIn = dataGetClockInList.data[0]
+      let dataClockIn = dataGetClockInList.datas[0]
       this.logger.p({ currentTotal: this.currentTotal })
       for (let i = 0; i < dataClockIn.length; i++) {
         let time = dataClockIn[i].time
@@ -134,7 +134,7 @@ export default {
         })
       }
       this.logger.p({'tableData.length': this.tableData.length})
-      this.logger.me('getUserAllClockInList', '获取用户全部签到列表')
+      this.logger.me(this.getUserAllClockInList.className, '')
     }
   }
 }

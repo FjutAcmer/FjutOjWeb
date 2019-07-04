@@ -136,7 +136,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataGetTodayClockIn = await this.$http
-        .post('/clockin/GUserTodayClockIn', params)
+        .get('/clockin/getUserTodayClockIn', params)
         .catch(() => {
           this.$message({
             message: '服务器繁忙，请稍后再试！',

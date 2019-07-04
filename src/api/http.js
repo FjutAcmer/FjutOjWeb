@@ -11,13 +11,14 @@ var http = {
    */
   get: function (url, params) {
     return new Promise((resolve, reject) => {
-      axios.get(url, {
-        params: params
-      })
-        .then((response) => {
+      axios
+        .get(url, {
+          params: params
+        })
+        .then(response => {
           resolve(response.data)
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error)
         })
     })
@@ -28,11 +29,12 @@ var http = {
    */
   post: function (url, params) {
     return new Promise((resolve, reject) => {
-      axios.post(url, params)
-        .then((response) => {
+      axios
+        .post(url, params)
+        .then(response => {
           resolve(response.data)
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error)
         })
     })
