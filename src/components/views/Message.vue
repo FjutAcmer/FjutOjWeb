@@ -157,10 +157,7 @@ export default {
       params.append('username', username)
       params.append('pagenum', pagenum)
       let dataMessage = await this.$http
-        .post('/message/getUserMessage', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
+        .get('/message/getUserMessage', params)
       let dataTempMessage = dataMessage.datas[0]
       this.Total = dataMessage.datas[1]
       if (typeof dataTempMessage !== 'undefined') {
@@ -191,7 +188,7 @@ export default {
       params.append('username', username)
       params.append('pagenum', pagenum)
       let dataUnReadMessage = await this.$http
-        .post('/message/getUnReadMessageByUser', params)
+        .get('/message/getUnReadMessage', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('获取消息列表失败')
@@ -220,7 +217,7 @@ export default {
       let params = new URLSearchParams()
       params.append('mid', mid)
       let dataSetReaded = await this.$http
-        .post('/message/setReadedByMid', params)
+        .post('/message/setReaded', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('请求失败')
@@ -235,7 +232,7 @@ export default {
       let params = new URLSearchParams()
       params.append('mid', mid)
       let dataSetReaded = await this.$http
-        .post('/message/delMessageByMid', params)
+        .post('/message/delMessage', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('请求失败')
@@ -253,7 +250,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataSetMsgAllRead = await this.$http
-        .post('/message/setAllMessageReadByUser', params)
+        .post('/message/setAllMessageRead', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('请求失败')
@@ -278,7 +275,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUnReadMsgCount = await this.$http
-        .post('/message/getUnReadMessageCountByUser', params)
+        .get('/message/getUnReadMessageCount', params)
         .catch(() => {
           this.$message({
             message: '服务器繁忙，请稍后再试！',

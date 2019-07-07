@@ -98,12 +98,12 @@ export default {
       let dataProblemsByPage = await this.$http
         .post('/problem/GProblemsByPage', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.loading = false
-      this.currentTotal = dataProblemsByPage.data[0]
+      this.currentTotal = dataProblemsByPage.datas[0]
       // console.log(this.currentTotal);
-      let tableDataTemp = dataProblemsByPage.data[1]
+      let tableDataTemp = dataProblemsByPage.datas[1]
       for (let i = 0; i < tableDataTemp.length; i++) {
         this.tableData.push({
           id: tableDataTemp[i].pid,
@@ -138,10 +138,11 @@ export default {
             })
             // return
           })
+        console.log(dataProblemByTitle)
         this.loading = false
         this.tableData = []
-        this.currentTotal = dataProblemByTitle.data[0]
-        let tableDataTemp = dataProblemByTitle.data[1]
+        this.currentTotal = dataProblemByTitle.datas[0]
+        let tableDataTemp = dataProblemByTitle.datas[1]
         for (let i = 0; i < tableDataTemp.length; i++) {
           this.tableData.push({
             id: tableDataTemp[i].pid,
