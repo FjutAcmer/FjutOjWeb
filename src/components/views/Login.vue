@@ -85,7 +85,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', this.$refs.name.value)
       params.append('password', this.$refs.pwd.value)
-      let dataGetLogin = await this.$http.post('/dologin', params).catch(() => {
+      let dataGetLogin = await this.$http.post('/token/login', params).catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         this.logger.e('请求失败')
       })
@@ -96,8 +96,11 @@ export default {
         })
         this.logger.e('登录失败')
       } else {
-        let username = dataGetLogin.datas[0].username
+        console.log(dataGetLogin)
+        let username = dataGetLogin.datas[0]
+        let token = dataGetLogin.datas[1]
         this.$store.commit('setUsername', username)
+        this.$store.commit('setToken', token)
         this.$store.commit('setIsLogin', true)
         this.$message({ message: '登录成功！', type: 'success' })
         this.logger.i('登录成功')
@@ -160,7 +163,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUnReadMsgCount = await this.$http
-        .post('/message/getUnReadMessageCountByUser', params)
+        .get('/message/getUnReadMessageCount', params)
         .catch(() => {
           this.$message({
             message: '服务器繁忙，请稍后再试！',

@@ -179,7 +179,7 @@ export default {
   },
   methods: {
     async getAllTop () {
-      let dataRank = await this.$http.post('/Galltop').catch(() => {
+      let dataRank = await this.$http.get('/getAllTopBorder').catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
       })
       this.acbTop = dataRank.datas[0]

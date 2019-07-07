@@ -191,6 +191,7 @@ export default {
     }
   },
   methods: {
+    // FIXME: 无法正常读取内容
     async getProblem () {
       this.islogin = this.$store.getters.getUsername
       let params = new URLSearchParams()

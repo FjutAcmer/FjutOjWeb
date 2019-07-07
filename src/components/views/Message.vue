@@ -158,9 +158,6 @@ export default {
       params.append('pagenum', pagenum)
       let dataMessage = await this.$http
         .get('/message/getUserMessage', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
       let dataTempMessage = dataMessage.datas[0]
       this.Total = dataMessage.datas[1]
       if (typeof dataTempMessage !== 'undefined') {

@@ -229,12 +229,11 @@ export default {
     }
   },
   mounted () {
-    // var _this = this; //声明一个变量指向vue实例this,保证作用域一致
-    // this.timer = setInterval(() => {
-    // _this.getStatus(this.currentPage); // 修改数据date
-    // }, 1000)
-    // this.$store.commit('setIndex', this.$router.name)
-    // this.logger.w(this.$router.name)
+    if (this.$store.getters.getUsername === '') {
+      this.$message.warning('请先登录！')
+      this.loading = false
+      return
+    }
     this.getStatus(this.currentPage)
   },
   computed: {
@@ -300,17 +299,18 @@ export default {
       })
       window.open(href, '_blank')
     },
+    // FIXME: add by axiang [20190705] 获取错误信息有bug, 而且居然显示在msgbox上，惊了
     async getInfo (row) {
       let params = new URLSearchParams()
       params.append('rid', row.id)
       let dataCeinfo = await this.$http
-        .post('/ceinfo/GCeinfo', params)
+        .get('/ceinfo/getCeInfo', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       this.$message({
         dangerouslyUseHTMLString: true,
-        message: 'rid:' + dataCeinfo.data[0].rid + '  info:' + dataCeinfo.data[0].info,
+        message: 'rid:' + dataCeinfo.datas[0].rid + '  info:' + dataCeinfo.datas[0].info,
         showClose: true,
         duration: 0
       })
