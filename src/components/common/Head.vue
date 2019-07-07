@@ -176,7 +176,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataSetClockIn = await this.$http
-        .post('/clockin/UserClockIn', params)
+        .post('/clockin/setUserClockIn', params)
         .catch(() => {
           this.$message({
             message: '服务器繁忙，请稍后再试！',
@@ -185,7 +185,7 @@ export default {
         })
       if (dataSetClockIn.code === 200) {
         this.$message({
-          message: '签到失败:' + dataSetClockIn.data[0],
+          message: '签到失败:' + dataSetClockIn.msg,
           type: 'error'
         })
         this.$store.commit('setIsClockIn', false)
@@ -201,7 +201,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUnReadMsgCount = await this.$http
-        .post('/message/getUnReadMessageCountByUser', params)
+        .get('/message/getUnReadMessageCount', params)
         .catch(() => {
           this.$message({
             message: '服务器繁忙，请稍后再试！',

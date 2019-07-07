@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as actions from './actions'
 
 Vue.use(Vuex)
-// add by axiang [20190611] 增加store存储状态
+// add by axiang [20190611] 添加store存储状态
 export default new Vuex.Store({
   state: {
     username: '',
@@ -12,9 +11,7 @@ export default new Vuex.Store({
     isClockIn: false,
     index: '',
     unReadMsgCount: 0,
-    token: '',
-    // 测试
-    myChartData: ''
+    token: ''
   },
   mutations: {
     LOGOUT (state) {
@@ -44,16 +41,18 @@ export default new Vuex.Store({
     },
     setUnReadMsgCount (state, unReadMsgCount) {
       state.unReadMsgCount = unReadMsgCount
+    },
+    setToken (state, token) {
+      state.token = token
     }
   },
-  actions,
   getters: {
     getUsername: state => state.username,
     getIsLogin: state => state.isLogin,
-    getToken: state => state.token,
     getIsAdmin: state => state.isAdmin,
     getIsClockIn: state => state.isClockIn,
     getIndex: state => state.index,
-    getUnReadMsgCount: state => state.unReadMsgCount
+    getUnReadMsgCount: state => state.unReadMsgCount,
+    getToken: state => state.token
   }
 })

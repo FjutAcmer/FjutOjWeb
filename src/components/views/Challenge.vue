@@ -69,13 +69,14 @@ export default {
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       if (username === '') {
-        this.$message({ message: '登录后重试！', type: 'error' })
+        this.$message.warning('请先登录！')
         this.myChart.hideLoading()
+        return
       }
       this.logger.p({ username: username })
       params.append('username', username)
       let dataGetBlocks = await this.$http
-        .post('/challenge/getAllChallengeBlocksByUsername', params)
+        .get('/challenge/getAllChallengeBlocks', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.myChart.hideLoading()
@@ -216,7 +217,7 @@ export default {
               // 获取解锁的前置条件内容
               let condition = await _this.getPerCondition(blockId)
               if (params.data.locked === true) {
-                _this.logger.p(
+                _this.logger.i(
                   '\n选择的模块ID为：' +
                   params.data.id +
                   '\n模块名为：' +
@@ -254,7 +255,7 @@ export default {
       let params = new URLSearchParams()
       params.append('blockId', blockId)
       let dataBlockCondition = await this.$http
-        .post('/challenge/getConditionByBlockId', params)
+        .get('/challenge/getCondition', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })

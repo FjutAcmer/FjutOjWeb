@@ -151,6 +151,11 @@ export default {
     }
   },
   mounted () {
+    if (this.$store.getters.getUsername === '') {
+      this.$message.warning('请先登录！')
+      this.loading = false
+      return
+    }
     this.getLoginStatu()
     this.getDiscuss(this.currentPage)
   }

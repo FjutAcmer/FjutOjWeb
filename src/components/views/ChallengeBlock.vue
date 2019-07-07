@@ -158,7 +158,7 @@ export default {
       params.append('blockId', blockId)
       params.append('username', this.$store.getters.getUsername)
       let dataBlockDetail = await this.$http
-        .post('/challenge/getBlockDetail', params)
+        .get('/challenge/getBlockDetail', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -185,7 +185,7 @@ export default {
       let params = new URLSearchParams()
       params.append('blockId', blockId)
       let dataBlockCondition = await this.$http
-        .post('/challenge/getConditionByBlockId', params)
+        .get('/challenge/getCondition', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -210,7 +210,7 @@ export default {
       params.append('blockId', blockId)
       params.append('pageNum', pageNum)
       let dataBlockProblems = await this.$http
-        .post('/challenge/getBlockProblems', params)
+        .get('/challenge/getBlockProblems', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
