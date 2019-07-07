@@ -125,6 +125,12 @@
             <el-tag
               size="medium"
               effect="dark"
+              type="warning"
+              v-show="scope.row.result==3||scope.row.result==8"
+            >{{ scope.row.otherinfo }}</el-tag>
+            <el-tag
+              size="medium"
+              effect="dark"
               v-show="scope.row.result==0||scope.row.result==10||scope.row.result==12||scope.row.result==13"
             >{{ scope.row.otherinfo }}</el-tag>
             <el-tag
@@ -133,8 +139,8 @@
               @click="getInfo(scope.row)"
               type="danger"
               style="cursor:pointer;"
-              v-show="scope.row.result==2||scope.row.result==3||scope.row.result==4||scope.row.result==5
-                            ||scope.row.result==6||scope.row.result==7||scope.row.result==8||scope.row.result==11"
+              v-show="scope.row.result==2||scope.row.result==4||scope.row.result==5
+                            ||scope.row.result==6||scope.row.result==7||scope.row.result==11"
             >{{ scope.row.otherinfo }}</el-tag>
             <el-tag
               size="medium"
@@ -211,6 +217,7 @@ export default {
         { id: 11, name: 'Time Limit Exceeded' },
         { id: 12, name: 'Wrong Answer' },
         { id: 13, name: 'Score' }
+        // { id: 14, name: 'Submit Error' }
       ],
       langList: [
         { id: 0, name: 'All' },
@@ -229,11 +236,11 @@ export default {
     }
   },
   mounted () {
-    if (this.$store.getters.getUsername === '') {
-      this.$message.warning('请先登录！')
-      this.loading = false
-      return
-    }
+    // if (this.$store.getters.getUsername === '') {
+    //   this.$message.warning('请先登录！')
+    //   this.loading = false
+    //   return
+    // }
     this.getStatus(this.currentPage)
   },
   computed: {
@@ -256,7 +263,7 @@ export default {
       let dataAllStatus = await this.$http
         .post('/status/GAllStatus', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+          this.loading = false
         })
       this.loading = false
       this.tableData = dataAllStatus.datas[1]

@@ -62,7 +62,7 @@
               class="file-upload"
               name="file"
               :data="formData"
-              action="http://localhost:8080/file/uploadPic"
+              action="http://localhost:8080/api/file/uploadPic"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :before-upload="beforeUpload"

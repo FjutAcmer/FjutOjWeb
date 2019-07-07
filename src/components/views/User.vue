@@ -130,7 +130,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserRadar = await this.$http
-        .post('/GUserRadar', params)
+        .post('/user/GUserRadar', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -150,7 +150,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserInfo = await this.$http
-        .post('/GUserInfo', params)
+        .post('/user/GUserInfo', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -162,7 +162,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataAwardInfo = await this.$http
-        .post('/awardinfo', params)
+        .post('/user/awardinfo', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -175,7 +175,7 @@ export default {
       params.append('username', username)
       params.append('status', 0)
       let dataStatusProblems = await this.$http
-        .post('/GStatusProblems', params)
+        .post('/user/GStatusProblems', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -187,7 +187,7 @@ export default {
       params.append('username', username)
       params.append('status', 1)
       let dataStatusProblems = await this.$http
-        .post('/GStatusProblems', params)
+        .post('/user/GStatusProblems', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -199,7 +199,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataCanViewCodeProblems = await this.$http
-        .post('/Gcanviewcodeproblems')
+        .post('/user/Gcanviewcodeproblems')
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -223,7 +223,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataRatingGraph = await this.$http
-        .post('/GRatingGraph', params)
+        .post('/user/GRatingGraph', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -234,7 +234,7 @@ export default {
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
-      let dataAcGraph = await this.$http.post('/GAcGraph', params).catch(() => {
+      let dataAcGraph = await this.$http.post('/user/GAcGraph', params).catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
       })
       this.acrecord = dataAcGraph.datas[0]
@@ -245,11 +245,11 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserPermission = await this.$http
-        .post('/GUserPermission', params)
+        .post('/user/GUserPermission', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.isAdmin = dataUserPermission.data[0]
+      this.isAdmin = dataUserPermission.datas[0]
     },
     toAdmin () {
       this.$router.push({ path: '/Admin' })

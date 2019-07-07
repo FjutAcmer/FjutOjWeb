@@ -149,10 +149,7 @@ export default {
       this.$store.commit('LOGOUT')
       this.handleSelect('Index')
       this.$router.push({ path: '/' })
-      this.$message({
-        message: '您已退出登录！',
-        type: 'info'
-      })
+      this.$message.warning('您已退出登录！')
     },
     honorRank () {
       this.$router.push({ path: 'HonorRank' })

@@ -10,6 +10,8 @@ axios.interceptors.response.use(
   error => {
     if (error.response.status === 500) {
       Message.error(error.response.data.msg)
+    } else {
+      Message.error('服务器繁忙，请稍后重试！')
     }
     return Promise.reject(error)
   }

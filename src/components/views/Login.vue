@@ -85,7 +85,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', this.$refs.name.value)
       params.append('password', this.$refs.pwd.value)
-      let dataGetLogin = await this.$http.post('/token/login', params).catch(() => {
+      let dataGetLogin = await this.$http.post('/user/login', params).catch(() => {
         this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         this.logger.e('请求失败')
       })

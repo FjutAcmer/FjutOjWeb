@@ -107,7 +107,7 @@ export default {
         params.append('school', this.$refs.school.value)
         params.append('motto', this.$refs.motto.value)
         let dataInserUser = await this.$http
-          .post('/insertUser', params)
+          .post('/user/insertUser', params)
           .catch(() => {
             this.$message({
               message: '服务器繁忙，请稍后再试！',
