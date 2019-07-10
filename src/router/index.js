@@ -112,6 +112,11 @@ export default new Router({
       path: '/Verify',
       name: 'Verify',
       component: () => import('@/components/views/Verify')
+    },
+    {
+      path: '/Test',
+      name: 'Test',
+      component: () => import('@/components/views/UserInfo')
     }
   ]
 })

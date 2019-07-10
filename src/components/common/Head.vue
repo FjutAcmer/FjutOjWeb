@@ -36,6 +36,8 @@
         <el-menu-item index="9-4">组队榜</el-menu-item>
       </el-submenu>
       <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
+      <!-- 方便调试暂时设置 -->
+      <el-menu-item index="Test">测试</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
       <div class="menu-rightside">

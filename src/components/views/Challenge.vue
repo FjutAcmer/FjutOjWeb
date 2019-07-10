@@ -280,8 +280,10 @@ export default {
 <style scoped>
 #blockView {
   align-items: center;
-  border: 1px solid gray;
-  width: 100%;
+  /* border: 1px solid gray; */
+  margin-left: 6%;
+  margin-right: 6%;
+  width: auto;
   height: 800px;
   background-color: #eeeeee;
 }

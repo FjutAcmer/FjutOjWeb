@@ -123,7 +123,7 @@ export default {
           this.isAdmin = false
           this.logger.e('获取用户权限失败')
         })
-      this.isAdmin = dataGetPermission.data[0]
+      this.isAdmin = dataGetPermission.datas[0]
       this.$store.commit('setIsAdmin', this.isAdmin)
       this.logger.p({ isAdmin: this.isAdmin })
       this.logger.me('isAdmin', '判断是否管理员')

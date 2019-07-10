@@ -17,7 +17,6 @@ module.exports = {
           '^/apis':''
         }
       }
-
     },
 
     // Various Dev Server settings

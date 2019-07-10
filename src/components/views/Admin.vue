@@ -246,9 +246,11 @@
   </div>
 </template>
 <script>
+// import userPerType from '../../util/UserPermissionType.json'
 export default {
   data () {
     return {
+      // userPer: userPerType,
       ojvalue: '',
       oj: '',
       ojList: [{ id: 0, name: 'HDU' }, { id: 1, name: 'PKU' }],

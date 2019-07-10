@@ -35,11 +35,12 @@
               @click="toAdmin"
               v-if="isAdmin"
               style="margin-left:10px;cursor:pointer;margin-bottom:10px;color:blue;width:100px"
-            >拥有权限: Admin</div>
+            >拥有权限: </div>
             <div
               v-if="!isAdmin"
               style="margin-left:100px;margin-bottom:10px;color:green;width:100px"
             >普通用户</div>
+            <el-tag style="margin-left:10px;" type="success" :key="per" v-for="per in this.userPerList">{{per}}</el-tag>
           </div>
         </div>
         <div id="leida" style="width: 400px;height:300px;float:right;margin-bottom:10px"></div>
@@ -89,6 +90,7 @@
 
 <script>
 import echarts from 'echarts'
+import userPerType from '../../util/UserPermissionType.json'
 
 export default {
   data () {
@@ -106,7 +108,8 @@ export default {
       submitrecord: [],
       ratingrecord: [],
       acrecord: '',
-      isAdmin: ''
+      isAdmin: '',
+      userPerList: []
     }
   },
   created () {
@@ -130,7 +133,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserRadar = await this.$http
-        .post('/user/GUserRadar', params)
+        .post('/user/getUserRadar', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -250,7 +253,16 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.isAdmin = dataUserPermission.datas[0]
+      let perListTemp = dataUserPermission.datas[0]
+      if (perListTemp.length > 0) {
+        this.isAdmin = true
+      } else {
+        this.isAdmin = false
+      }
+      for (let i = 0; i < perListTemp.length; i++) {
+        this.userPerList.push(userPerType[perListTemp[i]])
+      }
+      console.log(this.userPerList)
     },
     toAdmin () {
       this.$router.push({ path: '/Admin' })

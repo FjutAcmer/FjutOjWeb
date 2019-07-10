@@ -23,10 +23,6 @@ const logger = {
     isLevel: true,
     isColor: true
   },
-  init: function (param) {
-    // 不允许依赖jquery
-    // $.extend(this.options, param);
-  },
   _logTemplate: function (pContent, pLevel) {
     var format = this.options.isColor ? '%c' : ''
     if (this.options.isTimestamp) {
