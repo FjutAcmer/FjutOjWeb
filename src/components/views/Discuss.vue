@@ -31,7 +31,7 @@
         highlight-current-row
         v-loading="loading"
       >
-        <el-table-column prop="discussid" label="#" width="300"></el-table-column>
+        <el-table-column prop="discussid" label="#" width="100"></el-table-column>
         <el-table-column label="标题" width="500">
           <template slot-scope="scope">
             <div style="cursor:pointer;color:blue" @click="toChat(scope.row)">{{scope.row.title}}</div>
@@ -68,14 +68,13 @@ export default {
       params.append('pagenum', val)
       this.currentPage = val
       let dataDiscuss = await this.$http
-        .post('/discuss/GDiscuss', params)
+        .get('/discuss/getDiscuss', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.loading = false
-      this.currentTotal = dataDiscuss.data[0]
-      // console.log(this.currentTotal)
-      this.tableData = dataDiscuss.data[1]
+      this.currentTotal = dataDiscuss.datas[0]
+      this.tableData = dataDiscuss.datas[1]
     },
     async getList (val) {
       if (this.isSearch) {
@@ -103,7 +102,6 @@ export default {
           })
         this.loading = false
         this.currentTotal = dataDiscussByTitle.data[0]
-        // console.log(this.currentTotal)
         this.tableData = dataDiscussByTitle.data[1]
       }
     },
@@ -136,11 +134,11 @@ export default {
       params.append('title', val)
       params.append('author', this.$store.getters.getUsername)
       let dataInsertDiscuss = await this.$http
-        .post('/discuss/insertDiscuss', params)
+        .post('/discuss/putDiscuss', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.$message({ message: dataInsertDiscuss.data[0], type: 'success' })
+      this.$message({ message: dataInsertDiscuss.msg, type: 'success' })
     },
     getLoginStatu () {
       if (this.$store.getters.getUsername) {

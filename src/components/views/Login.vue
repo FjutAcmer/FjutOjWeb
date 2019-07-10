@@ -85,10 +85,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', this.$refs.name.value)
       params.append('password', this.$refs.pwd.value)
-      let dataGetLogin = await this.$http.post('/user/login', params).catch(() => {
-        this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        this.logger.e('请求失败')
-      })
+      let dataGetLogin = await this.$http.post('/user/login', params)
       if (dataGetLogin.code !== 100) {
         this.$message({
           message: '登录失败: ' + dataGetLogin.msg,
@@ -96,7 +93,6 @@ export default {
         })
         this.logger.e('登录失败')
       } else {
-        console.log(dataGetLogin)
         let username = dataGetLogin.datas[0]
         let token = dataGetLogin.datas[1]
         this.$store.commit('setUsername', username)
@@ -118,7 +114,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataGetPermission = await this.$http
-        .post('/GUserPermission', params)
+        .get('/permission/getUserPermission', params)
         .catch(() => {
           this.$message({
             message: '服务器繁忙，请稍后再试！',

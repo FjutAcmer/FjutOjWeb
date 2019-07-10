@@ -234,9 +234,10 @@ export default {
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
-      let dataAcGraph = await this.$http.post('/user/GAcGraph', params).catch(() => {
-        this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-      })
+      let dataAcGraph = await this.$http
+        .post('/user/GAcGraph', params).catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
       this.acrecord = dataAcGraph.datas[0]
       this.quxian()
     },
@@ -245,7 +246,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserPermission = await this.$http
-        .post('/user/GUserPermission', params)
+        .get('/permission/getUserPermission', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })

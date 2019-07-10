@@ -459,7 +459,7 @@ export default {
         params.append('id', this.discussid)
         params.append('priority', this.priority)
         let dataUPriority = await this.$http
-          .post('/discuss/UPriority', params)
+          .post('/discuss/updatePriority', params)
           .catch(() => {
             this.$message({
               message: '服务器繁忙，请稍后再试！',
@@ -467,9 +467,9 @@ export default {
             })
             // return
           })
-        this.$message({ message: dataUPriority.data[0], type: 'success' })
+        this.$message.success(dataUPriority.msg)
       } else {
-        this.$message({ message: '缺少重要信息!', type: 'error' })
+        this.$message.error('缺少重要信息!')
       }
     },
     async addContest () {

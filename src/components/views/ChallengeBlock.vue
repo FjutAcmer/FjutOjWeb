@@ -63,6 +63,9 @@
                 @current-change="getList"
                 :current-page="this.currentPage"
               ></el-pagination>
+              <el-input placeholder="请输入标题" size="mini">
+                <template slot="prepend">Http://</template>
+              </el-input>
               <el-table
                 style="width:100%;"
                 :data="this.tableData"

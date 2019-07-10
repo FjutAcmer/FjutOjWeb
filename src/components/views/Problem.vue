@@ -55,7 +55,7 @@
         ></el-table-column>
         <el-table-column
           prop="Title"
-          label="标题"
+          label="题目标题"
           style="width:60%"
         >
           <template slot-scope="scope">
@@ -67,7 +67,7 @@
         </el-table-column>
         <el-table-column
           prop="Ratio"
-          label="AC状态"
+          label="AC率（通过人数/总提交数）"
           style="width:30%"
         ></el-table-column>
       </el-table>
