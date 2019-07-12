@@ -1,0 +1,6 @@
+/* 榜单的卡片头部 */
+
+
+#topborder .el-card__header{
+  background-color: burlywood;
+}

@@ -41,7 +41,7 @@
         </el-collapse-item>
         <el-collapse-item name="2">
           <template slot="title">
-            <div>编译器（IDE）</div>
+            <div>集成开发环境（IDE）</div>
           </template>
           <div>
             <el-tag type="success">

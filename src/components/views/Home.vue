@@ -1,239 +1,48 @@
 <template>
-<!-- TODO: add by axiang [20190702] 将样式独立出去，动态设置class来改变样式 -->
-  <div class="home-body">
-    <div class="carousel">
-      <Carousel></Carousel>
-    </div>
-    <div class="card">
-      <HomeInfo></HomeInfo>
-    </div>
-    <div class="card">
-      <div style="width:30%;margin-right:5%">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span style="float:left;color:red">积分榜 Top10</span>
-            <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
-          </div>
-          <div slot="header" style="margin:8px 0 15px 0;">
-            <div style="width:20%;float:left">#</div>
-            <div style="width:50%;float:left">User</div>
-            <div style="width:30%;float:left">Rating</div>
-          </div>
-          <div v-for="(o,index) in ratingTop?ratingTop:10" :key="index" class="text item">
-            <div style="width:100%;display:inline-flex;">
-              <div style="width:20%;float:left">{{index+1}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=0&&o.acnum<=100"
-                style="cursor:pointer;width:50%;float:left;color:gray"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=100&&o.acnum<=500"
-                style="cursor:pointer;width:50%;float:left;color:blue"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=500&&o.acnum<=700"
-                style="cursor:pointer;width:50%;float:left;color:purple"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=700&&o.acnum<=1000"
-                style="cursor:pointer;width:50%;float:left;color:#FF6A6A"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=1000"
-                style="cursor:pointer;width:50%;float:left;color:orange"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div style="width:30%;float:left">{{o.rating?o.rating:""}}</div>
-            </div>
-          </div>
-        </el-card>
-      </div>
-      <div style="width:30%">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span style="float:left;color:red">AC题数榜 Top10</span>
-            <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
-          </div>
-          <div slot="header" style="margin:8px 0 15px 0;">
-            <div style="width:20%;float:left">#</div>
-            <div style="width:50%;float:left">User</div>
-            <div style="width:30%;float:left">AC</div>
-          </div>
-          <div v-for="(o,index) in acTop?acTop:10" :key="index" class="text item">
-            <div style="width:100%;display:inline-flex;">
-              <div style="width:20%;">{{index+1}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=0&&o.acnum<=100"
-                style="cursor:pointer;width:50%;float:left;color:gray"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=100&&o.acnum<=500"
-                style="cursor:pointer;width:50%;float:left;color:blue"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=500&&o.acnum<=700"
-                style="cursor:pointer;width:50%;float:left;color:purple"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=700&&o.acnum<=1000"
-                style="cursor:pointer;width:50%;float:left;color:#FF6A6A"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=1000"
-                style="cursor:pointer;width:50%;float:left;color:orange"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div style="width:30%;float:left">{{o.acnum?o.acnum:""}}</div>
-            </div>
-          </div>
-        </el-card>
-      </div>
-      <div style="width:30%;margin-left:5%">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span style="float:left;color:red">AC币富豪榜 Top10</span>
-            <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
-          </div>
-          <div slot="header" style="margin:8px 0 15px 0;">
-            <div style="width:20%;float:left">#</div>
-            <div style="width:50%;float:left">User</div>
-            <div style="width:30%;float:left">ACB</div>
-          </div>
-          <div v-for="(o,index) in acbTop?acbTop:10" :key="index" class="text item">
-            <div style="width:100%;display:inline-flex;">
-              <div style="width:20%;float:left">{{index+1}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=0&&o.acnum<=100"
-                style="cursor:pointer;width:50%;float:left;color:gray"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=100&&o.acnum<=500"
-                style="cursor:pointer;width:50%;float:left;color:blue"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=500&&o.acnum<=700"
-                style="cursor:pointer;width:50%;float:left;color:purple"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=700&&o.acnum<=1000"
-                style="cursor:pointer;width:50%;float:left;color:#FF6A6A"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div
-                @click="toUser(o.username)"
-                v-if="o.acnum>=1000"
-                style="cursor:pointer;width:50%;float:left;color:orange"
-              >{{o.nick?o.nick:"无"}}</div>
-              <div style="cursor:pointer;width:30%;float:left">{{o.acb?o.acb:""}}</div>
-            </div>
-          </div>
-        </el-card>
-        <!-- <el-card class="box-card">
-              <div slot="header" class="clearfix">
-                  <span style="float:left">最近活跃 Top10</span>
-                  <el-button style="float: right; padding: 3px 0" type="text">All</el-button>
-              </div>
-              <div slot="header" style="margin:8px 0 15px 0;">
-                <div style="width:20%;float:left">#</div>
-                <div style="width:80%;float:left">User</div>
-              </div>
-              <div v-for="(o,index) in activeTop!=''?activeTop:10" :key="o" class="text item">
-              <div style="width:100%;display:inline-flex;">
-                <div style="width:20%;float:left">{{index+1}}</div>
-                <div style="width:80%;float:left">{{o.nick?o.nick:"无"}}</div>
-              </div>
-              </div>
-        </el-card>-->
-      </div>
-    </div>
+  <div class="index-body">
+    <div class="header-announcement"><Carousel></Carousel></div>
+    <div class="home-info-body"><HomeInfo></HomeInfo></div>
+    <div class="border-body"><Border></Border></div>
   </div>
 </template>
 
 <script>
 import Carousel from '@/components/common/CarouselGraph'
 import HomeInfo from '@/components/common/HomeInfo'
+import Border from '@/components/common/Border'
 
 export default {
   components: {
     Carousel,
-    HomeInfo
-  },
-  data () {
-    return {
-      ratingTop: '',
-      acTop: '',
-      acbTop: '',
-      activeTop: ''
-    }
-  },
-  methods: {
-    async getAllTop () {
-      let dataRank = await this.$http.get('/getAllTopBorder').catch(() => {
-        this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-      })
-      this.acbTop = dataRank.datas[0]
-      this.ratingTop = dataRank.datas[1]
-      this.acTop = dataRank.datas[2]
-      this.activeTop = dataRank.datas[3]
-    },
-    toUser (username) {
-      this.$router.push({ path: '/User', query: { username: username } })
-    }
-  },
-  mounted () {
-    this.getAllTop()
+    HomeInfo,
+    Border
   }
+
 }
 </script>
 
 <style>
-.home-body{
-  width: 100%;
-}
-
-.carousel {
-  padding: 0;
-  margin: 30px 18% 30px 18%;
-}
-
-.card {
-  padding: 0;
+.index-body {
   margin: auto;
-  width: 80%;
-  background-color: burlywood;
-  display: inline-flex;
+  width: 90%;
+  min-height: 800px;
 }
 
-.text {
-  font-size: 14px;
+.header-announcement {
+  width: 900px;
+  margin: auto;
 }
 
-.item {
-  margin-bottom: 18px;
+.home-info-body{
+  float: left;
+  margin-bottom: 30px;
+  width: 950px;
 }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both;
-}
-
-.box-card {
-  width: 100%;
-  max-height: 95%;
+.border-body{
+  float: left;
+  width: 330px;
+  margin-left: 30px;
+  min-height: 400px;
 }
 </style>

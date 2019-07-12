@@ -14,14 +14,12 @@
   background-color: #f5f5f5;
 }
 
-
 /* 菜单项 */
 .el-menu-item {
   width: 110px;
   font-size: 15px;
   border-right: #eeeeee 2px solid;
 }
-
 
 /* hover在菜单项上 */
 .el-menu-item:hover {
