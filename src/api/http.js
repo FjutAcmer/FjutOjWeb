@@ -31,7 +31,7 @@ var http = {
           url: url,
           params: params,
           headers: {
-            'token': store.default.getters.getToken
+            'auth': store.default.getters.getToken
           }
         }
       ).then(response => {
@@ -54,7 +54,7 @@ var http = {
         url: url,
         params: params,
         headers: {
-          'token': store.default.getters.getToken
+          'auth': store.default.getters.getToken
         }
       }).then(response => {
         resolve(response.data)

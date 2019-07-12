@@ -54,9 +54,9 @@ export default {
 
 <style>
 .foot-box {
-  padding: 0 5% 0 5%;
+  float: left;
   margin: 0;
-  width: 90%;
+  width: 100%;
   height: 10%;
   font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
   font-size: 15px;

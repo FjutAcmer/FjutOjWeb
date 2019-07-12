@@ -4,15 +4,15 @@
       :body-style="{ padding: '0px' }"
       class="box-card"
     >
-      <div class="block-head">
-        <div class="title">挑战模式</div>
-        <div class="title">模块：【{{this.blockDetail.name}}】</div>
+      <div slot="header">
+        <span>挑战模式&nbsp;&nbsp;</span>
+        <span>模块：【{{this.blockDetail.name}}】</span>
       </div>
       <div class="block-description">
         <el-collapse v-model="defopen">
           <el-collapse-item name="1">
             <template slot="title">
-              <div class="des-title">模块说明</div>
+              <div>模块说明</div>
             </template>
             <div
               class="des-detail"
@@ -21,13 +21,13 @@
           </el-collapse-item>
           <el-collapse-item name="2">
             <template slot="title">
-              <div class="des-title">模块类型</div>
+              <div>模块类型</div>
             </template>
             <div class="des-detail">{{this.blockDetail.type}}</div>
           </el-collapse-item>
           <el-collapse-item name="3">
             <template slot="title">
-              <div class="des-title">开启条件</div>
+              <div>开启条件</div>
             </template>
             <div
               class="des-detail"
@@ -36,7 +36,7 @@
           </el-collapse-item>
           <el-collapse-item name="4">
             <template slot="title">
-              <div class="des-title">我的状态</div>
+              <div>我的状态</div>
             </template>
             <div class="des-detail">
               <div class="solving-progress">
@@ -52,9 +52,21 @@
           </el-collapse-item>
           <el-collapse-item name="5">
             <template slot="title">
-              <div class="des-title">题目列表</div>
+              <div>题目列表</div>
             </template>
             <div class="des-problem-list">
+              <div class="search-input">
+                <el-input
+                  placeholder="请输入标题"
+                  size="mini"
+                >
+                  <template slot="prepend">查找题目：</template>
+                  <template slot="append">
+                    <el-button icon="el-icon-search"></el-button>
+                  </template>
+                </el-input>
+
+              </div>
               <el-pagination
                 class="bar-pagination"
                 layout="total, prev, pager, next, jumper"
@@ -63,9 +75,7 @@
                 @current-change="getList"
                 :current-page="this.currentPage"
               ></el-pagination>
-              <el-input placeholder="请输入标题" size="mini">
-                <template slot="prepend">Http://</template>
-              </el-input>
+
               <el-table
                 style="width:100%;"
                 :data="this.tableData"
@@ -264,23 +274,10 @@ export default {
   display: block;
 }
 
-.title {
-  height: 100%;
-  float: left;
-  font-size: 22px;
-  margin-right: 20px;
-}
-
 .block-description {
   min-height: 300px;
   width: 100%;
   height: auto;
-}
-
-.des-title {
-  font-size: 17px;
-  margin-left: 20px;
-  font-weight: bolder;
 }
 
 .des-detail {
@@ -290,20 +287,30 @@ export default {
   padding-right: 80px;
 }
 
+.des-detail-problem-table{
+  margin: 0;
+}
+
 .des-problem-list {
-  /* font-size: 16px; */
-  /* text-align: left; */
-  padding-left: 30px;
-  padding-right: 30px;
+  margin: 0;
 }
 
 .solving-progress {
   width: 40%;
 }
 
+.table-function-menu {
+  width: 100%;
+}
+
 .bar-pagination {
   margin-left: 20px;
   float: left;
+}
+
+.search-input {
+  width: 400px;
+  margin-bottom: 10px;
 }
 
 .row-solved {

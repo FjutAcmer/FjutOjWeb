@@ -35,7 +35,7 @@
           plain
           @click="handleAllMessageRead"
         >全部已读</el-button>
-        <el-table :data="this.tableData" max-height="600">
+        <el-table :data="this.tableData" max-height="600" v-loading="loading">
           <el-table-column type="index" :index="indexChange" label="#" width="100"></el-table-column>
           <el-table-column prop="status" label="状态" width="100">
             <template slot-scope="scope">
@@ -69,7 +69,8 @@ export default {
       Total: 0,
       pagesize: 10,
       tableData: [],
-      isSearch: false
+      isSearch: false,
+      loading: false
     }
   },
   computed: {
@@ -85,6 +86,7 @@ export default {
     getList (val) {
       if (this.isSearch) {
         this.getUserUnReadMessage(val)
+        this.loading = false
       } else {
         this.getUserMessage(val)
       }
@@ -149,6 +151,7 @@ export default {
       this.getUserMessage(1)
     },
     async getUserMessage (pagenum) {
+      this.loading = true
       this.logger.ms(this.getUserMessage.name, '')
       this.tableData = []
       let params = new URLSearchParams()
@@ -179,9 +182,10 @@ export default {
         this.$message({ message: '没有系统消息', type: 'warning' })
       }
       this.logger.me(this.getUserMessage.name, '')
+      this.loading = false
     },
     async getUserUnReadMessage (pagenum) {
-      this.tableData = []
+      this.loading = true
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
       this.currentPage = pagenum
@@ -195,6 +199,7 @@ export default {
         })
       let dataTempUnReadMessage = dataUnReadMessage.datas[0]
       this.Total = dataUnReadMessage.datas[1]
+      this.tableData = []
       if (typeof dataTempUnReadMessage !== 'undefined') {
         for (let i = 0; i < dataTempUnReadMessage.length; i++) {
           let localeTime = new Date(
@@ -212,6 +217,7 @@ export default {
       } else {
         this.$message({ message: '没有未读消息', type: 'warning' })
       }
+      this.loading = false
     },
     async setReaded (mid) {
       let params = new URLSearchParams()

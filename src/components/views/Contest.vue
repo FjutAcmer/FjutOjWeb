@@ -2,9 +2,7 @@
   <!-- FIXME: add by axiang [20190702] 交互性不明确，显示的内容不全面，功能不完整。建议重构，计划中-->
   <div class="contest">
     <el-card :body-style="{ padding: '0px' }" class="box-card">
-      <div class="contest-head">
-        <div style="float:left">比赛列表</div>
-      </div>
+      <div slot="header">比赛列表</div>
       <div class="contest-filter">
         <el-row type="flex">
           <!-- <el-col :span="4">
@@ -251,7 +249,7 @@ export default {
 <style scoped>
 .contest {
   width: 90%;
-  padding-top: 5%;
+  /* padding-top: 5%; */
   margin-bottom: 10%;
   margin-left: 5%;
   margin-right: 5%;

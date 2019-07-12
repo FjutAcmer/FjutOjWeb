@@ -8,9 +8,7 @@
       :body-style="{ padding: '0px' }"
       class="box-card"
     >
-      <div class="problem-head">
-        <div style="float:left">评测列表</div>
-      </div>
+        <div slot="header">评测列表</div>
       <div class="problem-filter">
         <el-row type="flex">
           <el-col :span="4">
@@ -362,23 +360,12 @@ export default {
 }
 
 .box-card {
-  width: 86%;
+  width: 90%;
   min-height: 450px;
   display: block;
-  margin-left: 7%;
-  margin-right: 7%;
+  margin:auto;
   margin-bottom: 2%;
   padding: 0;
-}
-
-.problem-head {
-  background-color: #f5f5f5;
-  height: 20px;
-  width: 100%;
-  margin: 0;
-  border-bottom: 1px solid #eeeeee;
-  padding: 10px 15px;
-  display: block;
 }
 
 .problem-filter {

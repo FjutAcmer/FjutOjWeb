@@ -167,7 +167,7 @@ export default {
       this.$router.push({ path: 'Message' })
     },
     toVerify () {
-      this.$router.push({path: 'Verify'})
+      this.$router.push({ path: 'Verify' })
     },
     // add by axiang [20190613] 签到
     async clockin () {
@@ -222,18 +222,6 @@ export default {
 <style>
 /* FIXME: add by axiang [20190628] 外部引入样式文件有BUG，暂时先手动引入全局style */
 
-/* 水平菜单的子菜单 */
-.el-menu--horizontal > .el-submenu .el-submenu__title {
-  width: 110px;
-  border-right: 1px solid #eeeeee;
-  font-size: 15px;
-}
-
-/* 水平菜单的子菜单的菜单项 */
-.el-menu--horizontal .el-menu .el-menu-item {
-  font-size: 14px;
-  width: auto;
-}
 </style>
 
 <style scoped >
@@ -244,26 +232,7 @@ export default {
   margin: 0;
   height: auto;
   width: 100%;
-  min-width: 1380px;
-  /* box-shadow: darkgrey 0px 0px 0px 2px; */
-
-}
-
-.el-menu {
-  width: 100%;
-  float: left;
-  font-size: 16px;
-}
-
-.el-menu-item {
-  width: 110px;
-  font-size: 15px;
-  border-right: #eeeeee 1px solid;
-}
-
-.el-menu-item:hover {
-  font-weight: bolder;
-  width: 110px;
+  min-width: 1480px;
 }
 
 .el-menu-item-right {
@@ -285,16 +254,18 @@ export default {
   border-left: 1px solid #eeeeee;
 }
 
-.menu-rightside{
+.menu-rightside {
   float: right;
 }
 
 .el-menu-item-userinfo {
   width: auto;
 }
-.clockin-button{
- margin-right: 20px;
+
+.clockin-button {
+  margin-right: 20px;
 }
+
 .badge-dot {
   line-height: 0px;
   margin-right: 10px;

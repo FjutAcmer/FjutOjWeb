@@ -8,6 +8,7 @@ import store from './store/index'
 import logger from './util/xow.logger.js'
 import http from './api/http.js'
 import 'element-ui/lib/theme-chalk/index.css'
+import './assets/css/global.css'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true

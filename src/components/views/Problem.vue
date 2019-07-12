@@ -5,9 +5,7 @@
       :body-style="{ padding: '0px' }"
       class="box-card"
     >
-      <div class="problem-head">
-        <div style="float:left">题目列表</div>
-      </div>
+      <div slot="header">题目列表</div>
       <div class="problem-filter">
         <el-row type="flex">
           <!-- <el-col style="width:10%">
@@ -173,13 +171,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .problem {
-  width: 90%;
+  width: 100%;
+  min-height: 700px;
   padding-top: 0;
-  margin-bottom: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
+  margin: 0;
   display: block;
   font-family: 微软雅黑, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -192,17 +189,6 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-}
-
-.problem-head {
-  background-color: #f5f5f5;
-  height: 20px;
-  width: 100%;
-  margin: 0;
-  border-bottom: 1px solid #eeeeee;
-  padding: 10px 15px;
-  display: block;
-  /* float: left; */
 }
 
 .problem-filter {

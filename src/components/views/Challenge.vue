@@ -1,5 +1,10 @@
 <template>
+<div class="block-body">
+<el-card>
+  <div slot="header">挑战模式</div>
   <div id="blockView"></div>
+</el-card>
+</div>
 </template>
 
 <script>
@@ -278,13 +283,21 @@ export default {
 </script>
 
 <style scoped>
+.block-body {
+  width: 90%;
+  height: 100%;
+  min-height: 800px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
 #blockView {
-  align-items: center;
+  /* align-items: center; */
   /* border: 1px solid gray; */
-  margin-left: 6%;
-  margin-right: 6%;
-  width: auto;
+  width: 100%;
   height: 800px;
-  background-color: #eeeeee;
+  /* background-color: #eeeeee; */
 }
 </style>

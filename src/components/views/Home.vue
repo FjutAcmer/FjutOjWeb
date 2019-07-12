@@ -1,11 +1,11 @@
 <template>
 <!-- TODO: add by axiang [20190702] 将样式独立出去，动态设置class来改变样式 -->
-  <div>
+  <div class="home-body">
     <div class="carousel">
       <Carousel></Carousel>
     </div>
     <div class="card">
-      <RCompetition></RCompetition>
+      <HomeInfo></HomeInfo>
     </div>
     <div class="card">
       <div style="width:30%;margin-right:5%">
@@ -162,12 +162,12 @@
 
 <script>
 import Carousel from '@/components/common/CarouselGraph'
-import RCompetition from '@/components/common/RecentCompetition'
+import HomeInfo from '@/components/common/HomeInfo'
 
 export default {
   components: {
     Carousel,
-    RCompetition
+    HomeInfo
   },
   data () {
     return {
@@ -198,6 +198,10 @@ export default {
 </script>
 
 <style>
+.home-body{
+  width: 100%;
+}
+
 .carousel {
   padding: 0;
   margin: 30px 18% 30px 18%;
@@ -205,8 +209,9 @@ export default {
 
 .card {
   padding: 0;
-  margin: 30px 18% 30px 18%;
-  width: 64%;
+  margin: auto;
+  width: 80%;
+  background-color: burlywood;
   display: inline-flex;
 }
 

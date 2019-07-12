@@ -1,90 +1,79 @@
 <template>
-<!-- FIXME: add by axiang [20190703] rating 和 AC 图表部分显示有问题，不知道是哪里的错误，等待进一步修复 -->
-  <div class="container">
-    <el-card class="box-card-userInfo" style="min-height:800px;">
+  <div class="info-body">
+    <el-card class="box-card-userInfo" shadow="always">
       <div class="user-avatar">
         <img class="avatar-img" :src="circleUrl" />
         <img class="avatar-title" :src="titleImgTest" />
       </div>
-      <div class="name">
-        <h1>{{user.nick}}</h1>
+      <div>
+        <h1>
+          <span class="user-adjective">{{title.adjective}}</span>
+          的
+          <span class="user-noun">{{title.noun}}</span>
+          <span class="user-nick">{{user.nick}}</span>
+          </h1>
         <h2>{{user.motto}}</h2>
       </div>
-      <div class="userbottom">
-        <div class="detail" style="text-align: left;font-size:20px">
-          &emsp;&emsp;{{user.nick}}
-          <font style="color:blue;font-size:30px">({{user.username}})</font>
-          在{{user.registertime}}加入OJ，来自
-          <font
-            style="color:blue;font-size:25px"
-          >{{user.school}}</font>。
-          <!--<br>
-          &emsp;&emsp;截止目前共参加了{{user.ratingnum}}场积分赛，当前rating达到{{user.rating}}了已经出神入化，-->
-          在所有人中排名第{{user.rank}}。已经在OJ上AC过{{user.acnum}}道题目。
-          <br />&emsp;&emsp;
-          <!-- 一共给{{puttagnum}}道题目贴过标签，当前有{{user.acb}}ACB。-->
-          <br />
-          <div class="detail" style="width:200%;text-align: left;">
-            <p>正式队员经历：</p>
-            <div :key="item" v-for="item in rewordinfo">
-              <p>&emsp;&emsp;{{item}}</p>
-            </div>
-          </div>
-          <div v-if="!this.$route.query.username">
-            <div
-              @click="toAdmin"
-              v-if="isAdmin"
-              style="margin-left:10px;cursor:pointer;margin-bottom:10px;color:blue;width:100px"
-            >拥有权限: </div>
-            <div
-              v-if="!isAdmin"
-              style="margin-left:100px;margin-bottom:10px;color:green;width:100px"
-            >普通用户</div>
-            <el-tag style="margin-left:10px;" type="success" :key="per" v-for="per in this.userPerList">{{per}}</el-tag>
-          </div>
+      <!-- TODO: 暂时使用style，之后替换为css -->
+        <div class="info-detail">
+          <span style="color:blue;font-size:26px;">{{user.nick}}</span>
+          (<span style="color:orange;font-size:26px;">{{user.username}}</span>)在
+          <span>{{user.registertime}}</span>加入FJUT OJ，
+          来自 <span style="color:white;font-size:26px;">{{user.school}}</span>。<tr/>
+          目前共参加了 <span style="color:blue;font-size:26px;">{{user.ratingnum}}</span> 场积分赛，
+          积分达到了<span style="color:orange;font-size:26px;">{{user.rating}}</span>，
+          在所有人中排名第 <span style="color:red;font-size:26px;">{{user.rank}} </span>。<tr/>
+          已经在OJ上AC过<span style="color:red;font-size:26px;">{{user.acnum}}</span>道题目，
+          已经<span style="color:red;font-size:26px;">[xxxx]</span>了，
+          一共提交过<span style="color:red;font-size:26px;">[xxxx]</span>次。<tr/>
+          一共给<span style="color:red;font-size:26px;">[xxxx]</span>道题目贴过标签，
+          当前有<span style="color:red;font-size:26px;">{{user.acb}}</span>ACB。<br/>
+          <span style="color:#eeeeee;font-size:26px;">正式队员经历：</span><br/>
+            <span :key="item" v-for="item in rewordinfo" style="font-size:20px;">
+            {{item}}<br/>
+            </span>
         </div>
-        <div id="leida" style="width: 400px;height:300px;float:right;margin-bottom:10px"></div>
+        <div id="info-radar">
+        </div>
+        <div class="info-permission" v-if="!isVisitor">
+          【拥有权限】<br/>
+          <el-tag
+            effect="dark"
+            type="success"
+            :key="per"
+            size="small"
+            v-for="per in this.userPerList"
+            >{{per}}</el-tag>
+        </div>
+    </el-card>
+    <el-card class="box-card">
+      <div id="graph-rating-change"></div>
+    </el-card>
+    <el-card class="box-card">
+      <div id="graph-submit-change"></div>
+    </el-card>
+    <el-card class="box-card">
+      <div slot="header">
+        已解决题目:{{problemSolved.length}}
       </div>
-    </el-card>
-    <el-card class="box-card" style="height:600px">
-      <div id="zhexian2" style="width: 100%;height:500px"></div>
-    </el-card>
-    <el-card class="box-card" style="height:600px">
-      <div id="zhexian" style="width: 100%;height:500px"></div>
-    </el-card>
-    <el-card class="box-card" style="height:600px">
-      <div id="quxian" style="width: 100%;height:500px"></div>
-    </el-card>
-    <el-card class="box-card" style="min-height:200px">
-      <div slot="header" class="clearfix">
-        <span style="float:left;">已解决题目列表: {{statusproblems1.length}}</span>
-      </div>
-      <div style="width:100%;text-align:left;" :key="item" v-for="item in statusproblems1">
+      <div :key="item" v-for="item in problemSolved">
         <div
-          style="width:80px;float:left;cursor:pointer;margin-bottom:10px;margin-left:2%;"
+          class="problem-id"
           @click="toSubmit(item)"
         >{{item}}</div>
       </div>
     </el-card>
-    <el-card class="box-card" style="min-height:200px">
-      <div slot="header" class="clearfix">
-        <span style="float:left">尝试过但是仍未解决的题目列表: {{statusproblems2.length}}</span>
+    <el-card class="box-card">
+      <div slot="header">
+        尝试过但是仍未解决的题目列表：{{problemSolving.length}}
       </div>
-      <div style="width:100%;text-align:left;" :key="item" v-for="item in statusproblems2">
+      <div :key="item" v-for="item in problemSolving">
         <div
-          style="width:80px;float:left;cursor:pointer;margin-bottom:10px;margin-left:2%;"
-          @click="toSubmit(item)"
-        >{{item}}</div>
+          class="problem-id"
+          @click="toSubmit(item)">
+        {{item}}</div>
       </div>
     </el-card>
-    <!-- <el-card class="box-card" style="min-height:200px">
-            <div slot="header" class="clearfix">
-                <span style="float:left">待贴标签题目列表:</span>
-            </div>
-            <div style="width:100%;text-align:left;" :key="item" v-for="item in canviewcodeproblems">
-                {{item}}
-            </div>
-    </el-card>-->
   </div>
 </template>
 
@@ -97,63 +86,45 @@ export default {
     return {
       circleUrl: require('../../../pic/Head/2.jpg'),
       titleImgTest: 'http://www.fjutacm.com/syspic/Title/9001.png',
-      name: '',
-      rewordinfo: '',
+      title: {
+        adjective: '干活干到晕厥',
+        noun: '包工头'
+      },
       user: '',
-      radar: [],
-      puttagnum: '',
-      statusproblems2: '',
-      statusproblems1: '',
-      canviewcodeproblems: '',
-      submitrecord: [],
-      ratingrecord: [],
-      acrecord: '',
-      isAdmin: '',
-      userPerList: []
+      rewordinfo: '',
+      radar: '',
+      userPerList: [],
+      problemSolved: [],
+      problemSolving: [],
+      isVisitor: false
     }
   },
   created () {
-    this.getUserInfo()
-    this.getRadarData()
-    this.getawardinfo()
-    // this.getPutTagNum()
-    this.getStatusProblems2()
-    this.getStatusProblems1()
-    this.getSubmitRecord()
-    this.getRatingRecord()
-    this.getAcRecord()
-    this.getUserPermission()
+
+  },
+  mounted () {
+    let username = ''
+    if (this.$route.query.username) {
+      this.isVisitor = true
+      username = this.$route.query.username
+    } else {
+      this.isVisitor = false
+      username = this.$store.getters.getUsername
+      this.getUserPermission(username)
+    }
+    this.getUserInfo(username)
+    this.getRadarData(username)
+    this.getawardinfo(username)
+    this.getRatingRecord(username)
+    this.getSubmitRecord(username)
+    this.getStatusProblems(username)
   },
   methods: {
-    toSubmit (val) {
-      this.$router.push({ path: '/Submit', query: { pid: val } })
-    },
-    async getRadarData () {
-      let username = this.$store.getters.getUsername
-      let params = new URLSearchParams()
-      params.append('username', username)
-      let dataUserRadar = await this.$http
-        .post('/user/getUserRadar', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.radar = dataUserRadar.datas[0]
-      this.leida()
-    },
-    // async getPutTagNum(){
-    //     let params = new URLSearchParams()
-    //     params.append('username', sessionStorage.getItem('username'))
-    //     let dataTagNum = await this.$http.post('/GPutTagNum',params).catch(()=>{
-    //         this.$message({message: '服务器繁忙，请稍后再试！',type: 'error'})
-    //     })
-    //     this.puttagnum = dataTagNum.datas[0]
-    // },
-    async getUserInfo () {
-      let username = this.$store.getters.getUsername
+    async getUserInfo (username) {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserInfo = await this.$http
-        .post('/user/GUserInfo', params)
+        .get('/user/GUserInfo', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -171,78 +142,16 @@ export default {
         })
       this.rewordinfo = dataAwardInfo.datas[0]
     },
-    async getStatusProblems2 () {
-      // console.log('调用getStatusProblems')
-      let username = this.$store.getters.getUsername
+    async getRadarData (username) {
       let params = new URLSearchParams()
       params.append('username', username)
-      params.append('status', 0)
-      let dataStatusProblems = await this.$http
-        .post('/user/GStatusProblems', params)
+      let dataUserRadar = await this.$http
+        .get('/user/getUserRadar', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      this.statusproblems2 = dataStatusProblems.datas[0]
-    },
-    async getStatusProblems1 () {
-      let username = this.$store.getters.getUsername
-      let params = new URLSearchParams()
-      params.append('username', username)
-      params.append('status', 1)
-      let dataStatusProblems = await this.$http
-        .post('/user/GStatusProblems', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.statusproblems1 = dataStatusProblems.datas[0]
-    },
-    async getCanViewCodeProblems () {
-      // console.log('调用getCanViewCodeProblems')
-      let username = this.$store.getters.getUsername
-      let params = new URLSearchParams()
-      params.append('username', username)
-      let dataCanViewCodeProblems = await this.$http
-        .post('/user/Gcanviewcodeproblems')
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.canviewcodeproblems = dataCanViewCodeProblems.datas[0]
-    },
-    async getSubmitRecord () {
-      // console.log('调用getSubmitRecord')
-      let username = this.$store.getters.getUsername
-      let params = new URLSearchParams()
-      params.append('username', username)
-      let dataAllStatusByUsername = await this.$http
-        .post('/status/GAllStatusByUsername', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.submitrecord = dataAllStatusByUsername.datas[0]
-      this.zhexian1()
-    },
-    async getRatingRecord () {
-      let username = this.$store.getters.getUsername
-      let params = new URLSearchParams()
-      params.append('username', username)
-      let dataRatingGraph = await this.$http
-        .post('/user/GRatingGraph', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.ratingrecord = dataRatingGraph.datas[0]
-      this.zhexian2()
-    },
-    async getAcRecord () {
-      let username = this.$store.getters.getUsername
-      let params = new URLSearchParams()
-      params.append('username', username)
-      let dataAcGraph = await this.$http
-        .post('/user/GAcGraph', params).catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.acrecord = dataAcGraph.datas[0]
-      this.quxian()
+      this.radar = dataUserRadar.datas[0]
+      this.setRadar()
     },
     async getUserPermission () {
       let username = this.$store.getters.getUsername
@@ -254,21 +163,12 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       let perListTemp = dataUserPermission.datas[0]
-      if (perListTemp.length > 0) {
-        this.isAdmin = true
-      } else {
-        this.isAdmin = false
-      }
       for (let i = 0; i < perListTemp.length; i++) {
         this.userPerList.push(userPerType[perListTemp[i]])
       }
-      console.log(this.userPerList)
     },
-    toAdmin () {
-      this.$router.push({ path: '/Admin' })
-    },
-    leida () {
-      let myChart = echarts.init(document.getElementById('leida'))
+    setRadar () {
+      let myChart = echarts.init(document.getElementById('info-radar'))
       let r1 = this.radar.split(',')
       r1[0] = r1[0].split('[')[1]
       r1[6] = r1[6].split(']')[0]
@@ -278,20 +178,17 @@ export default {
         radar: {
           name: {
             textStyle: {
-              color: '#fff',
-              backgroundColor: '#999',
-              borderRadius: 3,
-              padding: [3, 5]
+              color: 'white'
             }
           },
           indicator: [
-            { name: '基础', max: 5 },
-            { name: '动态规划', max: 5 },
-            { name: '搜索', max: 5 },
-            { name: '图论', max: 5 },
-            { name: '几何', max: 5 },
-            { name: '数学', max: 5 },
-            { name: '数据结构', max: 5 }
+            { name: '基础', max: 4 },
+            { name: '动态规划', max: 4 },
+            { name: '搜索', max: 4 },
+            { name: '图论', max: 4 },
+            { name: '几何', max: 4 },
+            { name: '数学', max: 4 },
+            { name: '数据结构', max: 4 }
           ]
         },
         series: [
@@ -305,47 +202,21 @@ export default {
       }
       myChart.setOption(option)
     },
-    zhexian1 () {
-      let myChart = echarts.init(document.getElementById('zhexian'))
-      // let timeData = [this.submitrecord]
-      // console.log(Object.keys(this.submitrecord))
-      let option = {
-        title: {
-          text: '最近1年提交记录',
-          x: 'center'
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: this.submitrecord ? Object.keys(this.submitrecord) : '无'
-        },
-        yAxis: {
-          name: 'submit',
-          type: 'value'
-        },
-        dataZoom: [
-          {
-            type: 'inside',
-            start: 0,
-            end: 100
-          }
-        ],
-        series: [
-          {
-            name: 'ac',
-            type: 'line',
-            areaStyle: {},
-            data: this.submitrecord ? Object.values(this.submitrecord) : 0
-          }
-        ]
-      }
-      myChart.setOption(option)
+    async getRatingRecord (username) {
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataRatingGraph = await this.$http
+        .get('/user/GRatingGraph', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.ratingrecord = dataRatingGraph.datas[0]
+      this.setGraphRatingChange()
     },
-    zhexian2 () {
-      let myChart2 = echarts.init(document.getElementById('zhexian2'))
-      // let timeData = [this.ratingrecord]
-      // console.log(Object.keys(this.submitrecord))
+    setGraphRatingChange () {
+      let myChart = echarts.init(document.getElementById('graph-rating-change'))
       let option = {
+        tooltip: {},
         title: {
           text: 'Rating变化',
           x: 'center'
@@ -368,29 +239,43 @@ export default {
         ],
         series: [
           {
-            name: 'ac',
+            name: 'Rating变化',
             type: 'line',
             areaStyle: {},
             data: Object.values(this.ratingrecord)
           }
         ]
       }
-      myChart2.setOption(option)
+      myChart.setOption(option)
     },
-    quxian () {
-      let myChart = echarts.init(document.getElementById('quxian'))
+    async getSubmitRecord (username) {
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataAllStatusByUsername = await this.$http
+        .post('/status/GAllStatusByUsername', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.submitrecord = dataAllStatusByUsername.datas[0]
+      this.setGraphSubmitChange()
+    },
+    setGraphSubmitChange () {
+      let myChart = echarts.init(document.getElementById('graph-submit-change'))
+      // let timeData = [this.submitrecord]
+      // console.log(Object.keys(this.submitrecord))
       let option = {
+        tooltip: {},
         title: {
-          text: 'AC',
+          text: '最近1年提交记录',
           x: 'center'
         },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: this.acrecord[0]
+          data: this.submitrecord ? Object.keys(this.submitrecord) : '无'
         },
         yAxis: {
-          name: 'acNum',
+          name: 'submit',
           type: 'value'
         },
         dataZoom: [
@@ -402,114 +287,167 @@ export default {
         ],
         series: [
           {
-            data: this.acrecord[1],
+            name: '提交记录',
             type: 'line',
-            smooth: true
+            areaStyle: {},
+            data: this.submitrecord ? Object.values(this.submitrecord) : 0
           }
         ]
       }
       myChart.setOption(option)
+    },
+    async getStatusProblems (username) {
+      let params = new URLSearchParams()
+      params.append('username', username)
+      params.append('status', 1)
+      let dataProblemSolving = await this.$http
+        .post('/user/GStatusProblems', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.problemSolved = dataProblemSolving.datas[0]
+      params.set('status', 0)
+      let dataProblemSolved = await this.$http
+        .post('/user/GStatusProblems', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      this.problemSolving = dataProblemSolved.datas[0]
+    },
+    toSubmit (val) {
+      this.$router.push({ path: '/Submit', query: { pid: val } })
     }
   }
+
 }
 </script>
 
-<style scoped>
-.userbottom {
-  display: inline;
-}
-
-.container {
-  padding: 10px 10% 10px 10%;
-  margin: 0;
+<style scoped >
+.info-body {
+  min-height: 800px;
   width: auto;
 }
 
-.text {
-  font-size: 14px;
-}
-
-.item {
-  padding: 18px 0;
+.box-card-userInfo {
+  background: url(../../assets/image/bg-userindex.jpg);
+  background-size: 100% 100%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  width: auto;
+  min-height: 400px;
+  height: auto;
 }
 
 .box-card {
-  width: 100%;
-  margin: 0 0 10px 0;
-}
-
-.box-card-userInfo {
-  width: 100%;
-  margin: 0 0 10px 0;
-  min-height: 500px;
+  background-size: 100% 100%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  min-height: 100px;
+  height: auto;
 }
 
 .user-avatar {
   text-align: center;
-  /* background-color: lightblue; */
-  width: 400px;
-  height: 250px;
-  margin-left: 34%;
+  width: 360px;
+  height: 210px;
+  margin: auto;
 }
 
 .avatar-img {
   position: absolute;
   border: 8px solid #eeeeee;
-  border-radius:220px;
-  width: 220px;
-  height: 220px;
-  margin-top: 20px;
+  border-radius: 180px;
+  width: 180px;
+  height: 180px;
 }
 
 .avatar-title {
   text-align: center;
-  width: 180px;
+  width: 140px;
   height: 60px;
   border: 2px solid red;
   border-radius: 18px;
-  /* background-color: aquamarine; */
-  margin-top: 170px;
+  margin-top: 140px;
   margin-left: 75px;
-
   z-index: 999;
   transform: rotate(-30deg);
 }
 
-.head {
-  margin: 10px 0 0 0;
-  padding: 0;
-  height: 200px;
-  width: 100%;
+.user-adjective {
+  color: red;
 }
 
-.head img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: solid 6px rgba(255, 255, 255, 0.3);
+.user-noun {
+  color: green;
 }
 
-.name {
-  margin: 0;
-  padding: 5% 0 5% 0;
-  width: 100%;
-  height: 150px;
+.user-nick {
+  color: blue;
 }
 
-.detail {
-  margin-bottom: 10px;
-  padding: 0 25px 0 25px;
-  min-height: 300px;
-  width: 40%;
+.info-detail {
+  text-align: left;
   float: left;
+  width: 790px;
+  min-height: 100px;
+  font-size: 20px;
+  color: white;
+  line-height: 40px;
 }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
+#info-radar {
+  float: left;
+  min-width: 320px;
+  height: 320px;
+  padding: 5px;
 }
-.clearfix:after {
-  clear: both;
+
+#graph-rating-change {
+  width: 100%;
+  height: 400px;
+}
+
+#graph-submit-change {
+  width: 100%;
+  height: 400px;
+}
+
+.info-permission {
+  float: left;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  min-height: 100px;
+  min-width: 600px;
+}
+
+.el-tag {
+  margin-bottom: 4px;
+  margin-right: 14px;
+}
+
+/* .clearfix{
+  display: table
+} */
+
+.box-card-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.problem-id {
+  color: #337ab7;
+  float: left;
+  width: 90px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  margin-left: 2%;
+}
+
+.problem-id:hover {
+  color: blue;
+  text-decoration: underline;
 }
 </style>
