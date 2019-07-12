@@ -94,7 +94,7 @@ export default {
       params.append('pagenum', val)
       this.currentPage = val
       let dataProblemsByPage = await this.$http
-        .post('/problem/GProblemsByPage', params)
+        .post('/problem/getProblems', params)
         .catch(() => {
 
         })
@@ -128,7 +128,7 @@ export default {
         params.append('title', this.input)
         params.append('pagenum', this.currentPage)
         let dataProblemByTitle = await this.$http
-          .post('/problem/GProblemByTitle', params)
+          .post('/problem/getProblemByTitle', params)
           .catch(() => {
             this.$message({
               message: '服务器繁忙，请稍后再试！',

@@ -221,6 +221,7 @@ export default {
     },
     async setReaded (mid) {
       let params = new URLSearchParams()
+      params.append('username', this.$store.getters.getUsername)
       params.append('mid', mid)
       let dataSetReaded = await this.$http
         .post('/message/setReaded', params)
@@ -236,6 +237,7 @@ export default {
     },
     async delMessageByMid (mid) {
       let params = new URLSearchParams()
+      params.append('username', this.$store.getters.getUsername)
       params.append('mid', mid)
       let dataSetReaded = await this.$http
         .post('/message/delMessage', params)
@@ -254,6 +256,7 @@ export default {
     async setMessageAllRead () {
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
+      params.append('username', this.$store.getters.getUsername)
       params.append('username', username)
       let dataSetMsgAllRead = await this.$http
         .post('/message/setAllMessageRead', params)

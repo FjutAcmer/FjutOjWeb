@@ -90,8 +90,9 @@ export default {
         params.append('pagenum', val)
         params.append('title', this.input)
         this.currentPage = val
+        // FIXME: 请求是假的，记得在后端补充
         let dataDiscussByTitle = await this.$http
-          .post('/discuss/GDiscussByTitle', params)
+          .post('/discuss/getDiscussByTitle', params)
           .catch(() => {
             this.$message({
               message: '服务器繁忙，请稍后再试！',
@@ -99,8 +100,8 @@ export default {
             })
           })
         this.loading = false
-        this.currentTotal = dataDiscussByTitle.data[0]
-        this.tableData = dataDiscussByTitle.data[1]
+        this.currentTotal = dataDiscussByTitle.datas[0]
+        this.tableData = dataDiscussByTitle.datas[1]
       }
     },
     toChat (row) {
