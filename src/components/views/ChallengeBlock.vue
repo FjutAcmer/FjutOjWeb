@@ -56,6 +56,8 @@
             </template>
             <div class="des-problem-list">
               <div class="search-input">
+                <!-- TODO: 现在的html结构有问题，没办法放按钮在同一排，需要在栏目外层加一个div -->
+                <!-- TODO: 功能还没做 -->
                 <el-input
                   placeholder="请输入标题"
                   size="mini"
@@ -67,6 +69,7 @@
                 </el-input>
 
               </div>
+              <el-divider></el-divider>
               <el-pagination
                 class="bar-pagination"
                 layout="total, prev, pager, next, jumper"
@@ -287,7 +290,7 @@ export default {
   padding-right: 80px;
 }
 
-.des-detail-problem-table{
+.des-detail-problem-table {
   margin: 0;
 }
 
@@ -309,8 +312,7 @@ export default {
 }
 
 .search-input {
-  width: 400px;
-  margin-bottom: 10px;
+  width: 320px;
 }
 
 .row-solved {

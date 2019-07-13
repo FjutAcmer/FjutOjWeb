@@ -107,10 +107,10 @@
 export default {
   data () {
     return {
-      acTop: '',
-      acbTop: '',
-      ratingTop: '',
-      activeTop: ''
+      acTop: [],
+      acbTop: [],
+      ratingTop: [],
+      activeTop: []
     }
   },
   mounted () {
