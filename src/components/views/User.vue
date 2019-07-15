@@ -329,7 +329,7 @@ export default {
 }
 
 .box-card-userInfo {
-  background: url(../../assets/image/bg-userindex.jpg);
+  background: url(../../assets/image/bg/bg_userindex.jpg);
   background-size: 100% 100%;
   margin-left: 10%;
   margin-right: 10%;
