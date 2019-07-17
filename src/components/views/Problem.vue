@@ -182,8 +182,8 @@ export default {
       }
 
       this.problemSolveMap = map
-      console.log(this.problemSolveMap.values())
-      console.log(this.problemSolveMap)
+      // console.log(this.problemSolveMap.values())
+      // console.log(this.problemSolveMap)
     },
     async getProblemTags () {
       let params = new URLSearchParams()
