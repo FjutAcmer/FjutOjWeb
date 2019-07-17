@@ -25,9 +25,9 @@
         >
           <el-option
             v-for="item in problemTags"
-            :key="item"
-            :label="item"
-            :value="item"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
           ></el-option>
         </el-select>
         <el-button
@@ -37,7 +37,7 @@
           icon="el-icon-search"
           @click="handleSelect"
         >筛选</el-button>
-         <el-button
+        <el-button
           size="mini"
           class="bar-search-item"
           type="info"
@@ -58,10 +58,13 @@
         v-loading="loading"
       >
         <el-table-column
-          prop="status"
           label="是否解决"
           width="100"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span :class="scope.row.isSolved==='✔'?'success-row':scope.row.isSolved==='✘'?'error-row':''">{{scope.row.isSolved}}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="id"
           label="#"
@@ -73,7 +76,10 @@
           width="600"
         >
           <template slot-scope="scope">
-            <el-link type="primary" @click="toSubmit(scope.row.id)">{{scope.row.Title}}</el-link>
+            <el-link
+              type="primary"
+              @click="toSubmit(scope.row.id)"
+            >{{scope.row.Title}}</el-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -96,16 +102,19 @@ export default {
       currentPage: 1,
       total: 0,
       tableData: [],
+      problemSolveMap: new Map(),
       isSearch: false,
       loading: false
 
     }
   },
-  mounted () {
+  created () {
     this.getProlem()
+    this.getProblemTags()
+  },
+  mounted () {
   },
   methods: {
-
     switchPage (val) {
       this.currentPage = val
       this.getProlem()
@@ -122,10 +131,9 @@ export default {
       this.getProlem()
     },
     toSubmit (pid) {
-      // console.log(row.id)
       this.$router.push({ path: '/Submit', query: { pid: pid } })
     },
-    // add by axiang [20190714] 船新升级版逻辑，将筛选逻辑放在后端去做，前端只需要连接一个接口
+    // add by axiang [20190714] 船新升级版逻辑，将筛选逻辑放在后端去做
     async getProlem () {
       this.loading = true
       let params = new URLSearchParams()
@@ -142,8 +150,15 @@ export default {
       this.tableData = []
       let tableDataTemp = dataProblemsByPage.datas[0]
       this.total = dataProblemsByPage.datas[1]
+      if (this.problemSolveMap.size === 0) {
+        await this.getProblemSovle()
+      }
       for (let i = 0; i < tableDataTemp.length; i++) {
+        let isSolvedTemp = this.problemSolveMap.get(tableDataTemp[i].pid) === 0 ? '✘'
+          : this.problemSolveMap.get(tableDataTemp[i].pid) === 1 ? '✔' : undefined
         this.tableData.push({
+          isSolved: isSolvedTemp,
+          // isSolved: this.problemSolveMap.get(tableDataTemp[i].pid),
           id: tableDataTemp[i].pid,
           Title: tableDataTemp[i].title,
           Ratio: tableDataTemp[i].strRadio +
@@ -155,6 +170,31 @@ export default {
         })
       }
       this.loading = false
+    },
+    async getProblemSovle () {
+      let params = new URLSearchParams()
+      params.append('username', this.$store.getters.getUsername)
+      let dataProblemSolve = await this.$http.get('/problem/getProblemSolve', params)
+      let dataTempSolve = dataProblemSolve.datas[0]
+      let map = new Map()
+      for (let i = 0; i < dataTempSolve.length; i++) {
+        map.set(dataTempSolve[i].pid, dataTempSolve[i].solved)
+      }
+
+      this.problemSolveMap = map
+      console.log(this.problemSolveMap.values())
+      console.log(this.problemSolveMap)
+    },
+    async getProblemTags () {
+      let params = new URLSearchParams()
+      let dataProblemTags = await this.$http
+        .get('/problemTag/getAllProblemTag', params)
+      let dataTempTags = dataProblemTags.datas[0]
+      dataTempTags.unshift({
+        id: '',
+        name: '-'
+      })
+      this.problemTags = dataTempTags
     }
 
   }
@@ -184,6 +224,7 @@ export default {
 .function-bar {
   width: 100%;
   height: 40px;
+  border-bottom: 1px solid #eeeeee;
   /* background-color: aqua; */
 }
 
@@ -209,5 +250,15 @@ export default {
 
 .el-pagination {
   float: left;
+}
+
+.success-row {
+  font-weight: bold;
+  color: green;
+}
+
+.error-row {
+  font-weight: bold;
+  color: red;
 }
 </style>

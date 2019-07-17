@@ -86,16 +86,15 @@
           label="#"
           width="100"
         ></el-table-column>
-        <!--FIXME: add by axiang [20190702] 这里实际上是用户名，要改为昵称，后端处理 -->
         <el-table-column
           label="昵称"
-          width="140"
+          width="220"
         >
           <template slot-scope="scope">
-            <div
-              style="cursor:pointer;color:blue"
+            <el-link
+              type="primary"
               @click="toUser(scope.row)"
-            >{{scope.row.ruser}}</div>
+            >{{scope.row.nick}}</el-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -103,10 +102,10 @@
           width="100"
         >
           <template slot-scope="scope">
-            <div
-              style="cursor:pointer;color:blue"
+            <el-link
+              type="primary"
               @click="toSubmit(scope.row)"
-            >{{scope.row.pid}}</div>
+            >{{scope.row.pid}}</el-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -150,13 +149,13 @@
         </el-table-column>
         <el-table-column
           label="语言"
-          width="150"
+          width="100"
         >
           <template slot-scope="scope">
-            <div
+            <el-link
+              type="primary"
               @click="toCodeView(scope.row)"
-              style="cursor:pointer;color:blue"
-            >{{scope.row.submitlanguage}}</div>
+            >{{scope.row.submitlanguage}}</el-link>
           </template>
         </el-table-column>
         <el-table-column
@@ -177,8 +176,12 @@
         <el-table-column
           prop="submitTime"
           label="提交时间"
-          width="300"
-        ></el-table-column>
+        >
+        <template slot-scope="scope">
+          <span>{{new Date(scope.row.submitTime).toLocaleString(
+            'chinese',
+            { hour12: false }
+          )}}</span></template></el-table-column>
       </el-table>
     </el-card>
   </div>
