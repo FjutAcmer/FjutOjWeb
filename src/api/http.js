@@ -61,9 +61,6 @@ var http = {
       })
         .catch(error => {
           console.log(error)
-          // if (error.response.status === 500) {
-          //   Message.error('error: ' + error.response.data)
-          // }
           reject(error)
         })
     })
