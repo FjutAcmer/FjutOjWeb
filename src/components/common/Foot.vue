@@ -12,7 +12,7 @@
           [<a href="#">FAQ</a>]
         </li>
         <li>
-          [<a href="#">闽ICP备17026590号-1</a>]
+          [<a href="#">闽ICP备xxxxxxxx号-1</a>]
         </li>
       </ul>
     </div>

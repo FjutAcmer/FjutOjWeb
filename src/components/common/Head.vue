@@ -235,6 +235,11 @@ export default {
   min-width: 1480px;
 }
 
+.el-menu{
+  width: 80%;
+  margin: auto;
+}
+
 .el-menu-item-right {
   float: right;
   width: 110px;
