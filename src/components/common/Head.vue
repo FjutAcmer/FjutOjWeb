@@ -1,4 +1,5 @@
 <template>
+<div class="header">
   <div class="head-box">
     <el-menu
       :default-active="activeIndex"
@@ -37,7 +38,7 @@
       </el-submenu>
       <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
       <!-- 方便调试暂时设置 -->
-      <el-menu-item index="Test">测试</el-menu-item>
+      <!-- <el-menu-item index="Test">测试</el-menu-item> -->
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
       <div class="menu-rightside">
@@ -91,6 +92,7 @@
         </div>
     </el-menu>
   </div>
+</div>
 </template>
 
 <script>
@@ -225,24 +227,30 @@ export default {
 </style>
 
 <style scoped >
-.head-box {
+.header{
   line-height: 58px;
-  float: left;
   padding: 0;
   margin: 0;
   height: auto;
+  background-color: #f5f5f5;
   width: 100%;
-  min-width: 1480px;
+}
+
+.head-box {
+  width: 90%;
+  margin: auto;
 }
 
 .el-menu{
-  width: 80%;
+  width: 100%;
+  border-left: #eeeeee 2px solid;
+  border-right: #eeeeee 2px solid;
   margin: auto;
 }
 
 .el-menu-item-right {
   float: right;
-  width: 110px;
+  width: 100px;
   border-right: 0;
   border-left: #eeeeee 1px solid;
 }

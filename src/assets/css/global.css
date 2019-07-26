@@ -16,7 +16,7 @@
 
 /* 菜单项 */
 .el-menu-item {
-  width: 110px;
+  width: 100px;
   font-size: 15px;
   border-right: #eeeeee 2px solid;
 }
@@ -24,12 +24,12 @@
 /* hover在菜单项上 */
 .el-menu-item:hover {
   font-weight: bolder;
-  width: 110px;
+  width: 100px;
 }
 
 /* 水平菜单的子菜单 */
 .el-menu--horizontal > .el-submenu .el-submenu__title {
-  width: 110px;
+  width: 100px;
   border-right: 2px solid #eeeeee;
   font-size: 15px;
 }
