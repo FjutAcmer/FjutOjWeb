@@ -1,9 +1,27 @@
 <template>
-  <div id="app" v-loading="loading">
+  <div
+    id="app"
+    v-loading="loading"
+  >
     <Head style="position:fixed;top:0px;left:0px;z-index:10;"></Head>
     <div style="width:100%;background-color:#fafafa;margin-top:100px;">
-      <transition name="fade" mode="out-in">
-        <router-view></router-view>
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive">
+            <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+          </router-view>
+        </keep-alive>
+      </transition>
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+          <router-view v-if="!$route.meta.keepAlive">
+            <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+          </router-view>
       </transition>
     </div>
     <Foot></Foot>

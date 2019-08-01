@@ -197,6 +197,14 @@ export default {
       this.problemTags = dataTempTags
     }
 
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'Submit') {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
+    }
+    next()
   }
 }
 </script>

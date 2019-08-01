@@ -67,6 +67,7 @@ export default {
   mounted () {
     this.getCode()
   }
+
 }
 </script>
 <style scoped>

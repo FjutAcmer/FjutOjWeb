@@ -297,15 +297,20 @@ export default {
       this.$router.push({ path: '/User', query: { username: row.ruser } })
     },
     toCodeView (row) {
-      // 解构赋值，将this.$router.resolve对象内的href 返回给 href
-      let { href } = this.$router.resolve({
-        name: 'CodeView',
+      this.$router.push({path: '/CodeView',
         query: {
           id: row.id,
           ruser: row.ruser
-        }
-      })
-      window.open(href, '_blank')
+        }})
+      // // 解构赋值，将this.$router.resolve对象内的href 返回给 href
+      // let { href } = this.$router.resolve({
+      //   name: 'CodeView',
+      //   query: {
+      //     id: row.id,
+      //     ruser: row.ruser
+      //   }
+      // })
+      // window.open(href, '_blank')
     },
     // FIXME: add by axiang [20190705] 获取错误信息有bug, 而且居然显示在msgbox上，惊了
     async getInfo (row) {
@@ -348,6 +353,16 @@ export default {
       this.lang = obj.name
       this.langValue = val
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    // 如果是点击到代码详情或者题目列表时，离开评测页面时让评测页面缓存
+    if (to.name === 'CodeView' || to.name === 'Submit') {
+      from.meta.keepAlive = true
+    } else {
+      // 否则，离开评测页面不缓存
+      from.meta.keepAlive = false
+    }
+    next()
   }
 }
 </script>

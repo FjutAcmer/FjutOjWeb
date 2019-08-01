@@ -179,6 +179,10 @@ export default {
         {
           value: 'JAVA',
           label: 'JAVA'
+        },
+        {
+          value: 'Python',
+          label: 'Python3'
         }
       ],
       code: '',
@@ -217,8 +221,11 @@ export default {
         params.append('user', this.$store.getters.getUsername)
         params.append('code', this.code)
         params.append('language', this.compileLanguage)
+        // FIXME: 暂时测试
+        params.append('timeLimit', 1000)
+        params.append('memoryLimit', 128000)
         let dataSubmitProblem = await this.$http
-          .post('/submit/submitProblem', params)
+          .post('/submit/submitProblemToLocal', params)
           .catch(() => {
             this.$message({
               message: '服务器繁忙，请稍后再试！',
@@ -234,6 +241,12 @@ export default {
   },
   mounted () {
     this.getProblem()
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'Status') {
+      to.meta.keepAlive = false
+    }
+    next()
   }
 }
 </script>
