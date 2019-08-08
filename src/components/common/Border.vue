@@ -5,7 +5,7 @@
         <span class="title-text">积分榜 Top10</span>
         <el-link
           type="info"
-          class="showmore-link"
+          class="elcard-showmore-link"
         >查看全部</el-link>
       </div>
       <el-table :data="ratingTop">
@@ -40,7 +40,7 @@
         <span class="title-text">AC题数榜 Top10</span>
         <el-link
           type="info"
-          class="showmore-link"
+          class="elcard-showmore-link"
         >查看全部</el-link>
       </div>
       <el-table :data="acTop">
@@ -73,7 +73,7 @@
         <span class="title-text">AC币富豪榜 Top10</span>
         <el-link
           type="info"
-          class="showmore-link"
+          class="elcard-showmore-link"
         >查看全部</el-link>
       </div>
       <el-table :data="acbTop">
@@ -149,8 +149,7 @@ export default {
   }
 }
 </script>
-<style src="../../assets/css/topborder.css">
-</style>
+
 <style scoped >
 .el-card {
   margin-bottom: 20px;

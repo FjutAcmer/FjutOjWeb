@@ -1,0 +1,13 @@
+/* 榜单的卡片头部 */
+#topborder .el-card__header{
+  background-color: burlywood;
+}
+
+
+
+#problem .el-card__header{
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  padding-left: 15px;
+}

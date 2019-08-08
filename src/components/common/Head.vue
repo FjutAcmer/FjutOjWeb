@@ -38,7 +38,7 @@
       </el-submenu>
       <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
       <!-- 方便调试暂时设置 -->
-      <!-- <el-menu-item index="Test">测试</el-menu-item> -->
+      <el-menu-item index="Test">测试</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
       <div class="menu-rightside">
@@ -179,10 +179,6 @@ export default {
       let dataSetClockIn = await this.$http
         .post('/clockin/setUserClockIn', params)
         .catch(() => {
-          this.$message({
-            message: '服务器繁忙，请稍后再试！',
-            type: 'error'
-          })
         })
       if (dataSetClockIn.code === 200) {
         this.$message({
@@ -204,10 +200,6 @@ export default {
       let dataUnReadMsgCount = await this.$http
         .get('/message/getUnReadMessageCount', params)
         .catch(() => {
-          this.$message({
-            message: '服务器繁忙，请稍后再试！',
-            type: 'error'
-          })
           this.logger.e('请求签到信息失败')
         })
 
@@ -221,11 +213,6 @@ export default {
 }
 </script>
 
-<style>
-/* FIXME: add by axiang [20190628] 外部引入样式文件有BUG，暂时先手动引入全局style */
-
-</style>
-
 <style scoped >
 .header{
   line-height: 58px;
@@ -237,6 +224,7 @@ export default {
 }
 
 .head-box {
+  min-width: 1400px;
   width: 90%;
   margin: auto;
 }
@@ -249,7 +237,7 @@ export default {
 }
 
 .el-menu-item-right {
-  float: right;
+  float: right !important;
   width: 100px;
   border-right: 0;
   border-left: #eeeeee 1px solid;

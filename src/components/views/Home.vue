@@ -29,7 +29,7 @@ export default {
 }
 
 .header-announcement {
-  width: 900px;
+  width: 90%;
   margin: auto;
 }
 

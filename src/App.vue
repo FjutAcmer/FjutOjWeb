@@ -3,8 +3,9 @@
     id="app"
     v-loading="loading"
   >
-    <Head style="position:fixed;top:0px;left:0px;z-index:10;"></Head>
-    <div style="width:100%;background-color:#fafafa;margin-top:100px;">
+
+    <Head class="header"></Head>
+    <div class="main">
       <transition
         name="fade"
         mode="out-in"
@@ -19,9 +20,9 @@
         name="fade"
         mode="out-in"
       >
-          <router-view v-if="!$route.meta.keepAlive">
-            <!-- 这里是会被缓存的视图组件，比如 Home！ -->
-          </router-view>
+        <router-view v-if="!$route.meta.keepAlive">
+          <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+        </router-view>
       </transition>
     </div>
     <Foot></Foot>
@@ -75,6 +76,19 @@ export default {
   position: relative;
   background-color: #fafafa;
   min-height: 600px;
+}
+
+.header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+}
+
+.main {
+  width: 100%;
+  background-color: #fafafa;
+  margin-top: 80px;
 }
 
 .fade-enter {

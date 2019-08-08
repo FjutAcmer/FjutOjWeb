@@ -1,15 +1,30 @@
 /* 卡片的标题栏 */
 .el-card__header{
+  width: 100%;
   background-color: #eeeeee;
   font-weight: bold;
   text-align: left;
   font-size: 16px;
 }
 
+/* 卡片的内容栏 */
+.el-card__body{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* 卡片标题上的查看更多 */
+.elcard-showmore-link{
+  float: right;
+  font-size: 14px;
+}
+
 /* 菜单*/
 .el-menu {
   width: 100%;
-  float: left;
   font-size: 16px;
   background-color: #f5f5f5;
 }

@@ -4,16 +4,30 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import VueHighlightJS from 'vue-highlightjs'
+import 'highlight.js/styles/docco.css'
 import store from './store/index'
 import logger from './util/xow.logger.js'
 import http from './api/http.js'
-import 'element-ui/lib/theme-chalk/index.css'
+
+import ace from 'ace-builds'
+
 import './assets/css/global.css'
+import './assets/css/elcard.css'
+
+// import VueQuillEditor from 'vue-quill-editor'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
 
 Vue.config.productionTip = false
 Vue.config.devtools = true
 
 Vue.use(ElementUI)
+Vue.use(VueHighlightJS)
+Vue.use(ace)
+// Vue.use(VueQuillEditor)
 Vue.prototype.logger = logger
 Vue.prototype.$http = http
 

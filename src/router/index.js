@@ -5,6 +5,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  // mode: 'hash',
   routes: [
     {
       path: '/Index',
@@ -61,7 +62,7 @@ export default new Router({
       name: 'Challenge',
       component: () => import('@/components/views/Challenge'),
       meta: {
-        keepAlive: true
+        keepAlive: false
       }
     }, {
       path: '/ChallengeBlock',
@@ -185,8 +186,9 @@ export default new Router({
     {
       path: '/Test',
       name: 'Test',
+      // component: () => import('@/components/views/Submit1'),
       meta: {
-        keepAlive: true
+        keepAlive: false
       }
     }
   ]

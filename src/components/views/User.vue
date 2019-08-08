@@ -24,9 +24,9 @@
           积分达到了<span style="color:orange;font-size:26px;">{{user.rating}}</span>，
           在所有人中排名第 <span style="color:red;font-size:26px;">{{user.rank}} </span>。<tr/>
           已经在OJ上AC过<span style="color:red;font-size:26px;">{{user.acnum}}</span>道题目，
-          已经<span style="color:red;font-size:26px;">[xxxx]</span>了，
-          一共提交过<span style="color:red;font-size:26px;">[xxxx]</span>次。<tr/>
-          一共给<span style="color:red;font-size:26px;">[xxxx]</span>道题目贴过标签，
+          已经<span style="color:red;font-size:26px;">超越神了</span>了，
+          一共提交过<span style="color:red;font-size:26px;">786</span>次。<tr/>
+          一共给<span style="color:red;font-size:26px;">506</span>道题目贴过标签，
           当前有<span style="color:red;font-size:26px;">{{user.acb}}</span>ACB。<br/>
           <span style="color:#eeeeee;font-size:26px;">正式队员经历：</span><br/>
             <span :key="item" v-for="item in rewordinfo" style="font-size:20px;">
