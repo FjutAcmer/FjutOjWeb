@@ -1,6 +1,6 @@
 <template>
   <div class="info-body">
-    <el-card class="box-card-userInfo" shadow="always">
+    <el-card id="userInfo" class="box-card-userInfo" shadow="always">
       <div class="user-avatar">
         <img class="avatar-img" :src="circleUrl" />
         <img class="avatar-title" :src="titleImgTest" />

@@ -1,33 +1,38 @@
 <template>
   <div class="submit-body">
-
     <div class="left-box">
       <el-scrollbar style="height:100%">
         <div class="title-box">
           <h1 class="title-font">{{this.dataProblemDetail.title?this.dataProblemDetail.title:'题目'}}</h1>
           时间限制: <el-tag type="info">{{this.dataProblemMain.timelimit?this.dataProblemMain.timelimit:'0MS'}}</el-tag>
           内存限制:<el-tag type="info">{{this.dataProblemMain.menorylimit?this.dataProblemMain.menorylimit:'0KB'}}</el-tag>
-          64位Integer的IO类型:<el-tag type="info">{{this.dataProblemMain.int64?this.dataProblemMain.int64:'-'}}</el-tag>
+          <br />64位Integer的IO类型:<el-tag type="info">{{this.dataProblemMain.int64?this.dataProblemMain.int64:'-'}}</el-tag>
         </div>
-        <el-link
-          v-if="this.problemIsAc"
-          type="success"
-          icon="el-icon-check"
-        >已解决</el-link>
-        <el-link
-          v-else
-          type="danger"
-          icon="el-icon-close"
-        >未解决</el-link>
-        | <el-link
-          v-if="!this.problemIsStar"
-          type="primary"
-          icon="el-icon-star-off"
-        >点击收藏</el-link>
-        <el-link
-          v-else
-          icon="el-icon-star-on"
-        >已收藏</el-link>
+        <div v-if="this.$store.getters.getIsLogin">
+          <el-link
+            v-if="this.problemIsAc"
+            type="success"
+            icon="el-icon-check"
+          >已解决</el-link>
+          <el-link
+            v-else
+            type="danger"
+            icon="el-icon-close"
+          >未解决</el-link>
+          | <el-link
+            v-if="!this.problemIsStar"
+            type="primary"
+            icon="el-icon-star-off"
+          >点击收藏</el-link>
+          <el-link
+            v-else
+            icon="el-icon-star-on"
+          >已收藏</el-link>
+          | <el-link
+            type="warning"
+            v-if="this.dataProblemDetail.ptype===1"
+          > 本地判题</el-link>
+        </div>
         <el-card
           id="problem"
           class="problem-detail-card"
@@ -89,11 +94,11 @@
             >查看详细</el-link>
           </div>
           <div class="detail-card-body">
-            <div class="text item">总AC数：{{this.dataProblemDetail.totalAc}}</div>
-            <div class="text item">通过人数：{{this.dataProblemDetail.totalAcUser}}</div>
-            <div class="text item">尝试人数：{{this.dataProblemDetail.totalSubmitUser}}</div>
-            <div class="text item">总提交量：{{this.dataProblemDetail.totalSubmit}}</div>
-            <div class="text item">AC率：{{this.dataProblemDetail.strRadio}}</div>
+            <span>总AC数：{{this.dataProblemDetail.totalAc}}</span>
+            <span>通过人数：{{this.dataProblemDetail.totalAcUser}}</span>
+            <span>尝试人数：{{this.dataProblemDetail.totalSubmitUser}}</span>
+            <span>总提交量：{{this.dataProblemDetail.totalSubmit}}</span>
+            <span>AC率：{{this.dataProblemDetail.strRadio}}</span>
           </div>
         </el-card>
       </el-scrollbar>
@@ -108,6 +113,7 @@
           size="medium"
           v-model="compileLanguage"
           @change="this.handleChangeLanguage"
+          :disabled="!this.$store.getters.getIsLogin"
         >
           <el-option
             v-for="item in languageType"
@@ -119,11 +125,13 @@
         <aceEditor
           class="code-editor"
           :language="this.compileLanguage"
+          :readOnly="!this.$store.getters.getIsLogin"
           @input="getCode"
         ></aceEditor>
         <el-button
           type="primary"
           @click="handleSubmit"
+          :disabled="!this.$store.getters.getIsLogin"
         >提交代码</el-button>
       </div>
 
@@ -149,7 +157,7 @@ export default {
         output: ''
       },
       problemIsAc: false,
-      problemIsStar: true,
+      problemIsStar: false,
       code: '',
       compileLanguage: 'G++',
       languageType: [
@@ -174,10 +182,18 @@ export default {
   },
   mounted () {
     this.getProblem()
+    if (!this.$store.getters.getIsLogin) {
+      this.$notify({
+        title: '提示',
+        message: '登录后才能作答哦',
+        type: 'warning',
+        offset: 100,
+        duration: 3000
+      })
+    }
   },
   methods: {
     async getProblem () {
-      this.islogin = this.$store.getters.getIsLogin
       let params = new URLSearchParams()
       params.append('pid', this.$route.query.pid ? this.$route.query.pid : '')
       params.append('username', this.$store.getters.getUsername)
@@ -201,7 +217,7 @@ export default {
         // FIXME: 暂时固定时间和内存限制
         params.append('timeLimit', 1000)
         params.append('memoryLimit', 128000)
-        // FIXME: 如果有本地判题标记，优先提交到本地
+        // 如果有本地判题标记，优先提交到本地
         let url = ''
         if (this.dataProblemDetail.ptype === 1) {
           url = '/submit/submitProblemToLocal'
@@ -226,11 +242,17 @@ export default {
       this.code = code
     },
     handleSubmit () {
-      console.log(this.code)
+      this.onSubmit()
     },
     handleChangeLanguage (val) {
       this.compileLanguage = val
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'Status') {
+      to.meta.keepAlive = false
+    }
+    next()
   }
 
 }
@@ -243,13 +265,11 @@ export default {
   margin-top: 0px;
   min-height: 700px;
   font-size: 15px;
-  /* background-color: goldenrod; */
 }
 
 .left-box {
   float: left;
   text-align: left;
-  /* background-color: aqua; */
   width: 50%;
   height: 680px;
   margin-bottom: 30px;
@@ -257,7 +277,6 @@ export default {
 
 .right-box {
   float: right;
-  /* background-color: darkcyan; */
   width: 49%;
   min-height: 700px;
 }
@@ -294,8 +313,7 @@ export default {
 }
 
 .problem-detail-card {
-  margin-bottom: 10px;
-  /* border: 2px black solid; */
+  margin-bottom: 20px;
   margin-right: 14px;
 }
 

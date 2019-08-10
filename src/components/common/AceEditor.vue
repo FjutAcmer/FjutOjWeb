@@ -57,14 +57,16 @@ const modeArray = [{
 export default {
   props: {
     value: String,
-    language: ''
+    language: String,
+    readOnly: ''
   },
   data () {
     return {
       aceEditor: null,
       toggle: false,
       wrap: true,
-      themePath: 'ace/theme/dracula',
+      EditThemePath: 'ace/theme/dracula',
+      ReadOnlyThemePath: 'ace/theme/eclipse',
       modePath: 'ace/mode/java',
       modeArray: modeArray
     }
@@ -75,11 +77,12 @@ export default {
       minLines: 28,
       fontSize: 16,
       value: this.value ? this.value : '',
-      theme: this.themePath,
+      theme: this.readOnly ? this.ReadOnlyThemePath : this.EditThemePath,
       mode: this.modePath,
       wrap: this.wrap,
       tabSize: 4
     })
+
     // 激活自动提示
     this.aceEditor.setOptions({
       enableSnippets: true,
@@ -89,6 +92,7 @@ export default {
     this.handleModelPathChange(this.language)
     this.logger.i(this.language)
     this.aceEditor.getSession().on('change', this.change)
+    this.aceEditor.setReadOnly(this.readOnly)
   },
   methods: {
     change () {
@@ -107,6 +111,9 @@ export default {
   watch: {
     language (val) {
       this.handleModelPathChange(this.language)
+    },
+    value (val) {
+      this.aceEditor.getSession().setValue(this.value)
     }
   }
 }

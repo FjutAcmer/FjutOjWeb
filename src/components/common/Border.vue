@@ -8,15 +8,18 @@
           class="elcard-showmore-link"
         >查看全部</el-link>
       </div>
-      <el-table :data="ratingTop">
+      <el-table
+        :data="ratingTop"
+        :cell-style="{padding:5+'px'}"
+      >
         <el-table-column
           type="index"
           label="#"
-          width="40"
+          width="50"
         ></el-table-column>
         <el-table-column
           label="用户名"
-          width="165"
+          width="150"
         >
           <template slot-scope="scope">
             <span
@@ -43,15 +46,18 @@
           class="elcard-showmore-link"
         >查看全部</el-link>
       </div>
-      <el-table :data="acTop">
+      <el-table
+        :data="acTop"
+        :cell-style="{padding:5+'px'}"
+      >
         <el-table-column
           type="index"
           label="#"
-          width="40"
+          width="50"
         ></el-table-column>
         <el-table-column
           label="用户名"
-          width="165"
+          width="150"
         >
           <template slot-scope="scope">
             <div
@@ -76,15 +82,18 @@
           class="elcard-showmore-link"
         >查看全部</el-link>
       </div>
-      <el-table :data="acbTop">
+      <el-table
+        :data="acbTop"
+        :cell-style="{padding:5+'px'}"
+      >
         <el-table-column
           type="index"
           label="#"
-          width="40"
+          width="50"
         ></el-table-column>
         <el-table-column
           label="用户名"
-          width="165"
+          width="150"
         >
           <template slot-scope="scope">
             <div
@@ -120,14 +129,10 @@ export default {
     selectColor (scoped) {
       if (scoped.$index === 0) {
         return 'border-level-five'
-      } else if (scoped.$index >= 1 && scoped.$index < 3) {
+      } else if (scoped.$index >= 1 && scoped.$index < 6) {
         return 'border-level-four'
-      } else if (scoped.$index >= 3 && scoped.$index < 6) {
-        return 'border-level-three'
-      } else if (scoped.$index >= 6 && scoped.$index < 8) {
-        return 'border-level-two'
       } else {
-        return 'border-level-one'
+        return 'border-level-three'
       }
     },
     async getAllTop () {

@@ -35,7 +35,7 @@ export default {
 
 .home-info-body{
   float: left;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   width: 950px;
 }
 
