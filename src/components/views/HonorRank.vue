@@ -21,6 +21,7 @@
       <el-table
         style="width:100%;"
         :data="this.tableData"
+        :row-class-name="tableRowClassName"
         highlight-current-row
       >
         <el-table-column
@@ -90,11 +91,22 @@ export default {
       this.currentTotal = dataTeamMemberInfo.data[0]
       // console.log(this.currentTotal)
       this.tableData = dataTeamMemberInfo.data[1]
+    },
+    tableRowClassName ({row, rowIndex}) {
+      if (rowIndex === 1) {
+        return 'First-row'
+      } else if (rowIndex === 2) {
+        return 'second-row'
+      } else if (rowIndex === 3) {
+        return 'third-row'
+      }
+      return ''
     }
   },
   mounted () {
     this.getHonorRank(this.currentPage)
   }
+
 }
 </script>
 <style scoped>
@@ -156,5 +168,15 @@ export default {
   margin-top: 10px;
   height: 30px;
   width: 50px;
+}
+
+.el-table.First-row{
+   background: rgb(228, 148, 0);
+}
+.el-table.second-row{
+   background: rgb(141, 141, 141);
+}
+.el-table.third-row{
+   background: rgb(190, 223, 72);
 }
 </style>

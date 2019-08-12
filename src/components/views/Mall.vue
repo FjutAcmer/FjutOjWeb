@@ -1,54 +1,46 @@
 <template>
   <!-- 放HTML代码  -->
   <div class="body">
-    <el-carousel
-      :interval="4000"
-      type="card"
-      height="300px"
-    >
-      <el-carousel-item
-        v-for="item in 3"
-        :key="item"
-      >
-        <div class="block">
-          <!-- <h3>热销商品</h3> -->
-          <el-image :src="src"></el-image>
+      <div class="block" >
+    <el-carousel>
+      <el-carousel-item v-for="item in 4" :key="item">
+        <div class="picture">
+        <el-image :src="src"></el-image>
         </div>
       </el-carousel-item>
     </el-carousel>
-
+  </div>
     <el-container>
       <el-main class="main1">
-        <el-row>
+
           <el-col
             :span="4"
             v-for="(o) in dataMallInfo "
             :key="o"
-            class="maincol"
+            class="main-col"
           >
             <el-card
               shadow="hover"
-              :body-style="{ padding: '0px' }"
-              class="kapian"
+              :body-style="{ padding: '10px' }"
+              class="card"
+               @click="handleClick(o.id)"
             >
               <img
-                src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                src="http://www.fjutacm.com/pic/defaulthead.jpg"
                 class="image"
+                 @click="handleClick(o.id)"
               >
-              <div style="padding: 2px;">
-                <span class="titlesize">{{o.title}}</span>
+              <div style="padding: 2px;"
+               @click="handleClick(o.id)"
+               >
+                <font size="4">{{o.title}}</font>
                 <br>
-                所需{{o.acb}}币
-                <div class="bottom clearfix">
-                  <el-button
-                    @click="dianji"
-                    type="primary"
-                  >购买</el-button>
-                </div>
+                <font size="5" color="orange">{{o.acb}}</font>ACB
               </div>
             </el-card>
+            <br>
+            <br>
           </el-col>
-        </el-row>
       </el-main>
       <el-footer></el-footer>
     </el-container>
@@ -61,15 +53,16 @@ export default {
   data () {
     return {
       dataMallInfo: '',
-      src: 'http://pic37.nipic.com/20140113/8800276_184927469000_2.png'
+      fits: ['none'],
+      src: 'http://pic22.nipic.com/20120622/10305018_153841644160_2.jpg'
     }
   },
   mounted () {
     this.getdata()
   },
   methods: {
-    dianji () {
-      this.$router.push({ path: 'dianji2' })
+    handleClick (gid) {
+      this.$router.push({ path: 'dianji2', query: {id: gid} })
     },
     async getdata () {
       let dataMall = await this.$http.get('/mall/getMallGoods').catch(() => {
@@ -90,29 +83,33 @@ export default {
   background-color: #ffffff;
 }
 
-.el-carousel__item h3 {
-  color: #ffffff;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
-}
-.kapian {
-  margin-bottom: 20px;
-}
-/* .kapian:hover{
-background: red
-} */
-.el-carousel__item:nth-child(2n) {
-  background-color: #ffffff;
-}
+    .el-carousel__item h3 {
+    color: #ffffff;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 150px;
+    margin: 0;
+    height: 200px;
+  }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #ffffff;
-}
+  .el-carousel__item:nth-child(2n) {
+     background-color: #ffffff;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+     background-color: #ffffff;
+  }
+  .block{
+    width: 500px; /*改变图片大小 */
+    margin: auto;
+  }
+  .picture{
+    height: 100px;
+    margin: auto;
+  }
 .bottom {
   margin-top: 5px;
-  line-height: 5px;
+  line-height: 10px;
 }
 
 .button {
@@ -138,10 +135,13 @@ background: red
   width: 1400px;
   margin: auto;
 }
-.maincol {
+.main-col {
   margin-left: 90px;
 }
 .titlesize {
   font-size: 12px;
+}
+.card{
+  height: 300px;
 }
 </style>
