@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <el-card class="box-card" :body-style="{ padding: '0px' }">
+    <el-card id="register" class="box-card" :body-style="{ padding: '0px'}">
       <h1>注册</h1>
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item prop="name">

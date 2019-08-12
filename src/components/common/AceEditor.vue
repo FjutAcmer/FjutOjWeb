@@ -66,7 +66,7 @@ export default {
       toggle: false,
       wrap: true,
       EditThemePath: 'ace/theme/dracula',
-      ReadOnlyThemePath: 'ace/theme/eclipse',
+      ReadOnlyThemePath: 'ace/theme/textmate',
       modePath: 'ace/mode/java',
       modeArray: modeArray
     }

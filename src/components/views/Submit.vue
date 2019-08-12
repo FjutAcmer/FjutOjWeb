@@ -91,14 +91,22 @@
             <el-link
               type="info"
               class="elcard-showmore-link"
-            >查看详细</el-link>
+            >查看更多</el-link>
           </div>
           <div class="detail-card-body">
-            <span>总AC数：{{this.dataProblemDetail.totalAc}}</span>
+            <div
+              class="echarts-box"
+              id="submit-echarts"
+            ></div>
+            <div
+              class="echarts-box"
+              id="acuser-echarts"
+            ></div>
+            <!-- <span>总AC数：{{this.dataProblemDetail.totalAc}}</span>
             <span>通过人数：{{this.dataProblemDetail.totalAcUser}}</span>
             <span>尝试人数：{{this.dataProblemDetail.totalSubmitUser}}</span>
             <span>总提交量：{{this.dataProblemDetail.totalSubmit}}</span>
-            <span>AC率：{{this.dataProblemDetail.strRadio}}</span>
+            <span>AC率：{{this.dataProblemDetail.strRadio}}</span> -->
           </div>
         </el-card>
       </el-scrollbar>
@@ -142,12 +150,16 @@
 
 <script>
 import aceEditor from '@/components/common/AceEditor'
+import echarts from 'echarts'
+import echartStyle from '../../util/echarts/shine.json'
 export default {
   components: {
     aceEditor
   },
   data () {
     return {
+      myChartSubmit: '',
+      myChartsAcUser: '',
       dataProblemMain: '',
       dataProblemDetail: '',
       dataProblemSamples: {
@@ -181,6 +193,7 @@ export default {
     }
   },
   mounted () {
+    this.init()
     this.getProblem()
     if (!this.$store.getters.getIsLogin) {
       this.$notify({
@@ -193,6 +206,14 @@ export default {
     }
   },
   methods: {
+    init () {
+      let obj = echartStyle
+      echarts.registerTheme('shine', obj)
+      this.myChartSubmit = echarts.init(document.getElementById('submit-echarts'), 'shine')
+      this.myChartSubmit.showLoading()
+      this.myChartsAcUser = echarts.init(document.getElementById('acuser-echarts'))
+      this.myChartsAcUser.showLoading()
+    },
     async getProblem () {
       let params = new URLSearchParams()
       params.append('pid', this.$route.query.pid ? this.$route.query.pid : '')
@@ -206,6 +227,88 @@ export default {
       this.dataProblemDetail = dataProblemView.datas[1]
       this.dataProblemSamples = dataProblemView.datas[2] ? dataProblemView.datas[2] : this.dataProblemSamples
       this.problemIsAc = dataProblemView.datas[3]
+      this.loadChartsSubmit()
+      this.loadChartsAcUser()
+    },
+    loadChartsSubmit () {
+      let totalAc = this.dataProblemDetail.totalAc
+      let others = this.dataProblemDetail.totalSubmit - this.dataProblemDetail.totalAc
+      let option = {
+        title: {
+          text: '提交AC占比',
+          x: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: ['总AC数', '其他']
+        },
+        series: [
+          {
+            name: '总AC数/总提交数',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+              { value: totalAc, name: '总AC数' },
+              { value: others, name: '其他' }
+            ],
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      this.myChartSubmit.setOption(option)
+      this.myChartSubmit.hideLoading()
+    },
+    loadChartsAcUser () {
+      let totalAcUser = this.dataProblemDetail.totalAcUser
+      let others = this.dataProblemDetail.totalSubmitUser - this.dataProblemDetail.totalAcUser
+      let option = {
+        title: {
+          text: '提交人数占比',
+          x: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: ['总提交数', '其他']
+        },
+        series: [
+          {
+            name: '通过人数/尝试次数',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+              { value: totalAcUser, name: '通过数' },
+              { value: others, name: '其他' }
+            ],
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      }
+      this.myChartsAcUser.setOption(option)
+      this.myChartsAcUser.hideLoading()
     },
     async onSubmit () {
       if (this.code.length > 50) {
@@ -281,6 +384,13 @@ export default {
   min-height: 700px;
 }
 
+.echarts-box {
+  margin: 0;
+  padding: 0;
+  float: left;
+  height: 320px;
+  width: 320px;
+}
 /* .code-editor-box {
 } */
 

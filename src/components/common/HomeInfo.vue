@@ -92,7 +92,7 @@
 
       </div>
     </el-card>
-    <el-card class="box-card">
+    <!-- <el-card class="box-card">
       <div slot="header">
         本站大数据
         <el-link
@@ -100,7 +100,7 @@
           class="showmore-link"
         >查看更多</el-link>
       </div>
-    </el-card>
+    </el-card> -->
     <el-card class="box-card">
       <div slot="header">
         常用文件下载中心
@@ -168,7 +168,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-card>
-    <el-card class="box-card"></el-card>
+    <!-- <el-card class="box-card"></el-card> -->
   </div>
 </template>
 

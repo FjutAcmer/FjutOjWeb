@@ -13,3 +13,7 @@
 #userInfo .el-card__body{
   text-align: center;
 }
+
+#register .el-card__body{
+  text-align: center
+}

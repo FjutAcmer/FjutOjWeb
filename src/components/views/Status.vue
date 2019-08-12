@@ -1,8 +1,4 @@
 <template>
-  <!-- FIXME: add by axiang [20190703]
-  筛选搜索慢到不可忍受！明明有代码非要用汉字去查表筛选？？？需重构；
-  题目类型的枚举虽然是搜索用的，但是和数据库定义的完全不对应，需修改
-  -->
   <div class="problem">
     <el-card
       :body-style="{ padding: '0px' }"
@@ -71,7 +67,7 @@
       </div>
       <el-pagination
         style="float:left"
-        layout="prev, pager, next"
+        layout="total, prev, pager, next, jumper"
         :current-page="currentPage"
         @current-change="getList"
         :total="currentTotal*10"
@@ -133,9 +129,7 @@
             <el-tag
               size="medium"
               effect="dark"
-              @click="getInfo(scope.row)"
               type="danger"
-              style="cursor:pointer;"
               v-show="scope.row.result==2||scope.row.result==4||scope.row.result==5
                             ||scope.row.result==6||scope.row.result==7||scope.row.result==11"
             >{{ scope.row.otherinfo }}</el-tag>
@@ -181,7 +175,8 @@
           <span>{{new Date(scope.row.submitTime).toLocaleString(
             'chinese',
             { hour12: false }
-          )}}</span></template></el-table-column>
+          )}}</span></template>
+          </el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -237,22 +232,9 @@ export default {
     }
   },
   mounted () {
-    // if (this.$store.getters.getUsername === '') {
-    //   this.$message.warning('请先登录！')
-    //   this.loading = false
-    //   return
-    // }
     this.getStatus(this.currentPage)
   },
   computed: {
-    // filter_data () {
-    //   return
-    // }
-  },
-  beforeDestroy () {
-    if (this.timer) {
-      clearInterval(this.timer) // 在vue实例销毁钱，清除我们的定时器
-    }
   },
   methods: {
     async getStatus (val) {
@@ -311,22 +293,6 @@ export default {
       //   }
       // })
       // window.open(href, '_blank')
-    },
-    // FIXME: add by axiang [20190705] 获取错误信息有bug, 而且居然显示在msgbox上，惊了
-    async getInfo (row) {
-      let params = new URLSearchParams()
-      params.append('rid', row.id)
-      let dataCeinfo = await this.$http
-        .get('/ceinfo/getCeInfo', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
-      this.$message({
-        dangerouslyUseHTMLString: true,
-        message: 'rid:' + dataCeinfo.datas[0].rid + '  info:' + dataCeinfo.datas[0].info,
-        showClose: true,
-        duration: 0
-      })
     },
     getList (val) {
       if (this.isSearch) {

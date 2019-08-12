@@ -34,7 +34,7 @@ export default new Router({
       name: 'Problem',
       component: () => import('@/components/views/Problem'),
       meta: {
-        keepAlive: true
+        keepAlive: false
       }
     }, {
       path: '/Submit',
