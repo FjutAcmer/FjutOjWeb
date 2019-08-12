@@ -62,7 +62,7 @@
               class="file-upload"
               name="file"
               :data="formData"
-              action="http://localhost:8080/api/file/uploadPic"
+              action="http://210.34.193.212:8080/api/file/uploadFile"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :before-upload="beforeUpload"
@@ -116,17 +116,17 @@ export default {
     handleExceed (files, fileList) {
       this.$message.warning('只允许上传一个文件！')
     },
-    beforeUpload (file) {
-      const isJPG = (file.type === 'image/jpeg') | (file.type === 'image/png')
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isJPG) {
-        this.$message.error('上传图片只能是JPG或者PNG格式！')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传图片大小限制在2M以内！')
-      }
-      return isJPG && isLt2M
-    },
+    // beforeUpload (file) {
+    //   const isJPG = (file.type === 'image/jpeg') | (file.type === 'image/png')
+    //   const isLt2M = file.size / 1024 / 1024 < 2
+    //   if (!isJPG) {
+    //     this.$message.error('上传图片只能是JPG或者PNG格式！')
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error('上传图片大小限制在2M以内！')
+    //   }
+    //   return isJPG && isLt2M
+    // },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}这个文件吗？`)
     },

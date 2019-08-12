@@ -1,33 +1,14 @@
 <template>
   <div class="foot-box">
-    <div class="foot-box-main">
-      <h2>FJUT Online Judge</h2>
+    <h1 class="title-span">FJUT Online Judge<span class="version-span"> v3.2</span></h1>
+    <div class="link-box">
+      <el-link>BUG反馈</el-link> |
+      <el-link>FAQ</el-link> |
+      <el-link>开发团队</el-link> |
+      <el-link>加入我们</el-link> |
+      <el-link>闽ICP备xxxxxxxx号-1</el-link>
     </div>
-    <div class="foot-box-item">
-      <ul>
-        <li>
-          [<a href="#">Bug反馈</a>]
-        </li>
-        <li>
-          [<a href="#">FAQ</a>]
-        </li>
-        <li>
-          [<a href="#">闽ICP备xxxxxxxx号-1</a>]
-        </li>
-      </ul>
-    </div>
-    <div class="foot-box-information">
-      <ul>
-        <li>
-          <strong>系统时间：</strong>
-          {{date}}
-        </li>
-        <li>
-          <strong>当前版本：</strong>
-          <a href="#">3.22</a>
-        </li>
-      </ul>
-    </div>
+    <span class="power-span">Power by ©515项目组-FJUTOJ</span>
   </div>
 </template>
 
@@ -46,61 +27,37 @@ export default {
   },
   beforeDestroy () {
     if (this.timer) {
-      clearInterval(this.timer) // 在vue实例销毁钱，清除我们的定时器
+      clearInterval(this.timer) // 在vue实例销毁钱，清除定时器
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .foot-box {
   float: left;
   margin: 0;
   width: 100%;
-  height: 10%;
+  height: auto;
   font-family: "微软雅黑", "宋体", "Arial Narrow", Helvetica, sans-serif;
   font-size: 15px;
   background-color: #eeeeee;
 }
 
-.foot-box a {
-  text-decoration: none;
-  color: #475669;
+.title-span {
+  margin: 4px;
 }
 
-.foot-box a:hover {
-  color: blue;
+.version-span {
+  font-size: 14px;
 }
 
-.foot-box-main {
-  padding: 0;
-  padding-right: 20px;
-  float: left;
-  border-right: white solid 2px;
+.link-box {
+  margin-bottom: 10px;
+  padding: 0px;
 }
 
-.foot-box-information {
-  padding: 0;
-  margin: 0;
-  float: right;
-}
-
-.foot-box-information ul li {
-  list-style: none;
-}
-
-.foot-box-item {
-  float: left;
-  font-size: 16px;
-  line-height: 40px;
-}
-
-.foot-box-item ul {
-  list-style: none;
-}
-
-.foot-box-item ul li {
-  float: left;
-  margin-right: 15px;
+.power-span {
+  margin: 5px;
 }
 </style>

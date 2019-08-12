@@ -248,6 +248,7 @@
 <script>
 // import userPerType from '../../util/UserPermissionType.json'
 export default {
+  name: 'Admin',
   data () {
     return {
       // userPer: userPerType,

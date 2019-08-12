@@ -169,6 +169,7 @@ export default {
             ')'
         })
       }
+      console.log(this.tableData)
       this.loading = false
     },
     async getProblemSovle () {
@@ -182,8 +183,6 @@ export default {
       }
 
       this.problemSolveMap = map
-      // console.log(this.problemSolveMap.values())
-      // console.log(this.problemSolveMap)
     },
     async getProblemTags () {
       let params = new URLSearchParams()
@@ -197,6 +196,14 @@ export default {
       this.problemTags = dataTempTags
     }
 
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'Submit') {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
+    }
+    next()
   }
 }
 </script>

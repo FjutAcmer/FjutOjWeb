@@ -1,34 +1,67 @@
 <template>
-<!-- FIXME: add by axiang [20190702] 能否查看代码的判断逻辑不清，显示的代码不完整，功能不完整。学长挖的坑，记得填-->
-<!-- TODO: add by axiang [20190702] 改中文显示，增加更多可视化的图表之类的内容 -->
-  <div class="docker">
-    <el-card :body-style="{ padding: '0px' }" class="head-card">
-      <span class="head-span">
-        <span style="color:green">题目ID:</span>
-        &nbsp;{{problem}}&nbsp;&nbsp;&nbsp;
-        <span style="color:green">评测结果:</span>
-        &nbsp;{{jadgeStatu}}&nbsp;&nbsp;&nbsp;
-        <span style="color:green">评测ID:</span>
-        &nbsp;{{runId}}&nbsp;&nbsp;&nbsp;
-        <span style="color:green">编程语言:</span>
-        &nbsp;{{languge}}&nbsp;&nbsp;&nbsp;
-        <span style="color:green">提交人:</span>
-        &nbsp;{{author}}
-      </span>
+  <!-- FIXME: add by axiang [20190702] 能否查看代码的判断逻辑不清，显示的代码不完整，功能不完整。学长挖的坑，记得填-->
+  <!-- TODO: add by axiang [20190702] 改中文显示，增加更多可视化的图表之类的内容 -->
+  <div class="view-body">
+    <el-card class="head-card">
+      <el-row :gutter="0">
+        <el-col :span="5">
+          <div><span>评测结果: </span>
+            <el-tag
+              :type="'Accepted'===jadgeStatu?'success':'danger'"
+              size="medium"
+            >{{jadgeStatu}}</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div><span>评测ID: </span>
+            <el-tag
+              type="primary"
+              size="medium"
+            >{{runId}}</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div><span>题目ID: </span>
+            <el-tag
+              type="primary"
+              size="medium"
+            >{{problem}}</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div><span>编程语言: </span>
+            <el-tag
+              type="primary"
+              size="medium"
+            >{{languge}}</el-tag>
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div><span>提交人: </span>
+            <el-tag
+              type="primary"
+              size="medium"
+            >{{author}}</el-tag>
+          </div>
+        </el-col>
+      </el-row>
     </el-card>
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
-      <!-- <span style="float:left">
-        <pre
-          style="text-align:left;font-size:20px;margin:10px 10px 10px 10px;padding-right:10px"
-          v-html="code"
-        ></pre>
-      </span> -->
-      <div class="code-view" ><pre>{{code}}</pre></div>
-    </el-card>
+    <div class="code-box">
+      <aceEditor
+        class="code-editor"
+        :language="this.languge"
+        :readOnly="true"
+        :value="this.code"
+      ></aceEditor>
+    </div>
   </div>
 </template>
 <script>
+import aceEditor from '@/components/common/AceEditor'
 export default {
+  components: {
+    aceEditor
+  },
   data () {
     return {
       code: '',
@@ -45,7 +78,7 @@ export default {
       params.append('id', this.$route.query.id)
       params.append('user', this.$store.getters.getUsername)
       let dataStatusCode = await this.$http
-        .post('/status/getStatusById', params)
+        .get('/status/getStatusById', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           // return
@@ -57,58 +90,48 @@ export default {
         this.problem = dataTemp.pid
         this.jadgeStatu = dataTemp.otherinfo
         this.id = dataTemp.pid
-        this.languge = dataTemp.lang.submitlanguage
+        this.languge = dataTemp.submitlanguage
         this.code = dataTemp.code
       } else {
         this.code = dataStatusCode.msg
       }
+      console.log(this.code)
     }
   },
-  mounted () {
+  created () {
     this.getCode()
   }
+
 }
 </script>
 <style scoped>
-.docker {
+.view-body {
   width: 100%;
   margin: 0;
+  margin-bottom: 20px;
   padding: 0;
   min-height: 100%;
 }
 
-.box-card {
-  width: 86%;
-  min-height: 600px;
-  display: block;
-  margin-left: 7%;
-  margin-right: 7%;
-  margin-bottom: 2%;
-  margin-top: 2%;
-  padding: 0;
-}
-
 .head-card {
   width: 86%;
-  height: 70px;
+  /* height: 40px; */
   display: block;
   margin-left: 7%;
   margin-right: 7%;
   margin-bottom: 2%;
   margin-top: 2%;
   padding: 0;
-  background-color: beige;
+  background-color: #eeeeee;
 }
 
-.head-span {
-  font-size: 20px;
-  line-height: 70px;
+.el-tag {
+  font-size: 15px;
 }
 
-.code-view {
-  text-align: left;
-  font-size: 20px;
-  margin: 10px 10px 10px 10px;
-  padding-right: 10px;
+.code-box {
+  width: 86%;
+  margin: auto;
+  min-height: 100px;
 }
 </style>

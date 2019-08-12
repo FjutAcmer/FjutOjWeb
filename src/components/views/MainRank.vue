@@ -123,14 +123,14 @@ export default {
       params.append('pagenum', val)
       this.currentPage = val
       let dataUserRank = await this.$http
-        .post('/rank/GUserRank', params)
+        .get('/rank/GUserRank', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       this.loading = false
-      this.currentTotal = dataUserRank.data[0]
+      this.currentTotal = dataUserRank.datas[0]
       // console.log(this.currentTotal)
-      this.tableData = dataUserRank.data[1]
+      this.tableData = dataUserRank.datas[1]
       this.Rank = 0
     },
     async getSearch (val) {
@@ -151,8 +151,8 @@ export default {
           })
         this.loading = false
         this.tableData = []
-        this.currentTotal = dataUserRankByName.data[0]
-        this.tableData = dataUserRankByName.data[1]
+        this.currentTotal = dataUserRankByName.datas[0]
+        this.tableData = dataUserRankByName.datas[1]
       }
     },
     getList (val) {

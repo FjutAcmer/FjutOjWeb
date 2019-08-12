@@ -18,8 +18,8 @@
             placeholder="*确认密码"
           ></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.nick" ref="nick" class="el-input" placeholder="昵称"></el-input>
+        <el-form-item prop="nick">
+          <el-input v-model="form.nick" ref="nick" class="el-input" placeholder="*昵称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-input v-model="form.school" ref="school" class="el-input" placeholder="学校"></el-input>
@@ -75,6 +75,10 @@ export default {
         pwd2: [
           { required: true, message: '请输入密码', trigger: 'change' },
           { min: 4, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
+        ],
+        nick: [
+          { required: true, message: '请输入昵称', trigger: 'change' },
+          { min: 4, max: 12, message: '长度在4到12个字符之间', trigger: 'blur' }
         ]
       }
     }

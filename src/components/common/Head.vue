@@ -1,4 +1,5 @@
 <template>
+<div class="header">
   <div class="head-box">
     <el-menu
       :default-active="activeIndex"
@@ -91,6 +92,7 @@
         </div>
     </el-menu>
   </div>
+</div>
 </template>
 
 <script>
@@ -177,10 +179,6 @@ export default {
       let dataSetClockIn = await this.$http
         .post('/clockin/setUserClockIn', params)
         .catch(() => {
-          this.$message({
-            message: '服务器繁忙，请稍后再试！',
-            type: 'error'
-          })
         })
       if (dataSetClockIn.code === 200) {
         this.$message({
@@ -202,10 +200,6 @@ export default {
       let dataUnReadMsgCount = await this.$http
         .get('/message/getUnReadMessageCount', params)
         .catch(() => {
-          this.$message({
-            message: '服务器繁忙，请稍后再试！',
-            type: 'error'
-          })
           this.logger.e('请求签到信息失败')
         })
 
@@ -219,30 +213,35 @@ export default {
 }
 </script>
 
-<style>
-/* FIXME: add by axiang [20190628] 外部引入样式文件有BUG，暂时先手动引入全局style */
-
-</style>
-
 <style scoped >
-.head-box {
+.header{
   line-height: 58px;
-  float: left;
   padding: 0;
   margin: 0;
   height: auto;
+  background-color: #f5f5f5;
   width: 100%;
-  min-width: 1480px;
+}
+
+.head-box {
+  min-width: 1400px;
+  width: 90%;
+  margin: auto;
 }
 
 .el-menu{
   width: 100%;
+<<<<<<< HEAD
+=======
+  border-left: #eeeeee 2px solid;
+  border-right: #eeeeee 2px solid;
+>>>>>>> 8bbe697cbf483bb810e0afd266f7c4c9b36011c1
   margin: auto;
 }
 
 .el-menu-item-right {
-  float: right;
-  width: 110px;
+  float: right !important;
+  width: 100px;
   border-right: 0;
   border-left: #eeeeee 1px solid;
 }

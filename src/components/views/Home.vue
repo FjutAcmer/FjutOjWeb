@@ -29,13 +29,13 @@ export default {
 }
 
 .header-announcement {
-  width: 900px;
+  width: 90%;
   margin: auto;
 }
 
 .home-info-body{
   float: left;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   width: 950px;
 }
 
