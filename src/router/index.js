@@ -185,20 +185,13 @@ export default new Router({
     },
     {
       path: '/Test',
-<<<<<<< HEAD
       name: 'Test'
     },
     {
       path: '/dianji2',
       name: 'dianji',
       component: () => import('@/components/views/ProductDetail')
-=======
-      name: 'Test',
-      // component: () => import('@/components/views/Submit1'),
-      meta: {
-        keepAlive: false
-      }
->>>>>>> 8bbe697cbf483bb810e0afd266f7c4c9b36011c1
+
     }
   ]
 })

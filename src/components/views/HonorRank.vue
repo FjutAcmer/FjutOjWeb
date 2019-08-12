@@ -93,14 +93,15 @@ export default {
       this.tableData = dataTeamMemberInfo.data[1]
     },
     tableRowClassName ({row, rowIndex}) {
-      if (rowIndex === 1) {
+      // console.log(row)
+      if (row.awardsLevelStr === '金奖' || row.awardsLevelStr === '一等奖') {
         return 'First-row'
-      } else if (rowIndex === 2) {
+      } else if (row.awardsLevelStr === '银奖' || row.awardsLevelStr === '二等奖') {
         return 'second-row'
-      } else if (rowIndex === 3) {
+      } else if (row.awardsLevelStr === '铜奖' || row.awardsLevelStr === '三等奖') {
         return 'third-row'
       }
-      return ''
+      return 'other-row'
     }
   },
   mounted () {
@@ -168,15 +169,5 @@ export default {
   margin-top: 10px;
   height: 30px;
   width: 50px;
-}
-
-.el-table.First-row{
-   background: rgb(228, 148, 0);
-}
-.el-table.second-row{
-   background: rgb(141, 141, 141);
-}
-.el-table.third-row{
-   background: rgb(190, 223, 72);
 }
 </style>
