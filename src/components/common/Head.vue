@@ -231,8 +231,11 @@ export default {
 
 .el-menu{
   width: 100%;
+<<<<<<< HEAD
+=======
   border-left: #eeeeee 2px solid;
   border-right: #eeeeee 2px solid;
+>>>>>>> 8bbe697cbf483bb810e0afd266f7c4c9b36011c1
   margin: auto;
 }
 

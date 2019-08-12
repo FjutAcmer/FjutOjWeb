@@ -185,11 +185,13 @@ export default new Router({
     },
     {
       path: '/Test',
-      name: 'Test',
-      // component: () => import('@/components/views/Submit1'),
-      meta: {
-        keepAlive: false
-      }
+      name: 'Test'
+    },
+    {
+      path: '/dianji2',
+      name: 'dianji',
+      component: () => import('@/components/views/ProductDetail')
+
     }
   ]
 })
