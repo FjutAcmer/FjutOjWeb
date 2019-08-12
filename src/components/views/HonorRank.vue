@@ -21,6 +21,7 @@
       <el-table
         style="width:100%;"
         :data="this.tableData"
+        :row-class-name="tableRowClassName"
         highlight-current-row
       >
         <el-table-column
@@ -90,11 +91,23 @@ export default {
       this.currentTotal = dataTeamMemberInfo.data[0]
       // console.log(this.currentTotal)
       this.tableData = dataTeamMemberInfo.data[1]
+    },
+    tableRowClassName ({row, rowIndex}) {
+      // console.log(row)
+      if (row.awardsLevelStr === '金奖' || row.awardsLevelStr === '一等奖') {
+        return 'First-row'
+      } else if (row.awardsLevelStr === '银奖' || row.awardsLevelStr === '二等奖') {
+        return 'second-row'
+      } else if (row.awardsLevelStr === '铜奖' || row.awardsLevelStr === '三等奖') {
+        return 'third-row'
+      }
+      return 'other-row'
     }
   },
   mounted () {
     this.getHonorRank(this.currentPage)
   }
+
 }
 </script>
 <style scoped>

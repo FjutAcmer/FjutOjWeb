@@ -16,6 +16,7 @@ import ace from 'ace-builds'
 import './assets/css/global.css'
 import './assets/css/elcard.css'
 import './assets/css/elcollapse.css'
+import './assets/css/rank.css'
 
 // import VueQuillEditor from 'vue-quill-editor'
 // import 'quill/dist/quill.core.css'

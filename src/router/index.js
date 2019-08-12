@@ -50,7 +50,16 @@ export default new Router({
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
+      path: '/ProductDetail',
+      name: 'ProductDetail',
+      component: () => import('@/components/views/ProductDetail'),
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
       path: '/User',
       name: 'User',
       component: () => import('@/components/views/User'),
