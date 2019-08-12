@@ -9,7 +9,7 @@
         <span>模块：【{{this.blockDetail.name}}】</span>
       </div>
       <div class="block-description">
-        <el-collapse v-model="defopen">
+        <el-collapse id="challenge-block" v-model="defopen">
           <el-collapse-item name="1">
             <template slot="title">
               <div>模块说明</div>

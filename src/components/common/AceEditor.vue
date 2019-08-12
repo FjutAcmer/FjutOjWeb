@@ -66,7 +66,7 @@ export default {
       toggle: false,
       wrap: true,
       EditThemePath: 'ace/theme/dracula',
-      ReadOnlyThemePath: 'ace/theme/textmate',
+      ReadOnlyThemePath: 'ace/theme/xcode',
       modePath: 'ace/mode/java',
       modeArray: modeArray
     }

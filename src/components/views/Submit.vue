@@ -102,46 +102,44 @@
               class="echarts-box"
               id="acuser-echarts"
             ></div>
-            <!-- <span>总AC数：{{this.dataProblemDetail.totalAc}}</span>
-            <span>通过人数：{{this.dataProblemDetail.totalAcUser}}</span>
-            <span>尝试人数：{{this.dataProblemDetail.totalSubmitUser}}</span>
-            <span>总提交量：{{this.dataProblemDetail.totalSubmit}}</span>
-            <span>AC率：{{this.dataProblemDetail.strRadio}}</span> -->
           </div>
         </el-card>
       </el-scrollbar>
     </div>
 
     <div class="right-box">
-      <br />
-      <div class="code-editor-box">
-        请选择语言：
-        <el-select
-          class="language-select"
-          size="medium"
-          v-model="compileLanguage"
-          @change="this.handleChangeLanguage"
-          :disabled="!this.$store.getters.getIsLogin"
-        >
-          <el-option
-            v-for="item in languageType"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <aceEditor
-          class="code-editor"
-          :language="this.compileLanguage"
-          :readOnly="!this.$store.getters.getIsLogin"
-          @input="getCode"
-        ></aceEditor>
-        <el-button
-          type="primary"
-          @click="handleSubmit"
-          :disabled="!this.$store.getters.getIsLogin"
-        >提交代码</el-button>
-      </div>
+      <el-collapse v-model="this.activeIndex">
+        <el-collapse-item title="提交代码" name="1">
+          <div class="code-editor-box">
+            请选择语言：
+            <el-select
+              class="language-select"
+              size="medium"
+              v-model="compileLanguage"
+              @change="this.handleChangeLanguage"
+              :disabled="!this.$store.getters.getIsLogin"
+            >
+              <el-option
+                v-for="item in languageType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <aceEditor
+              class="code-editor"
+              :language="this.compileLanguage"
+              :readOnly="!this.$store.getters.getIsLogin"
+              @input="getCode"
+            ></aceEditor>
+            <el-button
+              type="primary"
+              @click="handleSubmit"
+              :disabled="!this.$store.getters.getIsLogin"
+            >提交代码</el-button>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
 
     </div>
     <!-- <div class="code-box"><aceEditor language="CPP"></aceEditor></div> -->
@@ -189,7 +187,8 @@ export default {
           value: 'Python',
           label: 'Python2'
         }
-      ]
+      ],
+      activeIndex: ['1']
     }
   },
   mounted () {
@@ -391,8 +390,10 @@ export default {
   height: 320px;
   width: 320px;
 }
-/* .code-editor-box {
-} */
+.code-editor-box {
+  text-align: center;
+  background-color: #eeeeee
+}
 
 .language-select {
   margin-bottom: 10px;

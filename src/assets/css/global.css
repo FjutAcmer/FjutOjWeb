@@ -55,17 +55,3 @@
   width: auto;
 }
 
-/* 折叠框标题栏 */
-.el-collapse-item__header{
-  font-size: 17px;
-  margin-left: 20px;
-  font-weight: bolder;
-}
-
-/* 折叠框内容 */
-.el-collapse-item__content{
-  font-size: 14px;
-  text-align: left;
-  margin-left: 3%;
-  margin-right: 3%;
-}

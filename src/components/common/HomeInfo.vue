@@ -105,7 +105,7 @@
       <div slot="header">
         常用文件下载中心
       </div>
-      <el-collapse v-model="defopen">
+      <el-collapse id="download-file" v-model="defopen">
         <el-collapse-item name="1">
           <template slot="title">
             <div>浏览器</div>

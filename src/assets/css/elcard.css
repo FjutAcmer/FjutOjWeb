@@ -17,3 +17,8 @@
 #register .el-card__body{
   text-align: center
 }
+
+#admin .el-card__body{
+  font-size: 16px;
+  padding: 0px;
+}

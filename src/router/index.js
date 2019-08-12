@@ -186,7 +186,7 @@ export default new Router({
     {
       path: '/Test',
       name: 'Test',
-      // component: () => import('@/components/views/Submit1'),
+      component: () => import('@/components/views/Admin1'),
       meta: {
         keepAlive: false
       }
