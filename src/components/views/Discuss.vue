@@ -148,13 +148,12 @@ export default {
     }
   },
   mounted () {
-    if (this.$store.getters.getUsername === '') {
-      this.$message.warning('请先登录！')
-      this.loading = false
-      return
+    if (this.$store.getters.getIsLogin) {
+      this.getLoginStatu()
+      this.getDiscuss(this.currentPage)
+    } else {
+      this.$message.warning('登录后才能查看讨论区哦')
     }
-    this.getLoginStatu()
-    this.getDiscuss(this.currentPage)
   }
 }
 </script>

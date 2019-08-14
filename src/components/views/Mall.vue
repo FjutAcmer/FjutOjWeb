@@ -66,8 +66,11 @@ export default {
   },
   methods: {
     toProductDetail (gid) {
-      this.logger.e('go')
-      this.$router.push({ path: 'ProductDetail', query: { id: gid } })
+      if (this.$store.getters.getIsLogin) {
+        this.$router.push({ path: 'ProductDetail', query: { id: gid } })
+      } else {
+        this.$message.warning('登录后才能查看详情哦！')
+      }
     },
     async getdata () {
       let dataMall = await this.$http.get('/mall/getMallGoods').catch(() => {

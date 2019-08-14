@@ -6,7 +6,7 @@ const store = require('../store/index')
 axios.defaults.baseURL = 'http://localhost:8080/api'
 // 部署后端地址
 // axios.defaults.baseURL = 'http://210.34.193.212:8080/api'
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 6000
 axios.interceptors.response.use(
   res => { return res },
   error => {

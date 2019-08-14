@@ -45,7 +45,9 @@
         </el-col>
       </el-row>
     </el-card>
-    <el-card class="head-card">评测详情：<pre>{{ceInfoStr?ceInfoStr:'无'}}</pre></el-card>
+    <el-card class="head-card">评测详情：
+      <pre>{{ceInfoStr?ceInfoStr:'无'}}</pre>
+    </el-card>
     <div class="code-box">
       <aceEditor
         class="code-editor"
@@ -77,11 +79,12 @@ export default {
     async getCode () {
       let params = new URLSearchParams()
       params.append('id', this.$route.query.id)
-      params.append('user', this.$store.getters.getUsername)
+      params.append('username', this.$store.getters.getUsername)
       let dataStatusCode = await this.$http
         .get('/status/getStatusById', params)
         .catch(() => {
         })
+      console.log(dataStatusCode)
       if (dataStatusCode.code === 100) {
         let dataTemp = dataStatusCode.datas[0]
         this.runId = dataTemp.id
@@ -92,7 +95,7 @@ export default {
         this.languge = dataTemp.submitlanguage
         this.code = dataTemp.code
       } else {
-        this.code = dataStatusCode.msg
+        this.$message.error(dataStatusCode.msg)
       }
     },
     async getCeInfo () {
@@ -107,8 +110,12 @@ export default {
 
   },
   mounted () {
-    this.getCeInfo()
-    this.getCode()
+    if (this.$store.getters.getIsLogin) {
+      this.getCeInfo()
+      this.getCode()
+    } else {
+      this.$message.warning('登录后查看！')
+    }
   }
 
 }

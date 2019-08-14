@@ -220,7 +220,7 @@ export default {
         { id: 1, name: 'G++' },
         { id: 2, name: 'GCC' },
         { id: 3, name: 'JAVA' },
-        { id: 4, name: 'Python3' },
+        { id: 4, name: 'Python2' },
         { id: 5, name: 'G++11' },
         { id: 6, name: 'GCC11' },
         { id: 7, name: 'VC++' },
@@ -279,11 +279,7 @@ export default {
       this.$router.push({ path: '/User', query: { username: row.ruser } })
     },
     toCodeView (row) {
-      this.$router.push({path: '/CodeView',
-        query: {
-          id: row.id,
-          ruser: row.ruser
-        }})
+      this.$router.push({path: '/CodeView', query: {id: row.id}})
       // // 解构赋值，将this.$router.resolve对象内的href 返回给 href
       // let { href } = this.$router.resolve({
       //   name: 'CodeView',

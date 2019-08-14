@@ -148,9 +148,14 @@ export default {
   },
   mounted () {
     // add by axiang [20190701] 依次进行以下步骤填充界面
-    this.getBlockDetail(this.$route.query.id)
-    this.getPerCondition(this.$route.query.id)
-    this.getBlockProblems(this.$route.query.id, this.currentPage)
+    if (this.$store.getters.getIsLogin) {
+      this.getBlockDetail(this.$route.query.id)
+      this.getPerCondition(this.$route.query.id)
+      this.getBlockProblems(this.$route.query.id, this.currentPage)
+    } else {
+      this.$message.warning('登录后查看！')
+      this.loading = false
+    }
   },
   methods: {
     getList (val) {

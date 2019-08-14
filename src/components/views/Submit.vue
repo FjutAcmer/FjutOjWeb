@@ -108,8 +108,8 @@
     </div>
 
     <div class="right-box">
-      <el-collapse v-model="this.activeIndex">
-        <el-collapse-item title="提交代码" name="1">
+      <el-collapse id="submit-collapse" v-model="this.activeIndex">
+        <el-collapse-item title="答题" name="1">
           <div class="code-editor-box">
             请选择语言：
             <el-select
@@ -138,6 +138,8 @@
               :disabled="!this.$store.getters.getIsLogin"
             >提交代码</el-button>
           </div>
+        </el-collapse-item>
+        <el-collapse-item title="题解" name="2">
         </el-collapse-item>
       </el-collapse>
 
@@ -188,13 +190,14 @@ export default {
           label: 'Python2'
         }
       ],
-      activeIndex: ['1']
+      activeIndex: []
     }
   },
   mounted () {
     this.init()
     this.getProblem()
     if (!this.$store.getters.getIsLogin) {
+      this.activeIndex = []
       this.$notify({
         title: '提示',
         message: '登录后才能作答哦',
@@ -202,6 +205,8 @@ export default {
         offset: 100,
         duration: 3000
       })
+    } else {
+      this.activeIndex.push('1')
     }
   },
   methods: {
@@ -310,35 +315,31 @@ export default {
       this.myChartsAcUser.hideLoading()
     },
     async onSubmit () {
-      if (this.code.length > 50) {
-        let params = new URLSearchParams()
-        params.append('pid', this.$route.query.pid)
-        params.append('user', this.$store.getters.getUsername)
-        params.append('code', this.code)
-        params.append('language', this.compileLanguage)
-        // FIXME: 暂时固定时间和内存限制
-        params.append('timeLimit', 1000)
-        params.append('memoryLimit', 128000)
-        // 如果有本地判题标记，优先提交到本地
-        let url = ''
-        if (this.dataProblemDetail.ptype === 1) {
-          url = '/submit/submitProblemToLocal'
-        } else {
-          url = '/submit/submitProblem'
-        }
-        let dataSubmitProblem = await this.$http
-          .post(url, params)
-          .catch(() => {
-            this.$message({
-              message: '服务器繁忙，请稍后再试！',
-              type: 'error'
-            })
-          })
-        this.logger.i(dataSubmitProblem.datas)
-        this.$router.push({ path: '/Status' })
+      let params = new URLSearchParams()
+      params.append('pid', this.$route.query.pid)
+      params.append('user', this.$store.getters.getUsername)
+      params.append('code', this.code)
+      params.append('language', this.compileLanguage)
+      // FIXME: 暂时固定时间和内存限制
+      params.append('timeLimit', 1000)
+      params.append('memoryLimit', 128000)
+      // 如果有本地判题标记，优先提交到本地
+      let url = ''
+      if (this.dataProblemDetail.ptype === 1) {
+        url = '/submit/submitProblemToLocal'
       } else {
-        this.$message({ message: '提交长度过少！', type: 'error' })
+        url = '/submit/submitProblem'
       }
+      let dataSubmitProblem = await this.$http
+        .post(url, params)
+        .catch(() => {
+          this.$message({
+            message: '服务器繁忙，请稍后再试！',
+            type: 'error'
+          })
+        })
+      this.logger.i(dataSubmitProblem.datas)
+      this.$router.push({ path: '/Status' })
     },
     getCode (code) {
       this.code = code

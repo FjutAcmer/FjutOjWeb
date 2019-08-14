@@ -1,10 +1,10 @@
 <template>
-<div class="block-body">
-<el-card>
-  <div slot="header">挑战模式</div>
-  <div id="blockView"></div>
-</el-card>
-</div>
+  <div class="block-body">
+    <el-card>
+      <div slot="header">挑战模式</div>
+      <div id="blockView"></div>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -57,8 +57,12 @@ export default {
     }
   },
   mounted () {
-    this.init()
-    this.getBlocks()
+    if (this.$store.getters.getIsLogin) {
+      this.init()
+      this.getBlocks()
+    } else {
+      this.$message.warning('登录后才能查看挑战模式哦 ')
+    }
   },
   destroyed () {
     // 离开这个组件销毁一次ECharts实例，如果不手动销毁，ECharts内部有一个计时器会永久存在，切换界面切换回去后会越来越卡。应该是BUG，没有详细研究
@@ -73,11 +77,6 @@ export default {
     async getBlocks () {
       let params = new URLSearchParams()
       let username = this.$store.getters.getUsername
-      if (username === '') {
-        this.$message.warning('请先登录！')
-        this.myChart.hideLoading()
-        return
-      }
       this.logger.p({ username: username })
       params.append('username', username)
       let dataGetBlocks = await this.$http

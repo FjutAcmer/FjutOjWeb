@@ -24,9 +24,9 @@
           积分达到了<span style="color:orange;font-size:26px;">{{user.rating}}</span>，
           在所有人中排名第 <span style="color:red;font-size:26px;">{{user.rank}} </span>。<tr/>
           已经在OJ上AC过<span style="color:red;font-size:26px;">{{user.acnum}}</span>道题目，
-          已经<span style="color:red;font-size:26px;">超越神了</span>了，
-          一共提交过<span style="color:red;font-size:26px;">786</span>次。<tr/>
-          一共给<span style="color:red;font-size:26px;">506</span>道题目贴过标签，
+          已经<span style="color:red;font-size:26px;">[xxx]</span>了，
+          一共提交过<span style="color:red;font-size:26px;">[xxx]</span>次。<tr/>
+          一共给<span style="color:red;font-size:26px;">[xxx]</span>道题目贴过标签，
           当前有<span style="color:red;font-size:26px;">{{user.acb}}</span>ACB。<br/>
           <span style="color:#eeeeee;font-size:26px;">正式队员经历：</span><br/>
             <span :key="item" v-for="item in rewordinfo" style="font-size:20px;">
@@ -103,21 +103,25 @@ export default {
 
   },
   mounted () {
-    let username = ''
-    if (this.$route.query.username) {
-      this.isVisitor = true
-      username = this.$route.query.username
+    if (this.$store.getters.getIsLogin) {
+      let username = ''
+      if (this.$route.query.username) {
+        this.isVisitor = true
+        username = this.$route.query.username
+      } else {
+        this.isVisitor = false
+        username = this.$store.getters.getUsername
+        this.getUserPermission(username)
+      }
+      this.getUserInfo(username)
+      this.getRadarData(username)
+      this.getawardinfo(username)
+      this.getRatingRecord(username)
+      this.getSubmitRecord(username)
+      this.getStatusProblems(username)
     } else {
-      this.isVisitor = false
-      username = this.$store.getters.getUsername
-      this.getUserPermission(username)
+      this.$message.warning('登录后查看！')
     }
-    this.getUserInfo(username)
-    this.getRadarData(username)
-    this.getawardinfo(username)
-    this.getRatingRecord(username)
-    this.getSubmitRecord(username)
-    this.getStatusProblems(username)
   },
   methods: {
     async getUserInfo (username) {
@@ -261,8 +265,6 @@ export default {
     },
     setGraphSubmitChange () {
       let myChart = echarts.init(document.getElementById('graph-submit-change'))
-      // let timeData = [this.submitrecord]
-      // console.log(Object.keys(this.submitrecord))
       let option = {
         tooltip: {},
         title: {
@@ -343,7 +345,7 @@ export default {
   background-size: 100% 100%;
   margin-left: 10%;
   margin-right: 10%;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   min-height: 100px;
   height: auto;
 }
@@ -398,7 +400,7 @@ export default {
 }
 
 #info-radar {
-  float: left;
+  float: right;
   min-width: 320px;
   height: 320px;
   padding: 5px;
@@ -427,10 +429,6 @@ export default {
   margin-bottom: 4px;
   margin-right: 14px;
 }
-
-/* .clearfix{
-  display: table
-} */
 
 .box-card-title {
   font-weight: bold;

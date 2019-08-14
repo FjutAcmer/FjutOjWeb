@@ -3,6 +3,7 @@
     <el-card
       id="admin"
       class="admin-card"
+      v-if="this.$store.getters.getIsAdmin"
     >
       <div slot="header">
         <span>欢迎您，管理员：{{this.$store.getters.getUsername}}</span><br />
@@ -14,18 +15,25 @@
       >
         <!-- <el-tab-pane label="新增题目"><AddProblem></AddProblem></el-tab-pane> -->
         <el-tab-pane label="本地题目">
-          <AddLocalProblem></AddLocalProblem>
+          <LocalProblem></LocalProblem>
         </el-tab-pane>
-        <!-- <el-tab-pane label="测试">测试</el-tab-pane> -->
+        <el-tab-pane label="文件上传">
+          <FileUpload></FileUpload>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
-
+    <el-card
+      id="admin"
+      class="admin-card"
+      v-else
+    ><h1>对不起，你没有权限</h1></el-card>
   </div>
 </template>
 
 <script>
 import AddProblem from '../views/Admin/AdminAddProblem'
-import AddLocalProblem from '../views/Admin/AdminAddLocalProblem'
+import LocalProblem from '../views/Admin/AdminLocalProblem'
+import FileUpload from '../views/Admin/AdminFileUpload'
 export default {
   data () {
     return {
@@ -34,7 +42,8 @@ export default {
   },
   components: {
     AddProblem,
-    AddLocalProblem
+    LocalProblem,
+    FileUpload
   }
 }
 </script>
@@ -45,7 +54,6 @@ export default {
   margin: auto;
   margin-bottom: 20px;
   min-height: 400px;
-  /* min-height: 400px; */
 }
 
 .admin-card {
