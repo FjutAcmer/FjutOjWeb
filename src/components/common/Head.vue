@@ -2,7 +2,6 @@
 <div class="header">
   <div class="head-box">
     <el-menu
-      :default-active="activeIndex"
       class="el-menu"
       mode="horizontal"
       active-text-color="#409EFF"
@@ -22,11 +21,11 @@
       <el-submenu index="ContestSub">
         <template slot="title">比 赛</template>
         <!-- <el-menu-item index="Contest">全部</el-menu-item> -->
-        <el-menu-item index="Contest">练习</el-menu-item>
-        <el-menu-item index="8-2">积分</el-menu-item>
-        <el-menu-item index="8-3">趣味</el-menu-item>
-        <el-menu-item index="8-4">正式</el-menu-item>
-        <el-menu-item index="8-5">自定义</el-menu-item>
+        <el-menu-item index="Contest?kind=0">练习</el-menu-item>
+        <el-menu-item index="Contest?kind=1">积分</el-menu-item>
+        <el-menu-item index="Contest?kind=2">趣味</el-menu-item>
+        <el-menu-item index="Contest?kind=3">正式</el-menu-item>
+        <el-menu-item index="Contest?kind=5">自定义</el-menu-item>
       </el-submenu>
       <el-submenu index="RankSub">
         <template slot="title">排 名</template>
@@ -37,7 +36,7 @@
         <el-menu-item index="9-4">组队榜</el-menu-item>
       </el-submenu>
       <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
-      <!-- 方便调试暂时设置 -->
+      <!-- FIXME: 方便调试暂时设置，正式部署时需要去除 -->
       <el-menu-item index="Test">测试</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
@@ -105,20 +104,13 @@ export default {
     }
   },
   created () {
-    this.activeIndex = this.$store.getters.getIndex
   },
   mounted () {
-    this.activeIndex = this.$store.getters.getIndex
-    // this.logger.f(this.activeIndex)
     if (this.isLogin) {
       this.checkUnReadMsgCount()
     }
   },
   computed: {
-    activeIndex: {
-      get () { return this.$store.getters.getIndex },
-      set (val) { this.$store.commit('setIndex', val) }
-    },
     isLogin () {
       return this.$store.getters.getIsLogin
     },
@@ -134,11 +126,9 @@ export default {
   },
   methods: {
     handleSelect (key) {
-      this.$store.commit('setIndex', key)
     },
     // add by axiang [20190628] 统一处理用户名下拉框的下拉内容
     handleCommand (command) {
-      this.$store.commit('setIndex', '')
       if (command === 'toEditUser') {
         this.toEditUser()
       } else if (command === 'toMessage') {
@@ -150,6 +140,11 @@ export default {
       }
     },
     logout () {
+      // TODO: 请求后端消除redis记录
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      this.$http.post('/user/logout', params)
       this.$store.commit('LOGOUT')
       this.handleSelect('Index')
       this.$router.push({ path: '/' })
@@ -231,11 +226,8 @@ export default {
 
 .el-menu{
   width: 100%;
-<<<<<<< HEAD
-=======
   border-left: #eeeeee 2px solid;
   border-right: #eeeeee 2px solid;
->>>>>>> 8bbe697cbf483bb810e0afd266f7c4c9b36011c1
   margin: auto;
 }
 

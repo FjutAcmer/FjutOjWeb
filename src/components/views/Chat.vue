@@ -89,15 +89,13 @@ export default {
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
-      // console.log(data)
+
       if (dataDisuccssReplyById.data[0] !== null) {
         this.currentTotal = dataDisuccssReplyById.data[0]
         this.messageList = dataDisuccssReplyById.data[1]
       }
-      // console.log(this.messageList)
     },
     isLoginStatu () {
-      // console.log(sessionStorage.getItem('username'))
       if (this.$store.getters.getUsername) {
         this.isLogin = true
       } else {

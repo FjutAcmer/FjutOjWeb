@@ -1,15 +1,27 @@
 
 <template>
-<!--TODO: add by axiang [20190702] 添加确认旧密码输入框  -->
+  <!--TODO: add by axiang [20190702] 添加确认旧密码输入框  -->
   <div class="docker">
-    <el-card class="box-card" :body-style="{ padding: '0px' }">
+    <el-card
+      class="box-card"
+      :body-style="{ padding: '0px' }"
+    >
       <div slot="header">
         <span>编辑个人信息</span>
         <!-- <el-button  type="text">操作按钮</el-button> -->
       </div>
-      <el-form :model="form" class="el-form">
+      <el-form
+        :model="form"
+        class="el-form"
+      >
         <el-form-item prop="pwd">
-          <el-input show-password v-model="form.pwd" class="el-input" ref="pwd" placeholder="新密码"></el-input>
+          <el-input
+            show-password
+            v-model="form.pwd"
+            class="el-input"
+            ref="pwd"
+            placeholder="新密码"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="pwd2">
           <el-input
@@ -21,18 +33,41 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.nick" ref="nick" class="el-input" placeholder="昵称"></el-input>
+          <el-input
+            v-model="form.nick"
+            ref="nick"
+            class="el-input"
+            placeholder="昵称"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.school" ref="school" class="el-input" placeholder="学校"></el-input>
+          <el-input
+            v-model="form.school"
+            ref="school"
+            class="el-input"
+            placeholder="学校"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.email" ref="email" class="el-input" placeholder="电子邮箱"></el-input>
+          <el-input
+            v-model="form.email"
+            ref="email"
+            class="el-input"
+            placeholder="电子邮箱"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="form.motto" ref="motto" class="el-input" placeholder="签名"></el-input>
+          <el-input
+            v-model="form.motto"
+            ref="motto"
+            class="el-input"
+            placeholder="签名"
+          ></el-input>
         </el-form-item>
-        <el-button type="primary" @click="editUser">修改</el-button>
+        <el-button
+          type="primary"
+          @click="editUser"
+        >修改</el-button>
       </el-form>
     </el-card>
   </div>
@@ -73,7 +108,7 @@ export default {
         params.append('motto', this.$refs.motto.value)
         params.append('Email', this.$refs.email.value)
         let dataUpdateUser = await this.$http
-          .post('/updateUser', params)
+          .post('/user/updateUser', params)
           .catch(() => {
             this.$message({
               message: '服务器繁忙，请稍后再试！',
@@ -95,15 +130,16 @@ export default {
   padding: 0;
 }
 
-.clearfix{
+.clearfix {
   /* float: left; */
   display: block;
-  background-color: white
+  background-color: white;
 }
 
 .box-card {
   background: url(../../assets/editUser_card_bg.jpg) no-repeat;
   background-size: 100% 100%;
+
   width: 550px;
   height: 700px;
   display: block;
@@ -115,6 +151,7 @@ export default {
 }
 
 .el-form {
+  text-align: center;
   margin-top: 200px;
 }
 

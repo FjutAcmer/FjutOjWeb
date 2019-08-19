@@ -152,7 +152,13 @@ export default {
       this.getLoginStatu()
       this.getDiscuss(this.currentPage)
     } else {
-      this.$message.warning('登录后才能查看讨论区哦')
+      this.$notify({
+        title: '提示',
+        message: '登录后才能查看讨论区哦',
+        type: 'warning',
+        offset: 100,
+        duration: 3000
+      })
     }
   }
 }

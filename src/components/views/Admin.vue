@@ -57,6 +57,7 @@ export default {
 }
 
 .admin-card {
+  min-width: 1200px;
   min-height: 400px;
 }
 </style>

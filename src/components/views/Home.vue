@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Carousel from '@/components/common/CarouselGraph'
-import HomeInfo from '@/components/common/HomeInfo'
-import Border from '@/components/common/Border'
+import Carousel from '@/components/views/Home/CarouselGraph'
+import HomeInfo from '@/components/views/Home/HomeInfo'
+import Border from '@/components/views/Home/Border'
 
 export default {
   components: {

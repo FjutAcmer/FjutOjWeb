@@ -1,19 +1,18 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+const config = require('../../config/oj.config.json')
 const store = require('../store/index')
 
-// 开发后端地址
-axios.defaults.baseURL = 'http://localhost:8080/api'
-// 部署后端地址
-// axios.defaults.baseURL = 'http://210.34.193.212:8080/api'
-axios.defaults.timeout = 6000
+axios.defaults.baseURL = config.apiUrl
+axios.defaults.timeout = 5000
 axios.interceptors.response.use(
   res => { return res },
   error => {
+    if (String(error).toLowerCase().indexOf('timeout') !== -1) {
+      Message.error('服务器繁忙，请稍后重试！')
+    }
     if (error.response.status === 500) {
       Message.error(error.response.data.msg)
-    } else {
-      Message.error('服务器繁忙，请稍后重试！')
     }
     return Promise.reject(error)
   }
@@ -40,7 +39,6 @@ var http = {
         resolve(response.data)
       })
         .catch(error => {
-          console.log(error)
           reject(error)
         })
     })
@@ -62,7 +60,6 @@ var http = {
         resolve(response.data)
       })
         .catch(error => {
-          console.log(error)
           reject(error)
         })
     })

@@ -1,6 +1,6 @@
 <template>
   <div class="foot-box">
-    <h1 class="title-span">FJUT Online Judge<span class="version-span"> v3.2</span></h1>
+    <h1 class="title-span">FJUT Online Judge<span class="version-span"> v1.0测试</span></h1>
     <div class="link-box">
       <el-link>BUG反馈</el-link> |
       <el-link>FAQ</el-link> |

@@ -78,13 +78,13 @@ export default {
   methods: {
     async getCode () {
       let params = new URLSearchParams()
-      params.append('id', this.$route.query.id)
+      let pidTmp = this.$route.query.id
+      params.append('id', pidTmp)
       params.append('username', this.$store.getters.getUsername)
       let dataStatusCode = await this.$http
         .get('/status/getStatusById', params)
         .catch(() => {
         })
-      console.log(dataStatusCode)
       if (dataStatusCode.code === 100) {
         let dataTemp = dataStatusCode.datas[0]
         this.runId = dataTemp.id
@@ -114,7 +114,13 @@ export default {
       this.getCeInfo()
       this.getCode()
     } else {
-      this.$message.warning('登录后查看！')
+      this.$notify({
+        title: '提示',
+        message: '登录后才能查看哦',
+        type: 'warning',
+        offset: 100,
+        duration: 3000
+      })
     }
   }
 

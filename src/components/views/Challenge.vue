@@ -36,6 +36,7 @@ export default {
         },
         {
           name: '部分完成',
+          symbol: 'rect',
           itemStyle: {
             borderColor: '#ffcc00',
             borderWidth: 4,
@@ -61,11 +62,17 @@ export default {
       this.init()
       this.getBlocks()
     } else {
-      this.$message.warning('登录后才能查看挑战模式哦 ')
+      this.$notify({
+        title: '提示',
+        message: '登录后才能查看哦',
+        type: 'warning',
+        offset: 100,
+        duration: 3000
+      })
     }
   },
   destroyed () {
-    // 离开这个组件销毁一次ECharts实例，如果不手动销毁，ECharts内部有一个计时器会永久存在，切换界面切换回去后会越来越卡。应该是BUG，没有详细研究
+    // 离开这个组件销毁一次ECharts实例，如果不手动销毁，ECharts内部有一个计时器会永久存在，切换界面切换回去后会越来越卡。
     this.myChart.dispose()
   },
   methods: {
@@ -82,7 +89,6 @@ export default {
       let dataGetBlocks = await this.$http
         .get('/challenge/getAllChallengeBlocks', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.myChart.hideLoading()
         })
       if (dataGetBlocks.code === 100) {
@@ -107,7 +113,7 @@ export default {
             : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
               ? 0
               : 1,
-          // 根据模块的分值大小调整圆圈大小 目前公式为 ((总分+20)^(1/2))*15
+          // 根据模块的分值大小调整圆圈大小 目前计算公式为 ((总分+20)^(1/2))*15
           symbolSize: Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
           getScored: this.dataBlocks[i].getScore,
           notScored: this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
@@ -121,7 +127,13 @@ export default {
             }
           },
           // 是否可拖动
-          draggable: true
+          draggable: true,
+          // TODO: 修改不同进度的显示图片
+          symbol: this.dataBlocks[i].locked
+            ? 'rect'
+            : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
+              ? 'triangle'
+              : 'diamond'
         }
         this.dataForChart.push(dataTemp)
       }
@@ -187,6 +199,7 @@ export default {
           {
             type: 'graph',
             layout: 'force',
+            // symbol: 'none',
             force: {
               // layoutAnimation: false,
               initLayout: 'circular',
@@ -251,7 +264,24 @@ export default {
           }
         }
       })
+
       this.myChart.hideLoading()
+      let i = 0
+      this.myChart.nodes.forEach(function (node) {
+        node.itemStyle = null
+        node.value = node.symbolSize
+        node.symbolSize /= 1.5
+        node.label = {
+          normal: {
+            show: node.symbolSize > 30
+          }
+        }
+        node.category = this.dataBlocks[i].locked
+          ? 2
+          : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
+            ? 0
+            : 1
+      })
     },
     // add by axiang [20190628] 获取解锁的前置条件内容
     async getPerCondition (blockId) {

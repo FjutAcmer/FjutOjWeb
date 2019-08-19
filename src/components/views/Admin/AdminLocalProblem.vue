@@ -41,12 +41,19 @@
     <div class="right-body">
       <el-button
         type="warning"
+        size="medium"
         @click="getLocalJudgeProblemFileList"
-      >检测本地题库</el-button>
+      >获取本地题目</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        @click="searchAvailableProblem"
+      >查看可用题目</el-button>
       <el-button
         type="danger"
+        size="medium"
         @click="resetLocalJudgeMarker"
-        >重置本地题库标识</el-button>
+      >重置本地题目标识</el-button>
       <div>
         <el-pagination
           class="table-pagination"
@@ -120,14 +127,6 @@ export default {
     handleCurrentChange (currentPage) {
       this.currentPage = currentPage
     },
-    handleTableSearch () {
-      this.tableData = []
-      for (let i = 0; i < this.dataFileListDetail.length; i++) {
-        if (this.dataFileListDetail[i].problemName.indexOf(this.searchProblemName) >= 0) {
-          this.tableData.push(this.dataFileListDetail[i])
-        }
-      }
-    },
     async getLocalJudgeProblemFileList () {
       this.loading = true
       let params = new URLSearchParams()
@@ -144,8 +143,36 @@ export default {
       }
       this.loading = false
     },
-    resetLocalJudgeMarker () {
-
+    handleTableSearch () {
+      this.tableData = []
+      for (let i = 0; i < this.dataFileListDetail.length; i++) {
+        if (this.dataFileListDetail[i].problemName.indexOf(this.searchProblemName) >= 0) {
+          this.tableData.push(this.dataFileListDetail[i])
+        }
+      }
+    },
+    searchAvailableProblem () {
+      this.tableData = []
+      for (let i = 0; i < this.dataFileListDetail.length; i++) {
+        if ((this.dataFileListDetail[i].inputFiles !== '' && this.dataFileListDetail[i].outputFiles !== '') || (this.dataFileListDetail[i].otherFiles !== '')) {
+          this.tableData.push(this.dataFileListDetail[i])
+        }
+      }
+    },
+    async resetLocalJudgeMarker () {
+      // updateAllProblemType
+      let params = new URLSearchParams()
+      let dataFileList = await this.$http
+        .post('/problem/updateAllProblemType', params)
+        .catch(() => {
+          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+        })
+      if (dataFileList.code === 100) {
+        this.message.success('全部题目更新成功！')
+        this.getLocalJudgeProblemFileList()
+      } else {
+        this.$message.error(dataFileList.msg)
+      }
     }
   }
 }

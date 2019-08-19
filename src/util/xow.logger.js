@@ -6,7 +6,6 @@
  * XoW.logger.logParams({k1 : "v1", k2 : "v2"}); 输出 [log][参数][k1 : v1][k2 : v2]
  */
 const logger = {
-  // 'use strict'
   LOG_LEVEL: {
     DEBUG: 0,
     INFO: 1,
@@ -18,7 +17,7 @@ const logger = {
   colors: ['black', 'blue', 'orange', 'red', 'yellow'],
   version: 2.0,
   options: {
-    logLevel: 0, // represents debug level to output
+    logLevel: 5, // represents debug level to output
     isTimestamp: true,
     isLevel: true,
     isColor: true
@@ -83,7 +82,6 @@ const logger = {
     }
     this.d(content)
   }
-
 }
 
 export default logger

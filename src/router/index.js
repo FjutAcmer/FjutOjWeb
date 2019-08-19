@@ -85,7 +85,7 @@ export default new Router({
       name: 'Status',
       component: () => import('@/components/views/Status'),
       meta: {
-        keepAlive: true
+        keepAlive: false
       }
     },
     {
@@ -195,7 +195,7 @@ export default new Router({
     {
       path: '/Test',
       name: 'Test',
-      component: () => import('@/components/views/Admin1'),
+      component: () => import('@/components/views/ContestInfo1'),
       meta: {
         keepAlive: false
       }

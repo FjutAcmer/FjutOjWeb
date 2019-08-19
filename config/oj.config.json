@@ -1,0 +1,6 @@
+{
+  "apiUrl": "http://localhost:8080/api",
+  "apiUrl_dev_backUp": "http://localhost:8080/api",
+  "apiUrl_prod_backUp": "http://210.34.193.212:8080/api",
+  "loggerDisable": false
+}
