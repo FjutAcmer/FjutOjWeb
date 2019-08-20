@@ -302,17 +302,9 @@ export default {
   min-height: 700px;
 }
 
-.echarts-box {
-  margin: 0;
-  padding: 0;
-  float: left;
-  height: 320px;
-  width: 320px;
-}
-
 .code-editor-box {
   text-align: center;
-  background-color: #eeeeee;
+  /* background-color: #eeeeee; */
 }
 
 .language-select {

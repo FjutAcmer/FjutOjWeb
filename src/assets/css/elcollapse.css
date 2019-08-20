@@ -36,7 +36,7 @@
   background-color: #fafafa;
   font-size: 17px;
   font-weight: bolder;
-  margin-left: 5px;
+  /* margin-left: 5px; */
 }
 
 #submit-collapse .el-collapse-item__body{
