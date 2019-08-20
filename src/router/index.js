@@ -195,7 +195,7 @@ export default new Router({
     {
       path: '/Test',
       name: 'Test',
-      component: () => import('@/components/views/ContestInfo1'),
+      // component: () => import('@/components/views/ContestInfo1'),
       meta: {
         keepAlive: false
       }

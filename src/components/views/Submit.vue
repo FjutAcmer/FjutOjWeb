@@ -1,14 +1,27 @@
 <template>
   <div class="submit-body">
-    <SubmitBody :pid="this.$route.query.pid"></SubmitBody>
+    <SubmitComponent :pid="this.$route.query.pid"></SubmitComponent>
   </div>
 </template>
 
 <script>
-import SubmitBody from './Submit/SubmitBody'
+import SubmitComponent from './Submit/SubmitComponent'
 export default {
   components: {
-    SubmitBody
+    SubmitComponent
+  },
+  beforeRouteLeave (to, from, next) {
+    if (to.name === 'Status') {
+      next()
+    } else {
+      this.$confirm('正在离开本页面，本页面内所有未保存数据都会丢失', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        next()
+      }).catch(() => { })
+    }
   }
 
 }

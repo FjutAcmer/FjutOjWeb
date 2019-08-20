@@ -20,23 +20,19 @@
           <span
             v-if="this.contestInfo.status===0"
             class="detail-green-font"
-          >
-            正在进行
-          </span>
+          >正在进行</span>
           <span
             v-else-if="this.contestInfo.status===1"
             class="detail-blue-font"
-          >
-            未开始
-          </span>
+          >未开始</span>
           <span
             v-else
             class="detail-red-font"
-          >
-            已经结束
-          </span>
+          >已经结束</span>
           <br />
           比赛说明：<span v-html="this.contestInfo.info?this.contestInfo.info:'无'"></span>
+          <!-- <ContestProblemBody :isContestView="true"></ContestProblemBody> -->
+          <!-- <el-button @click="swithTabPane('2')">switch</el-button> -->
         </div>
       </el-tab-pane>
       <el-tab-pane
@@ -52,16 +48,22 @@
           plain
         >{{String.fromCharCode(item.pid+65)}}</el-button>
         <el-divider></el-divider>
-        <SubmitBody
-          :isContestView="true"
+        <ContestSubmitComponent
+          v-if="this.showSubmit && this.ProblemList.length"
+          :readOnly="this.contestInfo.status!==0"
           :pid="selectedPid"
-        ></SubmitBody>
+          :cid="String(this.$route.query.cid)"
+          @toPane="swithTabPane"
+        ></ContestSubmitComponent>
       </el-tab-pane>
       <el-tab-pane
         label="在线评测"
         name="3"
       >
-
+        <ContestStatusComponent
+          v-if="this.showStatus"
+          :cid="this.contestId"
+        ></ContestStatusComponent>
       </el-tab-pane>
       <el-tab-pane
         label="实时排名"
@@ -76,18 +78,29 @@
 </template>
 
 <script>
-import SubmitBody from '../views/Submit/SubmitBody'
+import ContestProblemComponent from '../views/ContestInfo/ContestProblemComponent'
+import ContestSubmitComponent from '../views/ContestInfo/ContestSubmitComponent'
+import ContestStatusComponent from '../views/ContestInfo/ContestStatusComponent'
 export default {
   data () {
     return {
       activeTab: '1',
       contestInfo: '',
-      selectedPid: '-1',
-      ProblemList: []
+      selectedPid: '1',
+      ProblemList: [],
+      contestId: '',
+      showSubmit: false,
+      showStatus: false
     }
   },
   components: {
-    SubmitBody
+    ContestProblemComponent,
+    ContestSubmitComponent,
+    ContestStatusComponent
+  },
+  created () {
+    this.contestId = String(this.$route.query.cid)
+    this.showStatus = true
   },
   mounted () {
     this.getProblemList()
@@ -96,7 +109,8 @@ export default {
   methods: {
     async getContest () {
       let params = new URLSearchParams()
-      params.append('cid', this.$route.query.cid)
+      params.append('cid', this.contestId)
+      console.log(this.contestId)
       let dataContest = await this.$http
         .get('/contest/getContestByCid', params)
         .catch(() => {
@@ -104,18 +118,32 @@ export default {
       this.contestInfo = dataContest.datas[0]
     },
     async getProblemList () {
+      this.contestId = String(this.$route.query.cid)
       let params = new URLSearchParams()
-      params.append('cid', this.$route.query.cid)
+      params.append('cid', this.contestId)
       let dataProblemList = await this.$http
         .get('/contest/getContestProblem', params)
         .catch(() => {
         })
       this.ProblemList = dataProblemList.datas[0]
-      this.selectedPid = this.ProblemList[0].tpid
+      this.selectedPid = String(this.ProblemList[0].tpid)
+      this.showSubmit = true
     },
     swithProblem (pid) {
       this.selectedPid = String(pid)
+    },
+    swithTabPane (val) {
+      this.activeTab = val
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$confirm('正在离开本页面，本页面内所有未保存数据都会丢失', '警告', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      next()
+    }).catch(() => { })
   }
 }
 </script>
@@ -125,13 +153,14 @@ export default {
   width: 90%;
   margin: auto;
   min-height: 400px;
+  margin-bottom: 20px;
 }
 
 .detail-box {
-  width: 50%;
-  float: left;
+  width: 80%;
   text-align: left;
-  margin-left: 20px;
+  line-height: 40px;
+  margin: auto;
   font-size: 18px;
 }
 

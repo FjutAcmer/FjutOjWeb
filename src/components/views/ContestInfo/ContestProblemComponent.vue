@@ -1,96 +1,94 @@
 <template>
   <div class="problem-body">
-      <div class="function-bar" v-if="!this.isContestView">
-        <el-checkbox
-          class="bar-search-item"
-          v-model="myCollection"
-        >我的收藏</el-checkbox>
-        <el-input
-          v-model="searchTitle"
-          class="bar-search-item-input"
-          size="mini"
-          placeholder="请输入标题"
-        >
-          <template slot="prepend">标题</template>
-        </el-input>
-        <el-select
-          v-model="searchTag"
-          class="bar-search-item-select"
-          size="mini"
-          placeholder="请选择标签"
-        >
-          <el-option
-            v-for="item in problemTags"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-        <el-button
-          size="mini"
-          class="bar-search-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleSelect"
-        >筛选</el-button>
-        <el-button
-          size="mini"
-          class="bar-search-item"
-          type="info"
-          icon="el-icon-s-grid"
-          @click="handleBackToAll"
-        >查看全部</el-button>
-      </div>
-      <el-pagination
-        layout="total, prev, pager, next, jumper"
-        :current-page="this.currentPage"
-        @current-change="switchPage"
-        :total="this.total"
-        :page-size="50"
-      ></el-pagination>
-      <el-table
-        style="width:100%;"
-        :data="this.tableData"
-        v-loading="loading"
+    <div class="function-bar">
+      <el-checkbox
+        class="bar-search-item"
+        v-model="myCollection"
+      >我的收藏</el-checkbox>
+      <el-input
+        v-model="searchTitle"
+        class="bar-search-item-input"
+        size="mini"
+        placeholder="请输入标题"
       >
-        <el-table-column
-          label="是否解决"
-          width="100"
-        >
-          <template slot-scope="scope">
-            <span :class="scope.row.isSolved==='✔'?'success-row':scope.row.isSolved==='?'?'error-row':''">{{scope.row.isSolved}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="id"
-          label="#"
-          width="150"
-        ></el-table-column>
-        <el-table-column
-          prop="Title"
-          label="题目标题"
-          width="600"
-        >
-          <template slot-scope="scope">
-            <el-link
-              type="primary"
-              @click="toSubmit(scope.row.id)"
-            >{{scope.row.Title}}</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="Ratio"
-          label="通过率（通过人数/总提交数）"
-        ></el-table-column>
-      </el-table>
+        <template slot="prepend">标题</template>
+      </el-input>
+      <el-select
+        v-model="searchTag"
+        class="bar-search-item-select"
+        size="mini"
+        placeholder="请选择标签"
+      >
+        <el-option
+          v-for="item in problemTags"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        ></el-option>
+      </el-select>
+      <el-button
+        size="mini"
+        class="bar-search-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleSelect"
+      >筛选</el-button>
+      <el-button
+        size="mini"
+        class="bar-search-item"
+        type="info"
+        icon="el-icon-s-grid"
+        @click="handleBackToAll"
+      >查看全部</el-button>
+    </div>
+    <el-pagination
+      layout="total, prev, pager, next, jumper"
+      :current-page="this.currentPage"
+      @current-change="switchPage"
+      :total="this.total"
+      :page-size="50"
+    ></el-pagination>
+    <el-table
+      style="width:100%;"
+      :data="this.tableData"
+      v-loading="loading"
+    >
+      <el-table-column
+        label="是否解决"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <span :class="scope.row.isSolved==='✔'?'success-row':scope.row.isSolved==='?'?'error-row':''">{{scope.row.isSolved}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="#"
+        width="150"
+      ></el-table-column>
+      <el-table-column
+        prop="Title"
+        label="题目标题"
+        width="600"
+      >
+        <template slot-scope="scope">
+          <el-link
+            type="primary"
+            @click="toSubmit(scope.row.id)"
+          >{{scope.row.Title}}</el-link>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="Ratio"
+        label="通过率（通过人数/总提交数）"
+      ></el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    isContestView: Boolean
-
   },
   data () {
     return {
@@ -108,12 +106,8 @@ export default {
   },
   mounted () {
     // 如果不是显示比赛界面
-    if (!this.isContestView) {
-      this.getProlem()
-      this.getProblemTags()
-    } else {
-
-    }
+    this.getProlem()
+    this.getProblemTags()
   },
   methods: {
     switchPage (val) {
@@ -219,16 +213,6 @@ export default {
   margin: 0;
   margin-bottom: 20px;
   font-family: 微软雅黑, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.box-card {
-  width: 90%;
-  height: 100%;
-  min-height: 500px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0;
 }
 
 .function-bar {

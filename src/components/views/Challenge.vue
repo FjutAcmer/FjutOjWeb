@@ -130,9 +130,9 @@ export default {
           draggable: true,
           // TODO: 修改不同进度的显示图片
           symbol: this.dataBlocks[i].locked
-            ? 'rect'
+            ? 'image://static/userInfoBG.png'
             : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
-              ? 'triangle'
+              ? 'image://https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1566868444&di=349555c02d2dadf813ff78dead3dabab&imgtype=jpg&er=1&src=http%3A%2F%2Fpic32.nipic.com%2F20130824%2F13506311_141948702155_2.jpg'
               : 'diamond'
         }
         this.dataForChart.push(dataTemp)
@@ -266,22 +266,22 @@ export default {
       })
 
       this.myChart.hideLoading()
-      let i = 0
-      this.myChart.nodes.forEach(function (node) {
-        node.itemStyle = null
-        node.value = node.symbolSize
-        node.symbolSize /= 1.5
-        node.label = {
-          normal: {
-            show: node.symbolSize > 30
-          }
-        }
-        node.category = this.dataBlocks[i].locked
-          ? 2
-          : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
-            ? 0
-            : 1
-      })
+      // let i = 0
+      // this.myChart.nodes.forEach(function (node) {
+      //   node.itemStyle = null
+      //   node.value = node.symbolSize
+      //   node.symbolSize /= 1.5
+      //   node.label = {
+      //     normal: {
+      //       show: node.symbolSize > 30
+      //     }
+      //   }
+      //   node.category = this.dataBlocks[i].locked
+      //     ? 2
+      //     : this.dataBlocks[i].totalScore === this.dataBlocks[i].getScore
+      //       ? 0
+      //       : 1
+      // })
     },
     // add by axiang [20190628] 获取解锁的前置条件内容
     async getPerCondition (blockId) {

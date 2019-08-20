@@ -4,16 +4,16 @@
       <div slot="header">
         题目列表
       </div>
-      <ProblemBody></ProblemBody>
+      <ProblemComponent></ProblemComponent>
     </el-card>
   </div>
 </template>
 
 <script>
-import ProblemBody from '../views/Problem/ProblemBody'
+import ProblemComponent from '../views/Problem/ProblemComponent'
 export default {
   components: {
-    ProblemBody
+    ProblemComponent
   },
   data () {
     return {}

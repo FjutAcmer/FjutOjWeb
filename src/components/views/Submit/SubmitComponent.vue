@@ -88,7 +88,6 @@
           ></div>
         </el-card>
         <el-card
-          v-if="!this.isContestView"
           id="problem"
           class="problem-detail-card"
         >
@@ -156,9 +155,7 @@
         >
         </el-collapse-item>
       </el-collapse>
-
     </div>
-    <!-- <div class="code-box"><aceEditor language="CPP"></aceEditor></div> -->
   </div>
 </template>
 
@@ -171,10 +168,8 @@ export default {
     aceEditor
   },
   props: {
-    isContestView: Boolean,
     pid: String
   },
-
   data () {
     return {
       myChartSubmit: '',
@@ -218,9 +213,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.isContestView) {
-      this.initEcharts()
-    }
+    this.initEcharts()
     this.getProblem()
     if (!this.$store.getters.getIsLogin) {
       this.activeIndex = []
@@ -258,10 +251,8 @@ export default {
       this.dataProblemDetail = dataProblemView.datas[1]
       this.dataProblemSamples = dataProblemView.datas[2] ? dataProblemView.datas[2] : this.dataProblemSamples
       this.problemIsAc = dataProblemView.datas[3]
-      if (!this.isContestView) {
-        this.loadChartsSubmit()
-        this.loadChartsAcUser()
-      }
+      this.loadChartsSubmit()
+      this.loadChartsAcUser()
     },
     loadChartsSubmit () {
       let totalAc = this.dataProblemDetail.totalAc
@@ -409,7 +400,8 @@ export default {
 
 .right-box {
   float: right;
-  width: 49%;
+  margin-top: 20px;
+  width: 50%;
   min-height: 700px;
 }
 
@@ -420,6 +412,7 @@ export default {
   height: 320px;
   width: 320px;
 }
+
 .code-editor-box {
   text-align: center;
   background-color: #eeeeee;
