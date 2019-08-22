@@ -20,6 +20,9 @@
         <el-tab-pane label="文件上传">
           <FileUpload></FileUpload>
         </el-tab-pane>
+        <el-tab-pane label="添加比赛">
+          <AddContest></AddContest>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
     <el-card
@@ -34,6 +37,7 @@
 import AddProblem from '../views/Admin/AdminAddProblem'
 import LocalProblem from '../views/Admin/AdminLocalProblem'
 import FileUpload from '../views/Admin/AdminFileUpload'
+import AddContest from '../views/Admin/AdminAddContest'
 export default {
   data () {
     return {
@@ -43,7 +47,8 @@ export default {
   components: {
     AddProblem,
     LocalProblem,
-    FileUpload
+    FileUpload,
+    AddContest
   }
 }
 </script>
@@ -57,7 +62,7 @@ export default {
 }
 
 .admin-card {
-  min-width: 1200px;
+  min-width: 1300px;
   min-height: 400px;
 }
 </style>

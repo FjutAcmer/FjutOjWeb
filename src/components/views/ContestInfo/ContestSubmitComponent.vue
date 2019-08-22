@@ -210,6 +210,10 @@ export default {
   },
   methods: {
     async getProblem () {
+      this.dataProblemMain = ''
+      this.dataProblemDetail = ''
+      this.dataProblemSamples = ''
+      this.problemIsAc = ''
       let params = new URLSearchParams()
       let pidTemp = this.pid
       params.append('pid', pidTemp)
@@ -245,10 +249,7 @@ export default {
       let dataSubmitProblem = await this.$http
         .post(url, params)
         .catch(() => {
-          this.$message({
-            message: '服务器繁忙，请稍后再试！',
-            type: 'error'
-          })
+          this.loading = false
         })
       if (dataSubmitProblem.code === 100) {
         this.loading = false

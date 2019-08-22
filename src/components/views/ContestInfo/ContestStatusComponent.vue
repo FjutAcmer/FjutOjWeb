@@ -260,18 +260,18 @@ export default {
       this.currentPage = 1
       this.getStatus()
     },
-    toCodeView (row) {
-      // this.$router.push({path: '/CodeView', query: {id: row.id}})
-      // 解构赋值，将this.$router.resolve对象内的href 返回给 href
-      let { href } = this.$router.resolve({
-        name: 'CodeView',
-        query: {
-          id: row.id,
-          ruser: row.ruser
-        }
-      })
-      window.open(href, '_blank')
-    },
+    // toCodeView (row) {
+    //   // this.$router.push({path: '/CodeView', query: {id: row.id}})
+    //   // 解构赋值，将this.$router.resolve对象内的href 返回给 href
+    //   let { href } = this.$router.resolve({
+    //     name: 'CodeView',
+    //     query: {
+    //       id: row.id,
+    //       ruser: row.ruser
+    //     }
+    //   })
+    //   window.open(href, '_blank')
+    // },
     switchPage (val) {
       this.currentPage = val
       this.getStatus()

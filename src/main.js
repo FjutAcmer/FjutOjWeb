@@ -18,11 +18,6 @@ import './assets/css/elcard.css'
 import './assets/css/elcollapse.css'
 import './assets/css/rank.css'
 
-// import VueQuillEditor from 'vue-quill-editor'
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import 'quill/dist/quill.bubble.css'
-
 Vue.config.productionTip = false
 Vue.config.devtools = true
 
