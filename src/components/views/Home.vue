@@ -36,12 +36,12 @@ export default {
 .home-info-body{
   float: left;
   margin-bottom: 10px;
-  width: 950px;
+  width: 70%;
 }
 
 .border-body{
   float: left;
-  width: 330px;
+  width: 25%;
   margin-left: 30px;
   min-height: 400px;
 }

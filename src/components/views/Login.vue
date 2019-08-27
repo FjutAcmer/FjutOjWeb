@@ -63,7 +63,7 @@ export default {
         ],
         pwd: [
           { required: true, message: '密码不能为空', trigger: 'change' },
-          { min: 4, max: 12, message: '长度在 4 到 12 个字符', trigger: 'blur' }
+          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
         ]
       }
     }

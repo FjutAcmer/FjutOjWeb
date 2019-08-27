@@ -52,7 +52,8 @@ var http = {
       axios({
         method: 'post',
         url: url,
-        params: params,
+        // FIXME: 实际上没有放入请求体中，而是放在请求参数里了，这里需要改正
+        data: params,
         headers: {
           'auth': store.default.getters.getToken
         }

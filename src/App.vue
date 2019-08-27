@@ -3,7 +3,6 @@
     id="app"
     v-loading="loading"
   >
-
     <Head class="header"></Head>
     <div class="main">
       <transition
@@ -30,14 +29,13 @@
 </template>
 
 <script>
-import Head from '@/components/common/Head'
-import Foot from '@/components/common/Foot'
+import Head from '@/components/common/HeadComponent'
+import Foot from '@/components/common/FootComponent'
 
 export default {
   name: 'App',
   components: {
     Head,
-    // NewHead,
     Foot
   },
   data () {

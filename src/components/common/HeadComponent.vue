@@ -37,7 +37,7 @@
       </el-submenu>
       <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
       <!-- FIXME: 方便调试暂时设置，正式部署时需要去除 -->
-      <el-menu-item index="Test">测试</el-menu-item>
+      <!-- <el-menu-item index="Test">测试</el-menu-item> -->
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
       <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
       <div class="menu-rightside">
@@ -140,10 +140,10 @@ export default {
       }
     },
     logout () {
-      // TODO: 请求后端消除redis记录
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
       params.append('username', username)
+      // 请求后端销毁redis记录
       this.$http.post('/user/logout', params)
       this.$store.commit('LOGOUT')
       this.handleSelect('Index')

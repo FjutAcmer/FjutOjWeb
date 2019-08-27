@@ -6,16 +6,15 @@
           签到记录
           <tr/>
         </div>
-        <div>
-          <font color="yellow">黄◉:今天未签到</font>
-          &emsp;
-          <font color="orange">橙◉:今天已签到</font>
-          &emsp;
-          <font color="orange">橙■:当天已签到</font>
-        </div>
       </div>
       <!-- TODO: add by axiang [20190613] 日历插件需要更新一个好用一些的 -->
-      <Calendar :markDateMore="clockInDateArr"></Calendar>
+      <Calendar lang="zh" :events="this.clockInDateArr"></Calendar>
+      <!-- <el-calendar>
+        <template slot="dataCell" slot-scope="{date, data}">
+
+        </template>
+      </el-calendar> -->
+
     </div>
     <div class="ClockInList">
       <div class="ClockInList-head">
@@ -59,7 +58,8 @@
 </template>
 
 <script>
-import Calendar from 'vue-calendar-component'
+// import Calendar from 'vue-calendar-component'
+import Calendar from 'vue-fullcalendar'
 
 export default {
   components: {
@@ -71,10 +71,16 @@ export default {
       tableData: [],
       clockInDateArr: [],
       today: new Date(),
-
       pagesize: 10,
       currentTotal: 0,
-      currentPage: 1
+      currentPage: 1,
+      events: [
+        {
+          title: '已签到',
+          start: '2019-08-25',
+          end: '2019-08-25',
+          cssClass: 'family' }
+      ]
     }
   },
   created () {
@@ -116,8 +122,10 @@ export default {
           className = 'clockInOther'
         }
         this.clockInDateArr.push({
-          date: timeStr.split(' ')[0],
-          className: className
+          title: '已签到',
+          start: timeStr.split(' ')[0],
+          end: timeStr.split(' ')[0],
+          cssClass: className
         })
       }
       for (let i = 0; i < dataClockIn.length; i++) {
@@ -155,7 +163,7 @@ export default {
 }
 
 .CalendarBox-head {
-  background-color: lightblue;
+  /* background-color: lightblue; */
   height: auto;
   width: 79%;
   margin: 0;

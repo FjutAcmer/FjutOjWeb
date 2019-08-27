@@ -99,7 +99,11 @@
           title="答题"
           name="1"
         >
-          <div class="code-editor-box">
+        <div v-if="this.readOnly"><h2>未在作答时间内无法作答</h2></div>
+          <div
+            class="code-editor-box"
+            v-else
+          >
             请选择语言：
             <el-select
               class="language-select"

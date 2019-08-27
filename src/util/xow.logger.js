@@ -17,7 +17,7 @@ const logger = {
   colors: ['black', 'blue', 'orange', 'red', 'yellow'],
   version: 2.0,
   options: {
-    logLevel: 5, // represents debug level to output
+    logLevel: 0, // represents debug level to output
     isTimestamp: true,
     isLevel: true,
     isColor: true

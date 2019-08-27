@@ -174,6 +174,10 @@ export default {
     this.getContest()
   },
   watch: {
+    /*
+     多个比赛列表用的同一个组件，传入不同参数，
+     如果单纯改变参数则不刷新。以下逻辑为强制刷新
+     */
     '$route' (to, from) {
       this.currentPage = 1
       this.getContest()
@@ -234,12 +238,16 @@ export default {
         this.$message.warning('登录后才能查看！')
       } else {
         // FIXME: 这里暂时还没详细判断限制条件，暂时注释掉，直接进入
-        this.$router.push({
-          path: '/ContestInfo',
-          query: {
-            cid: row.id
-          }
-        })
+        if (row.status === 1) {
+          this.$message.warning('比赛还未开始，不允许查看！')
+        } else {
+          this.$router.push({
+            path: '/ContestInfo',
+            query: {
+              cid: row.id
+            }
+          })
+        }
       }
       // else {
       //

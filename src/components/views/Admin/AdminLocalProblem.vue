@@ -49,11 +49,11 @@
         size="medium"
         @click="searchAvailableProblem"
       >查看可用题目</el-button>
-      <el-button
+      <!-- <el-button
         type="danger"
         size="medium"
         @click="resetLocalJudgeMarker"
-      >重置本地题目标识</el-button>
+      >重置本地题目标识</el-button> -->
       <div>
         <el-pagination
           class="table-pagination"
@@ -168,7 +168,7 @@ export default {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       if (dataFileList.code === 100) {
-        this.message.success('全部题目更新成功！')
+        this.message.success(dataFileList.msg)
         this.getLocalJudgeProblemFileList()
       } else {
         this.$message.error(dataFileList.msg)

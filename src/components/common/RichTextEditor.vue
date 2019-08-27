@@ -41,7 +41,7 @@ export default {
     return {
       content: null,
       editorOption: {
-        placeholder: '请在这里输入文本',
+        placeholder: '请在这里输入文本；不要上传过大图片',
         theme: 'snow',
         modules: {
           toolbar: {

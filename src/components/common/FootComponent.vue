@@ -2,20 +2,26 @@
   <div class="foot-box">
     <h1 class="title-span">FJUT Online Judge<span class="version-span"> v1.0测试</span></h1>
     <div class="link-box">
-      <el-link>BUG反馈</el-link> |
+      <el-link @click="goReportBug">BUG反馈</el-link> |
       <el-link>FAQ</el-link> |
       <el-link>开发团队</el-link> |
       <el-link>加入我们</el-link> |
       <el-link>闽ICP备xxxxxxxx号-1</el-link>
     </div>
     <span class="power-span">Power by ©515项目组-FJUTOJ</span>
+    <BugReport :dialogVisible="showBugReport" @visiable="changeVisiable"></BugReport>
   </div>
 </template>
 
 <script>
+import BugReport from '../common/BugReportComponent'
 export default {
+  components: {
+    BugReport
+  },
   data () {
     return {
+      showBugReport: false,
       date: new Date().toLocaleString('chinese', { hour12: false })
     }
   },
@@ -24,6 +30,14 @@ export default {
     this.timer = setInterval(() => {
       _this.date = new Date().toLocaleString('chinese', { hour12: false }) // 修改数据date
     }, 1000)
+  },
+  methods: {
+    goReportBug () {
+      this.showBugReport = true
+    },
+    changeVisiable (val) {
+      this.showBugReport = false
+    }
   },
   beforeDestroy () {
     if (this.timer) {

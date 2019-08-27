@@ -199,6 +199,14 @@ export default new Router({
       meta: {
         keepAlive: false
       }
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: () => import('@/components/views/NotFound.vue'),
+      meta: {
+        keepAlive: true
+      }
     }
   ]
 })

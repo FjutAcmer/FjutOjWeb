@@ -4,17 +4,15 @@
   <div class="docker">
     <el-card
       class="box-card"
-      :body-style="{ padding: '0px' }"
     >
       <div slot="header">
         <span>编辑个人信息</span>
-        <!-- <el-button  type="text">操作按钮</el-button> -->
       </div>
       <el-form
-        :model="form"
-        class="el-form"
+        label-position="right"
+        label-width="120px"
       >
-        <el-form-item prop="pwd">
+        <el-form-item label="输入新密码*：">
           <el-input
             show-password
             v-model="form.pwd"
@@ -23,7 +21,7 @@
             placeholder="新密码"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="pwd2">
+        <el-form-item label="输入旧密码*：">
           <el-input
             show-password
             v-model="form.pwd2"
@@ -32,7 +30,7 @@
             placeholder="确认密码"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="新昵称：">
           <el-input
             v-model="form.nick"
             ref="nick"
@@ -40,7 +38,7 @@
             placeholder="昵称"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="新学校：">
           <el-input
             v-model="form.school"
             ref="school"
@@ -48,7 +46,7 @@
             placeholder="学校"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="新邮箱：">
           <el-input
             v-model="form.email"
             ref="email"
@@ -56,7 +54,7 @@
             placeholder="电子邮箱"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item label="新签名：">
           <el-input
             v-model="form.motto"
             ref="motto"
@@ -125,34 +123,25 @@ export default {
 <style scoped>
 .docker {
   width: 100%;
-  min-height: 800px;
+  min-height: 400px;
   margin: 0;
   padding: 0;
 }
 
-.clearfix {
-  /* float: left; */
-  display: block;
-  background-color: white;
-}
-
 .box-card {
-  background: url(../../assets/editUser_card_bg.jpg) no-repeat;
-  background-size: 100% 100%;
-
-  width: 550px;
-  height: 700px;
-  display: block;
-  margin-top: 5%;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0;
-  padding: 0;
+  /* background: url(../../assets/editUser_card_bg.jpg) no-repeat; */
+  /* background-size: 100% 100%; */
+  width: 520px;
+  margin: auto;
+  margin-bottom: 20px;
+  min-height: 400px;
 }
 
 .el-form {
   text-align: center;
-  margin-top: 200px;
+  width: 100%;
+  margin: auto;
+  /* margin-top: 200px; */
 }
 
 button {
