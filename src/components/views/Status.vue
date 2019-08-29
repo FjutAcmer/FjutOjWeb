@@ -1,7 +1,6 @@
 <template>
   <div class="problem">
     <el-card
-      :body-style="{ padding: '0px' }"
       class="box-card"
     >
     <div slot="header">评测列表</div>

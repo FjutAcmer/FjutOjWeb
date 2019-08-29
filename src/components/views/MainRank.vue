@@ -1,8 +1,14 @@
 <template>
-<!--TODO: add by axiang [20190702] 颜色表示的逻辑非常糟糕，等待重构 -->
+  <!--TODO: add by axiang [20190702] 颜色表示的逻辑非常糟糕，等待重构 -->
   <div class="docker">
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
-      <div slot="header" class="clearfix">用户排名</div>
+    <el-card
+      :body-style="{ padding: '0px' }"
+      class="box-card"
+    >
+      <div
+        slot="header"
+        class="clearfix"
+      >用户排名</div>
       <div class="functionBar">
         <el-pagination
           class="pagination"
@@ -11,8 +17,17 @@
           @current-change="getList"
           :total="this.currentTotal*10"
         ></el-pagination>
-        <el-button class="button" size="mini" @click="getSearch(1)">确定</el-button>
-        <el-input v-model="input" placeholder="Username" size="mini" class="input">
+        <el-button
+          class="button"
+          size="mini"
+          @click="getSearch(1)"
+        >确定</el-button>
+        <el-input
+          v-model="input"
+          placeholder="Username"
+          size="mini"
+          class="input"
+        >
           <template slot="prepend">查找</template>
         </el-input>
       </div>
@@ -22,8 +37,16 @@
         highlight-current-row
         v-loading="loading"
       >
-        <el-table-column type="index" label="Rank" width="100" :index="indexMethod">Rank</el-table-column>
-        <el-table-column label="UserName" width="200">
+        <el-table-column
+          type="index"
+          label="Rank"
+          width="100"
+          :index="indexMethod"
+        >Rank</el-table-column>
+        <el-table-column
+          label="UserName"
+          width="200"
+        >
           <template slot-scope="scope">
             <div
               @click="toUser(scope.row)"
@@ -52,7 +75,10 @@
             >{{scope.row.username}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="Nick" width="220">
+        <el-table-column
+          label="Nick"
+          width="220"
+        >
           <template slot-scope="scope">
             <div
               v-if="scope.row.acnum>=0&&scope.row.acnum<=100"
@@ -70,10 +96,17 @@
               v-if="scope.row.acnum>=700&&scope.row.acnum<=1000"
               style="color:orange"
             >{{scope.row.nick}}</div>
-            <div v-if="scope.row.acnum>=1000" style="color:#FFD700">{{scope.row.nick}}</div>
+            <div
+              v-if="scope.row.acnum>=1000"
+              style="color:#FFD700"
+            >{{scope.row.nick}}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="motto" label="Motto" width="500"></el-table-column>
+        <el-table-column
+          prop="motto"
+          label="Motto"
+          width="500"
+        ></el-table-column>
         <el-table-column label="AC">
           <template slot-scope="scope">
             <div
@@ -92,7 +125,10 @@
               v-if="scope.row.acnum>=700&&scope.row.acnum<=1000"
               style="color:orange"
             >{{scope.row.acnum}}</div>
-            <div v-if="scope.row.acnum>=1000" style="color:#FFD700">{{scope.row.acnum}}</div>
+            <div
+              v-if="scope.row.acnum>=1000"
+              style="color:#FFD700"
+            >{{scope.row.acnum}}</div>
           </template>
         </el-table-column>
       </el-table>

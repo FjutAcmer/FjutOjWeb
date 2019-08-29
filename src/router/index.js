@@ -193,6 +193,14 @@ export default new Router({
       }
     },
     {
+      path: '/AccessDenied',
+      name: 'AccessDenied',
+      component: () => import('@/components/common/AccessDenied.vue'),
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
       path: '/Test',
       name: 'Test',
       component: () => import('@/components/common/RichTextEditor.vue'),
@@ -203,7 +211,7 @@ export default new Router({
     {
       path: '*',
       name: 'NotFound',
-      component: () => import('@/components/views/NotFound.vue'),
+      component: () => import('@/components/common/NotFound.vue'),
       meta: {
         keepAlive: true
       }

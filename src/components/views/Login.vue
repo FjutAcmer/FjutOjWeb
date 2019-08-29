@@ -1,32 +1,48 @@
 <template>
   <div class="login">
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
-      <img src="../../assets/Login_left_bg.jpg">
-      <div style="width:500px;height:100%;float:right">
+    <el-card
+      :body-style="{ padding: '0px' }"
+      class="box-card"
+    >
+      <el-image :src="picUrl" class="img"></el-image>
+      <div class="login-box">
         <h1>登录</h1>
-        <el-form ref="form" style="margin-top:8%" :model="form" :rules="rules">
-          <el-form-item prop="name" style="float:center">
-            <input
+        <el-form
+          ref="form"
+          :model="form"
+          :rules="rules"
+        >
+          <el-form-item prop="name" @keyup.enter.native="onSubmit('form')">
+            <el-input
               name="name"
               autocomplete="on"
               autofocus="autofocus"
               type="text"
               v-model="form.name"
               placeholder="用户名"
-              ref="name"
-            >
+            ></el-input>
           </el-form-item>
-          <el-form-item prop="pwd" style="float:center" @keyup.enter.native="onSubmit('form')">
-            <input
+          <el-form-item
+            prop="pwd"
+            @keyup.enter.native="onSubmit('form')"
+          >
+            <el-input
               name="pwd"
               type="password"
               show-password
               v-model="form.pwd"
               placeholder="密码"
-              ref="pwd"
-            >
+            ></el-input>
           </el-form-item>
-          <el-button type="primary" @click="onSubmit('form')">登录</el-button>
+
+          <el-button
+            type="primary"
+            @click="onSubmit('form')"
+          >登录</el-button>
+          <el-button
+            type="warning"
+            @click="toRegister()"
+          >注册</el-button>
         </el-form>
       </div>
     </el-card>
@@ -34,7 +50,6 @@
 </template>
 
 <script>
-// import { valid } from 'semver'
 
 export default {
   data () {
@@ -45,6 +60,7 @@ export default {
       else callback()
     }
     return {
+      picUrl: require('../../assets/image/login.jpg'),
       form: {
         name: '',
         pwd: ''
@@ -52,18 +68,18 @@ export default {
       datas: [],
       rules: {
         name: [
-          { required: true, message: '用户名不能为空', trigger: 'blur' },
+          { required: true, message: '用户名不能为空', trigger: 'change' },
           {
             min: 1,
             max: 20,
             message: '长度在 1 到 20 个字符',
-            trigger: 'blur'
+            trigger: 'change'
           },
-          { validator: validateUsername, trigger: 'blur' }
+          { validator: validateUsername, trigger: 'change' }
         ],
         pwd: [
           { required: true, message: '密码不能为空', trigger: 'change' },
-          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' }
+          { min: 4, max: 16, message: '长度在 4 到 16 个字符', trigger: 'change' }
         ]
       }
     }
@@ -81,16 +97,12 @@ export default {
       })
     },
     async userLogin () {
-      this.logger.ms('userLogin', '')
       let params = new URLSearchParams()
-      params.append('username', this.$refs.name.value)
-      params.append('password', this.$refs.pwd.value)
-      let dataGetLogin = await this.$http.post('/user/login', params)
+      params.append('username', this.form.name)
+      params.append('password', this.form.pwd)
+      let dataGetLogin = await this.$http.post('/auth/login', params)
       if (dataGetLogin.code !== 100) {
-        this.$message({
-          message: '登录失败: ' + dataGetLogin.msg,
-          type: 'error'
-        })
+        this.$message.error(dataGetLogin.msg)
         this.logger.e('登录失败')
       } else {
         let username = dataGetLogin.datas[0]
@@ -98,17 +110,15 @@ export default {
         this.$store.commit('setUsername', username)
         this.$store.commit('setToken', token)
         this.$store.commit('setIsLogin', true)
-        this.$message({ message: '登录成功！', type: 'success' })
+        this.$message.success(dataGetLogin.msg)
         this.logger.i('登录成功')
         this.checkIsAdmin()
         this.checkIsClockIn()
         this.checkUnReadMsgCount()
         this.$router.push({ path: '/' })
       }
-      this.logger.me('userLogin', '')
     },
     async checkIsAdmin () {
-      // TODO: add by axiang [20190609] 添加判断是否为管理员逻辑，目前还没做API，只判断是不是‘admin’账号
       this.logger.ms('isAdmin', '判断是否管理员')
       let username = this.$store.getters.getUsername
       let params = new URLSearchParams()
@@ -173,50 +183,34 @@ export default {
         this.$store.commit('setUnReadMsgCount', unReadMsgCount)
       }
       this.logger.me('UnReadMsgCount', '未读消息数量')
+    },
+    toRegister () {
+      this.$router.push({ name: 'Register' })
     }
   }
 }
 </script>
 
 <style scoped>
+.box-card {
+  width: 850px;
+  height: 380px;
+  margin: auto;
+  padding: 0;
+}
+
 .login {
   width: 100%;
   height: 700px;
   padding-top: 5%;
   margin: 0;
-  display: block;
 }
 
-.box-card {
-  width: 900px;
-  height: 400px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0;
-}
-
-input:focus {
-  outline: none;
-}
-
-input {
-  width: 300px;
-  margin-bottom: 5%;
-  height: 40px;
-  border-radius: 20px;
-  background-color: #f5f5dc;
-  border: 1px solid #f5f5dc;
-  padding: 0 20px 0 20px;
-}
-
-button {
-  width: 340px;
-  margin-bottom: 5%;
-  height: 40px;
-  border-radius: 20px;
-  background-color: #00688b;
-  border: 1px solid #00688b;
+.login-box {
+  width: 400px;
+  height: 100%;
+  float: left;
+  margin: 20px;
 }
 
 h1 {
@@ -225,10 +219,16 @@ h1 {
   color: #5d478b;
 }
 
-img {
+.img {
   float: left;
+  background-image: url("../../assets/image/login.jpg");
   background-size: cover;
-  width: 400px;
-  height: 400px;
+  width: 380px;
+  height: 380px;
+}
+
+.el-button{
+  float:right;
+  margin-left: 20px;
 }
 </style>

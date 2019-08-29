@@ -1,8 +1,14 @@
 <template>
   <div class="index-body">
-    <div class="header-announcement"><Carousel></Carousel></div>
-    <div class="home-info-body"><HomeInfo></HomeInfo></div>
-    <div class="border-body"><Border></Border></div>
+    <div class="header-announcement">
+      <Carousel></Carousel>
+    </div>
+    <div class="home-info-body">
+      <HomeInfo></HomeInfo>
+    </div>
+    <div class="border-body">
+      <Border></Border>
+    </div>
   </div>
 </template>
 
@@ -33,13 +39,13 @@ export default {
   margin: auto;
 }
 
-.home-info-body{
+.home-info-body {
   float: left;
   margin-bottom: 10px;
   width: 70%;
 }
 
-.border-body{
+.border-body {
   float: left;
   width: 25%;
   margin-left: 30px;

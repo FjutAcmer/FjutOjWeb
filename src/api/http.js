@@ -6,12 +6,19 @@ const store = require('../store/index')
 axios.defaults.baseURL = config.apiUrl
 axios.defaults.timeout = 5000
 axios.interceptors.response.use(
-  res => { return res },
+  res => {
+    return res
+  },
   error => {
-    if (String(error).toLowerCase().indexOf('timeout') !== -1) {
+    if (
+      String(error)
+        .toLowerCase()
+        .indexOf('timeout') !== -1
+    ) {
       Message.error('服务器繁忙，请稍后重试！')
-    }
-    if (error.response.status === 500) {
+    } else if (error.response.status === 500) {
+      Message.error(error.response.data.msg)
+    } else {
       Message.error(error.response.data.msg)
     }
     return Promise.reject(error)
@@ -26,18 +33,17 @@ var http = {
    */
   get: function (url, params) {
     return new Promise((resolve, reject) => {
-      axios(
-        {
-          method: 'get',
-          url: url,
-          params: params,
-          headers: {
-            'auth': store.default.getters.getToken
-          }
+      axios({
+        method: 'get',
+        url: url,
+        params: params,
+        headers: {
+          auth: store.default.getters.getToken
         }
-      ).then(response => {
-        resolve(response.data)
       })
+        .then(response => {
+          resolve(response.data)
+        })
         .catch(error => {
           reject(error)
         })
@@ -55,11 +61,12 @@ var http = {
         // FIXME: 实际上没有放入请求体中，而是放在请求参数里了，这里需要改正
         data: params,
         headers: {
-          'auth': store.default.getters.getToken
+          auth: store.default.getters.getToken
         }
-      }).then(response => {
-        resolve(response.data)
       })
+        .then(response => {
+          resolve(response.data)
+        })
         .catch(error => {
           reject(error)
         })

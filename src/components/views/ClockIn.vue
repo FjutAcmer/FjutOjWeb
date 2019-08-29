@@ -1,28 +1,17 @@
 <template>
-  <div class="ClockInBody">
-    <div class="CalendarBox">
-      <div class="CalendarBox-head">
-        <div class="clockin-title">
-          签到记录
-          <tr/>
-        </div>
-      </div>
-      <!-- TODO: add by axiang [20190613] 日历插件需要更新一个好用一些的 -->
-      <Calendar lang="zh" :events="this.clockInDateArr"></Calendar>
-      <!-- <el-calendar>
-        <template slot="dataCell" slot-scope="{date, data}">
-
-        </template>
-      </el-calendar> -->
-
-    </div>
-    <div class="ClockInList">
-      <div class="ClockInList-head">
-        <div class="clockin-title">
-          <font color="blue" >{{username}}</font> 的签到记录
-        </div>
-      </div>
-      <div class="ClockInList-table">
+  <div class="clockin-body">
+    <el-card class="calendar-card" :body-style="{ padding: '0px' }">
+      <template slot="header">
+        签到日历
+      </template>
+      <Calendar
+        lang="zh"
+        :events="this.clockInDateArr"
+      ></Calendar>
+    </el-card>
+    <div class="list-box">
+      <font color="blue">{{username}}</font> 的签到记录
+      <div>
         <el-pagination
           style="float:left"
           layout="prev, pager, next"
@@ -35,17 +24,33 @@
           :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           max-height="600"
         >
-          <el-table-column prop="username" label="用户名" width="180"></el-table-column>
-          <el-table-column prop="time" label="签到时间" width="240"></el-table-column>
-          <el-table-column prop="sign" label="状态" width="100">
+          <el-table-column
+            prop="username"
+            label="用户名"
+            width="180"
+          ></el-table-column>
+          <el-table-column
+            prop="time"
+            label="签到时间"
+            width="240"
+          ></el-table-column>
+          <el-table-column
+            prop="sign"
+            label="状态"
+            width="100"
+          >
             <template slot-scope="scope">
-              <div
-                :class="('日常'===scope.row.sign)?'table-row-normal':('迟到'===scope.row.sign?'table-row-late':'table-row-other')"
-              >{{scope.row.sign}}</div>
+              <div :class="('日常'===scope.row.sign)?'table-row-normal':('迟到'===scope.row.sign?'table-row-late':'table-row-other')">{{scope.row.sign}}</div>
             </template>
           </el-table-column>
-          <el-table-column prop="ip" label="签到IP"></el-table-column>
-          <el-table-column prop="#" label="奖励ACB">
+          <el-table-column
+            prop="ip"
+            label="签到IP"
+          ></el-table-column>
+          <el-table-column
+            prop="#"
+            label="奖励ACB"
+          >
             <template>
               <!-- TODO: add by axiang [20190613] 奖励ACB内容暂时留空 -->
             </template>
@@ -54,6 +59,7 @@
         </el-table>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -73,14 +79,7 @@ export default {
       today: new Date(),
       pagesize: 10,
       currentTotal: 0,
-      currentPage: 1,
-      events: [
-        {
-          title: '已签到',
-          start: '2019-08-25',
-          end: '2019-08-25',
-          cssClass: 'family' }
-      ]
+      currentPage: 1
     }
   },
   created () {
@@ -141,7 +140,7 @@ export default {
           todytimes: dataClockIn[i].todytimes
         })
       }
-      this.logger.p({'tableData.length': this.tableData.length})
+      this.logger.p({ 'tableData.length': this.tableData.length })
       this.logger.me(this.getUserAllClockInList.className, '')
     }
   }
@@ -149,75 +148,35 @@ export default {
 </script>
 
 <style  scoped>
-.ClockInBody {
+.clockin-body {
   width: 100%;
   min-height: 600px;
   margin-left: 50px;
   display: flex;
 }
 
-.CalendarBox {
+.calendar-card {
   width: 40%;
-  height: 100%;
-  padding: 5px;
+  min-height: 800px;
 }
 
-.CalendarBox-head {
-  /* background-color: lightblue; */
-  height: auto;
-  width: 79%;
-  margin: 0;
-  border-bottom: 1px solid #eeeeee;
-  padding: 10px 15px;
-  display: block;
-}
-
-.wh_container >>> .clockInNormal {
-  background-color: orange;
-}
-.wh_container >>> .clockInLate {
-  background-color: red;
-}
-
-.wh_content_item >>> .clockInOther {
-  background-color: blue;
-}
-
-.ClockInList {
+.list-box {
   width: 50%;
-  padding: 10px;
-}
-
-.ClockInList-head {
-  background-color: #f5f5f5;
-  height: 20px;
-  width: 100%;
-  margin: 0;
-  border-bottom: 1px solid #eeeeee;
-  padding: 10px;
-  display: block;
-}
-
-.clockin-title {
-  float: left;
-}
-
-.ClockInList-table {
-  float: left;
+  margin-left: 20px;
 }
 
 .table-row-normal {
   color: green;
-  font-weight: bold
+  font-weight: bold;
 }
 
 .table-row-late {
   color: red;
-  font-weight: bold
+  font-weight: bold;
 }
 
 .table-row-other {
   color: blue;
-  font-weight: bold
+  font-weight: bold;
 }
 </style>

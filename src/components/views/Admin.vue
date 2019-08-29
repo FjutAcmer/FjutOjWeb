@@ -49,6 +49,11 @@ export default {
     LocalProblem,
     FileUpload,
     AddContest
+  },
+  mounted () {
+    if (!this.$store.getters.getIsAdmin) {
+      this.$router.push({name: 'AccessDenied'})
+    }
   }
 }
 </script>

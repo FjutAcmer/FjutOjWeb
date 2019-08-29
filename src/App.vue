@@ -3,7 +3,10 @@
     id="app"
     v-loading="loading"
   >
+
     <Head class="header"></Head>
+    <CustomerService></CustomerService>
+
     <div class="main">
       <transition
         name="fade"
@@ -24,6 +27,7 @@
         </router-view>
       </transition>
     </div>
+    <BackTop></BackTop>
     <Foot></Foot>
   </div>
 </template>
@@ -31,12 +35,16 @@
 <script>
 import Head from '@/components/common/HeadComponent'
 import Foot from '@/components/common/FootComponent'
+import CustomerService from '@/components/common/CustomerServiceComponent'
+import BackTop from './components/common/BackTopComponent'
 
 export default {
   name: 'App',
   components: {
     Head,
-    Foot
+    Foot,
+    CustomerService,
+    BackTop
   },
   data () {
     return {

@@ -144,7 +144,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       // 请求后端销毁redis记录
-      this.$http.post('/user/logout', params)
+      this.$http.post('/auth/logout', params)
       this.$store.commit('LOGOUT')
       this.handleSelect('Index')
       this.$router.push({ path: '/' })

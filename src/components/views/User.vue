@@ -128,7 +128,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataUserInfo = await this.$http
-        .get('/user/GUserInfo', params)
+        .get('/user/getUserInfo', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
@@ -163,9 +163,6 @@ export default {
       params.append('username', username)
       let dataUserPermission = await this.$http
         .get('/permission/getUserPermission', params)
-        .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
-        })
       let perListTemp = dataUserPermission.datas[0]
       for (let i = 0; i < perListTemp.length; i++) {
         this.userPerList.push(userPerType[perListTemp[i]])
@@ -210,7 +207,7 @@ export default {
       let params = new URLSearchParams()
       params.append('username', username)
       let dataRatingGraph = await this.$http
-        .get('/user/GRatingGraph', params)
+        .get('/user/getRatingGraph', params)
         .catch(() => {
           this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })

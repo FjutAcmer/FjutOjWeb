@@ -179,7 +179,7 @@ export default {
           })
         }
       } else {
-        this.$message({ message: '没有系统消息', type: 'warning' })
+        this.$message.warning('没有系统消息')
       }
       this.logger.me(this.getUserMessage.name, '')
       this.loading = false
@@ -194,7 +194,6 @@ export default {
       let dataUnReadMessage = await this.$http
         .get('/message/getUnReadMessage', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('获取消息列表失败')
         })
       let dataTempUnReadMessage = dataUnReadMessage.datas[0]
@@ -226,7 +225,6 @@ export default {
       let dataSetReaded = await this.$http
         .post('/message/setReaded', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('请求失败')
         })
       if (dataSetReaded.code === 100) {
@@ -242,7 +240,6 @@ export default {
       let dataSetReaded = await this.$http
         .post('/message/delMessage', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('请求失败')
         })
       if (dataSetReaded.code === 100) {
@@ -261,7 +258,6 @@ export default {
       let dataSetMsgAllRead = await this.$http
         .post('/message/setAllMessageRead', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
           this.logger.e('请求失败')
         })
       if (dataSetMsgAllRead.code === 100) {
@@ -286,10 +282,6 @@ export default {
       let dataUnReadMsgCount = await this.$http
         .get('/message/getUnReadMessageCount', params)
         .catch(() => {
-          this.$message({
-            message: '服务器繁忙，请稍后再试！',
-            type: 'error'
-          })
           this.logger.e('请求签到信息失败')
         })
       if (dataUnReadMsgCount.code === 100) {
