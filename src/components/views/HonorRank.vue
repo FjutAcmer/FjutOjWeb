@@ -86,7 +86,6 @@ export default {
       let dataTeamMemberInfo = await this.$http
         .post('/addContestAward/GAllTeamMemberInfo', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
         })
       this.currentTotal = dataTeamMemberInfo.data[0]
       // console.log(this.currentTotal)

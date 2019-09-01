@@ -106,7 +106,6 @@ export default {
       let myLinks = []
       for (let i = 0; i < this.dataBlocks.length; i++) {
         let percent = 100.0 * this.dataBlocks[i].getScore / this.dataBlocks[i].totalScore
-        console.log(percent)
         let dataTemp = {
           id: this.dataBlocks[i].id,
           // 根据锁定与否和是否全部答题设置节点类别
