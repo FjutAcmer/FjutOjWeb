@@ -29,13 +29,13 @@ export default {
 
 <style>
 .index-body {
-  margin: auto;
   width: 85%;
+  margin: auto;
   min-height: 800px;
 }
 
 .header-announcement {
-  width: 90%;
+  width: 100%;
   margin: auto;
   margin-bottom: 20px;
 }

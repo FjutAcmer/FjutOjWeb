@@ -9,7 +9,10 @@
         <span>模块：【{{this.blockDetail.name}}】</span>
       </div>
       <div class="block-description">
-        <el-collapse id="challenge-block" v-model="defopen">
+        <el-collapse
+          id="challenge-block"
+          v-model="defopen"
+        >
           <el-collapse-item name="1">
             <template slot="title">
               <div>模块说明</div>
@@ -67,7 +70,6 @@
                     <el-button icon="el-icon-search"></el-button>
                   </template>
                 </el-input>
-
               </div>
               <el-divider></el-divider>
               <el-pagination
@@ -86,7 +88,7 @@
               >
                 <el-table-column
                   label="是否解决"
-                  width="150"
+                  min-width="10%"
                 >
                   <template slot-scope="scope">
                     <div :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'">{{scope.row.solved}}</div>
@@ -96,21 +98,21 @@
                 <el-table-column
                   prop="trueProblemId"
                   label="#"
-                  width="150"
+                  min-width="10%"
                 ></el-table-column>
                 <el-table-column
                   prop="title"
                   label="题目"
-                  width="750"
+                  min-width="60%"
                 >
                   <template slot-scope="scope">
-                    <div
-                      style="cursor:pointer;color:blue"
+                    <el-link
+                      type="primary"
                       @click="toSubmit(scope.row.trueProblemId)"
-                    >{{scope.row.title}}</div>
+                    >{{scope.row.title}}</el-link>
                   </template>
                 </el-table-column>
-                <el-table-column label="积分">
+                <el-table-column label="积分" min-width="20%">
                   <template slot-scope="scope">
                     <div :class="scope.row.solved === '✔'?'row-solved':scope.row.solved===''?'row-not-submit':'row-solving'">{{scope.row.score}}</div>
                   </template>
@@ -263,7 +265,7 @@ export default {
 
 <style scoped>
 .box-card {
-  width: 90%;
+  width: 80%;
   height: 100%;
   min-height: 800px;
   display: block;

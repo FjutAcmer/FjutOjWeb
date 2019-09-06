@@ -71,7 +71,6 @@
       :total="currentTotal*10"
     ></el-pagination>
     <el-table
-      style="width:100%;"
       :data="this.tableData"
       v-loading="loading"
     >

@@ -73,7 +73,7 @@
         label="在线讨论"
         name="5"
       >
-      <ContestOnlineDiscussComponent></ContestOnlineDiscussComponent>
+        <ContestOnlineDiscussComponent></ContestOnlineDiscussComponent>
       </el-tab-pane>
     </el-tabs>
   </div>

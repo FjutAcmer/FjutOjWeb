@@ -42,7 +42,7 @@ export default {
 
 .div-card-item {
   width: 80%;
-  margin-top: 8%;
+  margin-top: 5%;
   margin-left: 10%;
   font-size: 25px;
 }

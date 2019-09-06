@@ -1,5 +1,5 @@
 <template>
-<!-- TODO: add by axiang [20190702] 交互很难看，需要重新设计 -->
+  <!-- TODO: add by axiang [20190702] 交互很难看，需要重新设计 -->
   <div class="docker">
     <el-card class="box-card">
       <div slot="header">讨论区</div>
@@ -11,17 +11,26 @@
           @current-change="getList"
           :total="this.currentTotal*10"
         ></el-pagination>
-        <el-button
+        <!-- <el-button
           v-if="isLogin"
           style="float:right;margin-right:10px;margin-top:10px"
           @click="newDiscuss"
           size="mini"
-        >新建帖子</el-button>
+        >新建帖子</el-button> -->
 
-        <el-button class="button" size="mini" @click="getSearch(1)">确定</el-button>
-        <el-input v-model="input" placeholder="title" size="mini" class="input">
+        <!-- <el-button
+          class="button"
+          size="mini"
+          @click="getSearch(1)"
+        >确定</el-button> -->
+        <!-- <el-input
+          v-model="input"
+          placeholder="title"
+          size="mini"
+          class="input"
+        >
           <template slot="prepend">查找</template>
-        </el-input>
+        </el-input> -->
       </div>
       <el-table
         style="width:100%;"
@@ -29,18 +38,46 @@
         highlight-current-row
         v-loading="loading"
       >
-        <el-table-column prop="discussid" label="#" width="100"></el-table-column>
-        <el-table-column label="标题" width="500">
+        <el-table-column
+          prop="discussid"
+          label="#"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          label="标题"
+          width="350"
+        >
           <template slot-scope="scope">
-            <div style="cursor:pointer;color:blue" @click="toChat(scope.row)">{{scope.row.title}}</div>
+            <el-link
+              type="primary"
+              @click="toChat(scope.row)"
+            >{{scope.row.title}}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="time" label="发布时间" width="300"></el-table-column>
-        <el-table-column label="发布人">
+        <el-table-column
+          prop="time"
+          label="发布时间"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          label="发布人"
+          width="200"
+        >
           <template slot-scope="scope">
-            <div style="cursor:pointer;color:blue" @click="toUser(scope.row)">{{scope.row.author}}</div>
+            <el-link
+              type="primary"
+              @click="toUser(scope.row)"
+            >{{scope.row.author}}</el-link>
           </template>
         </el-table-column>
+        <el-table-column
+          label="最后回复时间"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          label="最后回复人"
+          width="200"
+        ></el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -67,9 +104,7 @@ export default {
       this.currentPage = val
       let dataDiscuss = await this.$http
         .get('/discuss/getDiscuss', params)
-        .catch(() => {
-
-        })
+        .catch(() => { })
       this.loading = false
       this.currentTotal = dataDiscuss.datas[0]
       this.tableData = dataDiscuss.datas[1]

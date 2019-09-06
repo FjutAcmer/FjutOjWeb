@@ -102,6 +102,7 @@ export default {
 .main {
   width: 100%;
   background-color: #fafafa;
+  min-height: 650px;
   margin-top: 80px;
 }
 
