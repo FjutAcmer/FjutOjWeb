@@ -1,6 +1,6 @@
 <template>
   <div class="message-box">
-    <el-card :body-style="{ padding: '0px' }" class="message-box-card">
+    <el-card class="message-box-card">
       <div slot="header" class="clearfix">
         <span>系统消息</span>
       </div>

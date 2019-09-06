@@ -82,7 +82,7 @@
       ></el-table-column>
       <el-table-column
         label="昵称"
-        width="220"
+        width="150"
       >
         <template slot-scope="scope">
           <el-link
@@ -104,7 +104,7 @@
       </el-table-column>
       <el-table-column
         label="评测结果"
-        width="200"
+        width="180"
       >
         <template slot-scope="scope">
           <el-tag
@@ -153,21 +153,22 @@
       <el-table-column
         prop="timeUsed"
         label="耗时"
-        width="150"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="memoryUsed"
         label="使用内存"
-        width="150"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="codelen"
         label="代码长"
-        width="150"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="submitTime"
         label="提交时间"
+        width="180"
       >
         <template slot-scope="scope">
           <span>{{new Date(scope.row.submitTime).toLocaleString(
@@ -175,6 +176,7 @@
             { hour12: false }
           )}}</span></template>
       </el-table-column>
+      <el-table-column label="是否赛题"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -195,7 +197,6 @@ export default {
       result: 'All',
       langValue: 0,
       lang: 'All',
-      // FIXME: add by axiang [20190703] 特别注意，这里与数据库并不对应！
       resultList: [
         { id: 0, name: 'All' },
         { id: 1, name: 'Accepted' },

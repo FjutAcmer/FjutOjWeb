@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel :interval="4000"  height="200px">
       <el-carousel-item v-for="item in newsList" :key="item">
         <div class="div-card-item" v-html="item">{{item}}</div>
       </el-carousel-item>

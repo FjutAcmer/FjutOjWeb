@@ -1,15 +1,15 @@
-.el-table .First-row{
-  color:rgb(255, 214, 79);
-  font-weight:bold
+.el-table .First-row {
+  color: rgb(255, 214, 79);
+  font-weight: bold;
 }
-.el-table .second-row{
-  color:#817f7f;
-  font-weight:bold
+.el-table .second-row {
+  color: #817f7f;
+  font-weight: bold;
 }
-.el-table .third-row{
-  color: #B5A642;
-  font-weight:bold
+.el-table .third-row {
+  color: #b5a642;
+  font-weight: bold;
 }
-.el-table .other-row{
-  font-weight:bold
+.el-table .other-row {
+  font-weight: bold;
 }

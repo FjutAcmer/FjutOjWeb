@@ -5,7 +5,7 @@
   >
 
     <Head class="header"></Head>
-    <CustomerService></CustomerService>
+    <Robot></Robot>
 
     <div class="main">
       <transition
@@ -35,7 +35,7 @@
 <script>
 import Head from '@/components/common/HeadComponent'
 import Foot from '@/components/common/FootComponent'
-import CustomerService from '@/components/common/CustomerServiceComponent'
+import Robot from '@/components/common/RobotComponent'
 import BackTop from './components/common/BackTopComponent'
 
 export default {
@@ -43,12 +43,13 @@ export default {
   components: {
     Head,
     Foot,
-    CustomerService,
+    Robot,
     BackTop
   },
   data () {
     return {
       loading: false
+
     }
   },
   created () {
@@ -66,6 +67,13 @@ export default {
     window.addEventListener('beforeunload', () => {
       sessionStorage.setItem('store', JSON.stringify(this.$store.state))
     })
+  },
+  methods: {
+
+  },
+  // 自定义指令
+  directives: {
+
   }
 }
 </script>

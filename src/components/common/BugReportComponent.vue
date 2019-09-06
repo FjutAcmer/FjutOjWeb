@@ -12,12 +12,12 @@
         :rules="rules"
         ref="form"
       >
-        <el-form-item label="反馈用户：">
+        <!-- <el-form-item label="反馈用户：">
           <el-input
             v-model="form.username"
             disabled
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           label="BUG类型："
           prop="type"
@@ -110,7 +110,6 @@ export default {
       // dialogVisible: true,
       formLabelWidth: '100px',
       form: {
-        username: this.$store.getters.getUsername,
         title: '',
         type: '',
         text: ''
@@ -135,7 +134,7 @@ export default {
     },
     async insertBugReport () {
       let params = new URLSearchParams()
-      params.append('username', this.form.username)
+      params.append('username', this.$store.getters.getUsername)
       params.append('type', this.form.type)
       params.append('title', this.form.title)
       params.append('text', this.form.text)

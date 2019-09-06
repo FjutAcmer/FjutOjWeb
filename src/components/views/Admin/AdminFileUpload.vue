@@ -31,16 +31,14 @@ export default {
     }
   },
   methods: {
-    methods: {
-      handleRemove (file, fileList) {
-        // console.log(file, fileList)
-      },
-      handlePreview (file) {
-        // console.log(file)
-      },
-      beforeRemove (file, fileList) {
-        return this.$confirm(`确定移除 ${file.name}？`)
-      }
+    handleRemove (file, fileList) {
+      // console.log(file, fileList)
+    },
+    handlePreview (file) {
+      // console.log(file)
+    },
+    beforeRemove (file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
     }
   }
 }

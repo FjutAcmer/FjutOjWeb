@@ -64,12 +64,12 @@
       <el-table-column
         prop="id"
         label="#"
-        width="150"
+        width="100"
       ></el-table-column>
       <el-table-column
         prop="Title"
         label="题目标题"
-        width="600"
+        width="350"
       >
         <template slot-scope="scope">
           <el-link
@@ -82,6 +82,8 @@
         prop="Ratio"
         label="通过率（通过人数/总提交数）"
       ></el-table-column>
+      <el-table-column label="题目难度" width="150"></el-table-column>
+      <el-table-column label="题目标签" ></el-table-column>
     </el-table>
   </div>
 </template>

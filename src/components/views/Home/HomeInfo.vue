@@ -130,7 +130,7 @@ export default {
 
 .box-card {
   width: 100%;
-  min-height: 420px;
+  min-height: 200px;
   margin-bottom: 20px;
 }
 

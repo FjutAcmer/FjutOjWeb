@@ -2,26 +2,15 @@
 <template>
   <!--TODO: add by axiang [20190702] 添加确认旧密码输入框  -->
   <div class="docker">
-    <el-card
-      class="box-card"
-    >
+    <el-card class="box-card">
       <div slot="header">
         <span>编辑个人信息</span>
       </div>
-      <el-form
-        label-position="right"
-        label-width="120px"
-      >
-        <el-form-item label="输入新密码*：">
-          <el-input
-            show-password
-            v-model="form.pwd"
-            class="el-input"
-            ref="pwd"
-            placeholder="新密码"
-          ></el-input>
+      <el-form class="info-form" label-width="120px">
+        <el-form-item label="输入新密码：">
+          <el-input show-password v-model="form.pwd" class="el-input" ref="pwd" placeholder="新密码"></el-input>
         </el-form-item>
-        <el-form-item label="输入旧密码*：">
+        <el-form-item label="输入旧密码：">
           <el-input
             show-password
             v-model="form.pwd2"
@@ -31,41 +20,20 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="新昵称：">
-          <el-input
-            v-model="form.nick"
-            ref="nick"
-            class="el-input"
-            placeholder="昵称"
-          ></el-input>
+          <el-input v-model="form.nick" ref="nick" class="el-input" placeholder="昵称"></el-input>
         </el-form-item>
         <el-form-item label="新学校：">
-          <el-input
-            v-model="form.school"
-            ref="school"
-            class="el-input"
-            placeholder="学校"
-          ></el-input>
+          <el-input v-model="form.school" ref="school" class="el-input" placeholder="学校"></el-input>
         </el-form-item>
         <el-form-item label="新邮箱：">
-          <el-input
-            v-model="form.email"
-            ref="email"
-            class="el-input"
-            placeholder="电子邮箱"
-          ></el-input>
+          <el-input v-model="form.email" ref="email" class="el-input" placeholder="电子邮箱"></el-input>
         </el-form-item>
         <el-form-item label="新签名：">
-          <el-input
-            v-model="form.motto"
-            ref="motto"
-            class="el-input"
-            placeholder="签名"
-          ></el-input>
+          <el-input v-model="form.motto" ref="motto" class="el-input" placeholder="签名"></el-input>
         </el-form-item>
-        <el-button
-          type="primary"
-          @click="editUser"
-        >修改</el-button>
+        <el-form-item>
+          <el-button class="edit-button" type="primary" @click="editUser">修改</el-button>
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -122,29 +90,31 @@ export default {
 </script>
 <style scoped>
 .docker {
-  width: 100%;
+  width: 90%;
   min-height: 400px;
-  margin: 0;
+  margin: auto;
   padding: 0;
 }
 
 .box-card {
-  /* background: url(../../assets/editUser_card_bg.jpg) no-repeat; */
-  /* background-size: 100% 100%; */
-  width: 520px;
+  width: 40%;
   margin: auto;
   margin-bottom: 20px;
   min-height: 400px;
 }
 
-.el-form {
-  text-align: center;
-  width: 100%;
+.info-form {
+  width: 90%;
   margin: auto;
   /* margin-top: 200px; */
 }
 
-button {
+.edit-button {
+  margin: auto;
+  width: 200px;
+}
+
+/* button {
   width: 250px;
   margin-bottom: 5%;
   height: 40px;
@@ -152,9 +122,5 @@ button {
   color: black;
   background-color: #afeeee;
   border: 1px solid #afeeee;
-}
-
-.el-input {
-  width: 55%;
-}
+} */
 </style>

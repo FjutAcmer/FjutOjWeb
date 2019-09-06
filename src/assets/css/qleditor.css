@@ -1,6 +1,7 @@
 .editor {
   line-height: normal !important;
-  height: 400px;
+  min-height: 350px;
+  height: 350px;
 }
 
 .ql-snow .ql-tooltip[data-mode='link']::before {

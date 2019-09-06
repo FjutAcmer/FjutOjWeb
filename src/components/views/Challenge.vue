@@ -1,6 +1,6 @@
 <template>
   <div class="block-body">
-    <el-card>
+    <el-card :body-style="{ padding: '0px' }">
       <div slot="header">挑战模式</div>
       <div id="blockView"></div>
     </el-card>
@@ -54,7 +54,8 @@ export default {
             // shadowColor: '#eeeeee',
             color: '#EE3B3B'
           }
-        }]
+        }
+      ]
     }
   },
   mounted () {
@@ -105,7 +106,8 @@ export default {
     loadEchartsSeries () {
       let myLinks = []
       for (let i = 0; i < this.dataBlocks.length; i++) {
-        let percent = 100.0 * this.dataBlocks[i].getScore / this.dataBlocks[i].totalScore
+        let percent =
+          (100.0 * this.dataBlocks[i].getScore) / this.dataBlocks[i].totalScore
         let dataTemp = {
           id: this.dataBlocks[i].id,
           // 根据锁定与否和是否全部答题设置节点类别
@@ -115,9 +117,11 @@ export default {
               ? 0
               : 1,
           // 根据模块的分值大小调整圆圈大小 目前计算公式为 ((总分+20)^(1/2))*15
-          symbolSize: Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
+          symbolSize:
+            Math.ceil(Math.sqrt(this.dataBlocks[i].totalScore + 20)) * 15,
           getScored: this.dataBlocks[i].getScore,
-          notScored: this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
+          notScored:
+            this.dataBlocks[i].totalScore - this.dataBlocks[i].getScore,
           locked: this.dataBlocks[i].locked,
           label: {
             normal: {
@@ -130,23 +134,24 @@ export default {
           // 是否可拖动
           draggable: true,
           // TODO: 不同进度的显示图片不好看，要重做一套
-          symbol: percent === 0
-            ? 'path://m512,-3.44828c-282.768,0 -512,229.232 -512,512s229.232,512 512,512s512,-229.232 512,-512s-229.232,-512 -512,-512zm0,928c-229.744,0 -416,-186.256 -416,-416c0,-114.872 42.68469,-218.00993 116.02704,-292.8609c73.34234,-74.85096 177.34234,-121.41496 299.97296,-123.1391c127.7623,1.34115 252.07633,87.16506 283.2869,105.74759l10.8731,16.09241c116.65931,145.96966 121.84,179.28 121.84,294.16c0,229.744 -186.256,416 -416,416z'
-            : percent <= 12.5
-              ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96l0 416 294.16-294.16C881.44 293.12 928 397.12 928 512 928 741.744 741.744 928 512 928z'
-              : percent <= 25
-                ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96l0 416 416 0C928 741.744 741.744 928 512 928z'
-                : percent <= 37.5
-                  ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96l0 416 294.16 294.16C730.88 881.44 626.88 928 512 928z'
-                  : percent <= 50
-                    ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96L512 928z'
-                    : percent <= 62.5
-                      ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 512 217.84 806.16C142.56 730.88 96 626.88 96 512 96 282.256 282.256 96 512 96L512 512z'
-                      : percent <= 75
-                        ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 512 96 512C96 282.256 282.256 96 512 96L512 512z'
-                        : percent < 100
-                          ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 512 217.84 217.84C293.12 142.56 397.12 96 512 96L512 512z'
-                          : 'path://M512 0c282.781538 0 512 229.218462 512 512S794.781538 1024 512 1024s-512-229.218462-512-512S229.218462 0 512 0z'
+          symbol:
+            percent === 0
+              ? 'path://m512,-3.44828c-282.768,0 -512,229.232 -512,512s229.232,512 512,512s512,-229.232 512,-512s-229.232,-512 -512,-512zm0,928c-229.744,0 -416,-186.256 -416,-416c0,-114.872 42.68469,-218.00993 116.02704,-292.8609c73.34234,-74.85096 177.34234,-121.41496 299.97296,-123.1391c127.7623,1.34115 252.07633,87.16506 283.2869,105.74759l10.8731,16.09241c116.65931,145.96966 121.84,179.28 121.84,294.16c0,229.744 -186.256,416 -416,416z'
+              : percent <= 12.5
+                ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96l0 416 294.16-294.16C881.44 293.12 928 397.12 928 512 928 741.744 741.744 928 512 928z'
+                : percent <= 25
+                  ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96l0 416 416 0C928 741.744 741.744 928 512 928z'
+                  : percent <= 37.5
+                    ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96l0 416 294.16 294.16C730.88 881.44 626.88 928 512 928z'
+                    : percent <= 50
+                      ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 928C282.256 928 96 741.744 96 512 96 282.256 282.256 96 512 96L512 928z'
+                      : percent <= 62.5
+                        ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 512 217.84 806.16C142.56 730.88 96 626.88 96 512 96 282.256 282.256 96 512 96L512 512z'
+                        : percent <= 75
+                          ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 512 96 512C96 282.256 282.256 96 512 96L512 512z'
+                          : percent < 100
+                            ? 'path://M512 0C229.232 0 0 229.232 0 512s229.232 512 512 512 512-229.232 512-512S794.768 0 512 0zM512 512 217.84 217.84C293.12 142.56 397.12 96 512 96L512 512z'
+                            : 'path://M512 0c282.781538 0 512 229.218462 512 512S794.781538 1024 512 1024s-512-229.218462-512-512S229.218462 0 512 0z'
         }
         this.dataForChart.push(dataTemp)
       }
@@ -177,7 +182,7 @@ export default {
         // legendHoverLink: true,
         // hoverAnimation: true,
         cursor: 'pointer',
-        backgroundColor: '#eeeeee',
+        // backgroundColor: '#eeeeee',
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
@@ -234,7 +239,8 @@ export default {
             },
             links: myLinks,
             data: datas
-          }]
+          }
+        ]
       }
       this.myChart.setOption(option)
       // add by axiang [20190701] 对ECharts的节点设置单击监听器
@@ -249,9 +255,9 @@ export default {
               if (params.data.locked === true) {
                 _this.logger.i(
                   '\n选择的模块ID为：' +
-                  params.data.id +
-                  '\n模块名为：' +
-                  params.data.label.formatter
+                    params.data.id +
+                    '\n模块名为：' +
+                    params.data.label.formatter
                 )
                 _this.$alert(
                   `${condition}`,
@@ -264,9 +270,9 @@ export default {
               } else {
                 _this.logger.i(
                   '\n选择的模块ID为：' +
-                  params.data.id +
-                  '\n模块名为：' +
-                  params.data.label.formatter
+                    params.data.id +
+                    '\n模块名为：' +
+                    params.data.label.formatter
                 )
                 _this.$router.push({
                   path: '/ChallengeBlock',
@@ -312,7 +318,9 @@ export default {
           res = '无解锁条件\n'
         } else {
           for (let i = 0; i < dataTemp.length; i++) {
-            res += `在模块【${dataTemp[i].name}】中获得【${dataTemp[i].num} 分】<br>`
+            res += `在模块【${dataTemp[i].name}】中获得【${
+              dataTemp[i].num
+            } 分】<br>`
           }
         }
       } else {
@@ -326,7 +334,7 @@ export default {
 
 <style scoped>
 .block-body {
-  width: 90%;
+  width: 85%;
   height: 100%;
   min-height: 800px;
   display: block;

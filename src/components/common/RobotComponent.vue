@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { clearInterval } from 'timers'
+// import { clearInterval } from 'timers'
 export default {
   data () {
     return {
@@ -32,8 +32,8 @@ export default {
     }
   },
   mounted () {
-    let _this = this
-    this.time = setInterval(function () { _this.changeMessage() }, 5000)
+    // let _this = this
+    // this.time = setInterval(function () { _this.changeMessage() }, 5000)
   },
   methods: {
     backTop () {
@@ -46,10 +46,11 @@ export default {
       this.message = this.messages[Math.floor((Math.random() * (max - min + 1) + min))]
     }
   },
+
   beforeDestroy () {
-    if (this.time) {
-      clearInterval(this.time)
-    }
+    // if (this.time) {
+    //   clearInterval(this.time)
+    // }
   }
 
 }
@@ -59,12 +60,11 @@ export default {
 .customerservice-body {
   position: fixed;
   display: flex;
-  left: 30px;
-  bottom: 30px;
+  left: 10px;
+  bottom: 10px;
   z-index: 100;
   width: 150px;
   height: 150px;
-  /* background-color:goldenrod */
 }
 
 .service-img {

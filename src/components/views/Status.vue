@@ -49,7 +49,7 @@ export default {
 }
 
 .box-card {
-  width: 90%;
+  width: 85%;
   min-height: 450px;
   display: block;
   margin: auto;

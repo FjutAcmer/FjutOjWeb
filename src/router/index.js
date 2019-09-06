@@ -15,35 +15,40 @@ export default new Router({
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Login',
       name: 'Login',
       component: () => import('@/components/views/Login'),
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Register',
       name: 'Register',
       component: () => import('@/components/views/Register'),
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Problem',
       name: 'Problem',
       component: () => import('@/components/views/Problem'),
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Submit',
       name: 'Submit',
       component: () => import('@/components/views/Submit'),
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Mall',
       name: 'Mall',
       component: () => import('@/components/views/Mall'),
@@ -66,21 +71,24 @@ export default new Router({
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Challenge',
       name: 'Challenge',
       component: () => import('@/components/views/Challenge'),
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/ChallengeBlock',
       name: 'ChallengeBlock',
       component: () => import('@/components/views/ChallengeBlock'),
       meta: {
         keepAlive: false
       }
-    }, {
+    },
+    {
       path: '/Status',
       name: 'Status',
       component: () => import('@/components/views/Status'),
@@ -141,7 +149,7 @@ export default new Router({
       name: 'MainRank',
       component: () => import('@/components/views/MainRank'),
       meta: {
-        keepAlive: true
+        keepAlive: false
       }
     },
     {
@@ -149,7 +157,7 @@ export default new Router({
       name: 'HonorRank',
       component: () => import('@/components/views/HonorRank'),
       meta: {
-        keepAlive: true
+        keepAlive: false
       }
     },
     {

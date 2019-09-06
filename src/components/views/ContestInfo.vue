@@ -72,7 +72,9 @@
       <el-tab-pane
         label="在线讨论"
         name="5"
-      ></el-tab-pane>
+      >
+      <ContestOnlineDiscussComponent></ContestOnlineDiscussComponent>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -81,6 +83,7 @@
 import ContestProblemComponent from '../views/ContestInfo/ContestProblemComponent'
 import ContestSubmitComponent from '../views/ContestInfo/ContestSubmitComponent'
 import ContestStatusComponent from '../views/ContestInfo/ContestStatusComponent'
+import ContestOnlineDiscussComponent from '../views/ContestInfo/ContestOnlineDiscussComponent'
 export default {
   data () {
     return {
@@ -96,7 +99,8 @@ export default {
   components: {
     ContestProblemComponent,
     ContestSubmitComponent,
-    ContestStatusComponent
+    ContestStatusComponent,
+    ContestOnlineDiscussComponent
   },
   created () {
     this.contestId = String(this.$route.query.cid)

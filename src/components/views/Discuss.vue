@@ -1,7 +1,7 @@
 <template>
 <!-- TODO: add by axiang [20190702] 交互很难看，需要重新设计 -->
   <div class="docker">
-    <el-card :body-style="{ padding: '0px' }" class="box-card">
+    <el-card class="box-card">
       <div slot="header">讨论区</div>
       <div class="functionBar">
         <el-pagination
@@ -173,8 +173,8 @@ export default {
 
 .box-card {
   min-height: 600px;
-  width: 90%;
-  margin: 2% 5% 2% 5%;
+  width: 85%;
+  margin: auto;
   padding: 0;
 }
 

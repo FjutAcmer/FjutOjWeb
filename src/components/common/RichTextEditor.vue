@@ -37,6 +37,14 @@ const toolbarOptions = [
 ]
 export default {
   components: { quillEditor },
+  props: {
+    text: String
+  },
+  watch: {
+    text (val) {
+      this.content = this.text
+    }
+  },
   data () {
     return {
       content: null,

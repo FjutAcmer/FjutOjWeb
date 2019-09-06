@@ -32,7 +32,7 @@
           <el-table-column
             prop="time"
             label="签到时间"
-            width="240"
+            width="200"
           ></el-table-column>
           <el-table-column
             prop="sign"
@@ -121,7 +121,7 @@ export default {
           className = 'clockInOther'
         }
         this.clockInDateArr.push({
-          title: '已签到',
+          title: '签到：' + dataClockIn[i].sign,
           start: timeStr.split(' ')[0],
           end: timeStr.split(' ')[0],
           cssClass: className
@@ -179,4 +179,5 @@ export default {
   color: blue;
   font-weight: bold;
 }
+
 </style>

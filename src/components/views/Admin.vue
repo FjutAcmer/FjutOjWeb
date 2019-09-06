@@ -20,8 +20,10 @@
         <el-tab-pane label="文件上传">
           <FileUpload></FileUpload>
         </el-tab-pane>
-        <el-tab-pane label="添加比赛">
-          <AddContest></AddContest>
+        <el-tab-pane label="比赛管理">
+          <AdminAddContest></AdminAddContest>
+          <el-divider></el-divider>
+          <AdminUpdateContest></AdminUpdateContest>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -29,7 +31,9 @@
       id="admin"
       class="admin-card"
       v-else
-    ><h1>对不起，你没有权限</h1></el-card>
+    >
+      <h1>对不起，你没有权限</h1>
+    </el-card>
   </div>
 </template>
 
@@ -37,7 +41,8 @@
 import AddProblem from '../views/Admin/AdminAddProblem'
 import LocalProblem from '../views/Admin/AdminLocalProblem'
 import FileUpload from '../views/Admin/AdminFileUpload'
-import AddContest from '../views/Admin/AdminAddContest'
+import AdminAddContest from '../views/Admin/AdminAddContest'
+import AdminUpdateContest from '../views/Admin/AdminUpdateContest'
 export default {
   data () {
     return {
@@ -48,11 +53,12 @@ export default {
     AddProblem,
     LocalProblem,
     FileUpload,
-    AddContest
+    AdminAddContest,
+    AdminUpdateContest
   },
   mounted () {
     if (!this.$store.getters.getIsAdmin) {
-      this.$router.push({name: 'AccessDenied'})
+      this.$router.push({ name: 'AccessDenied' })
     }
   }
 }

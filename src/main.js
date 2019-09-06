@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/docco.css'
 import store from './store/index'
-import logger from './util/xow.logger.js'
+import logger from './util/logger.js'
 import http from './api/http.js'
 
 import ace from 'ace-builds'

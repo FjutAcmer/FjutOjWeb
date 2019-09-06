@@ -37,7 +37,7 @@ export default {
 }
 
 .box-card {
-  width: 90%;
+  width: 80%;
   height: 100%;
   min-height: 500px;
   display: block;

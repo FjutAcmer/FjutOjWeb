@@ -25,26 +25,27 @@
 /* 菜单*/
 .el-menu {
   width: 100%;
-  font-size: 16px;
+  height: 100%;
+  font-size: 14px;
   background-color: #f5f5f5;
 }
 
 /* 菜单项 */
 .el-menu-item {
-  width: 100px;
-  font-size: 15px;
+  width: 90px;
+  font-size: 14px;
   border-right: #eeeeee 2px solid;
 }
 
 /* hover在菜单项上 */
 .el-menu-item:hover {
   font-weight: bolder;
-  width: 100px;
+  width: 90px;
 }
 
 /* 水平菜单的子菜单 */
 .el-menu--horizontal > .el-submenu .el-submenu__title {
-  width: 100px;
+  width: 90px;
   border-right: 2px solid #eeeeee;
   font-size: 15px;
 }

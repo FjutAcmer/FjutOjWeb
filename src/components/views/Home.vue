@@ -30,13 +30,14 @@ export default {
 <style>
 .index-body {
   margin: auto;
-  width: 90%;
+  width: 85%;
   min-height: 800px;
 }
 
 .header-announcement {
   width: 90%;
   margin: auto;
+  margin-bottom: 20px;
 }
 
 .home-info-body {

@@ -114,7 +114,7 @@ export default {
       memoryLimit: '',
       spj: false,
       searchProblemName: '',
-      tableData: '',
+      tableData: [],
       pageSize: 30,
       currentPage: 1,
       dataFileListDetail: '',
