@@ -81,7 +81,7 @@
       ></el-table-column>
       <el-table-column
         label="昵称"
-        width="150"
+        width="200"
       >
         <template slot-scope="scope">
           <el-link
@@ -103,7 +103,7 @@
       </el-table-column>
       <el-table-column
         label="评测结果"
-        width="180"
+        width="200"
       >
         <template slot-scope="scope">
           <el-tag
@@ -152,22 +152,21 @@
       <el-table-column
         prop="timeUsed"
         label="耗时"
-        width="100"
+        width="120"
       ></el-table-column>
       <el-table-column
         prop="memoryUsed"
         label="使用内存"
-        width="100"
+        width="120"
       ></el-table-column>
       <el-table-column
         prop="codelen"
         label="代码长"
-        width="100"
+        width="120"
       ></el-table-column>
       <el-table-column
         prop="submitTime"
         label="提交时间"
-        width="180"
       >
         <template slot-scope="scope">
           <span>{{new Date(scope.row.submitTime).toLocaleString(
@@ -175,7 +174,7 @@
             { hour12: false }
           )}}</span></template>
       </el-table-column>
-      <el-table-column label="是否赛题"></el-table-column>
+      <!-- <el-table-column label="是否赛题"></el-table-column> -->
     </el-table>
   </div>
 </template>

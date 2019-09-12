@@ -69,7 +69,7 @@
       <el-table-column
         prop="Title"
         label="题目标题"
-        width="350"
+        width="400"
       >
         <template slot-scope="scope">
           <el-link
@@ -82,8 +82,22 @@
         prop="Ratio"
         label="通过率（通过人数/总提交数）"
       ></el-table-column>
-      <el-table-column label="题目难度" width="150"></el-table-column>
-      <el-table-column label="题目标签" ></el-table-column>
+      <el-table-column
+        label="题目难度"
+        width="150"
+      >
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.diff==='简单'?'success': scope.row.diff==='中等'? 'warning':'danger'"
+            effect="dark"
+          > {{scope.row.diff}} </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="题目来源"
+        prop="ojid"
+        width="150"
+      ></el-table-column>
     </el-table>
   </div>
 </template>
@@ -101,9 +115,29 @@ export default {
       currentPage: 1,
       total: 0,
       tableData: [],
+      problemDiffMap: new Map(),
       problemSolveMap: new Map(),
       isSearch: false,
-      loading: false
+      loading: false,
+      ojIds: [
+        { key: '-1', value: '自主出题' },
+        { key: '0', value: 'HDU' },
+        { key: '1', value: 'BNUOJ' },
+        { key: '2', value: 'NBUT' },
+        { key: '3', value: 'PKU' },
+        { key: '4', value: 'HUST' },
+        { key: '5', value: 'CF' },
+        { key: '6', value: 'CodeVS' },
+        { key: '7', value: '自主出题' },
+        { key: '8', value: 'AcDream' },
+        { key: '9', value: 'FOJ' },
+        { key: '10', value: '自主出题（game）' },
+        { key: '11', value: 'CF_Gym' },
+        { key: '12', value: '其他' },
+        { key: '13', value: 'BZOJ' },
+        { key: '14', value: 'ZOJ' },
+        { key: '15', value: 'SPOJ' }
+      ]
     }
   },
   mounted () {
@@ -147,15 +181,23 @@ export default {
       this.tableData = []
       let tableDataTemp = dataProblemsByPage.datas[0]
       this.total = dataProblemsByPage.datas[1]
+
       if (this.problemSolveMap.size === 0) {
         await this.getProblemSovle()
       }
+      if (this.problemDiffMap.size === 0) {
+        await this.getProblemDiff()
+      }
+      //
+      this.getProblemTagRecords()
+      //
       for (let i = 0; i < tableDataTemp.length; i++) {
         let isSolvedTemp = this.problemSolveMap.get(tableDataTemp[i].pid) === 0 ? '?'
           : this.problemSolveMap.get(tableDataTemp[i].pid) === 1 ? '✔' : undefined
+        let diff = this.problemDiffMap.get(tableDataTemp[i].pid) === 0 ? '简单'
+          : this.problemDiffMap.get(tableDataTemp[i].pid) === 1 ? '中等' : '困难'
         this.tableData.push({
           isSolved: isSolvedTemp,
-          // isSolved: this.problemSolveMap.get(tableDataTemp[i].pid),
           id: tableDataTemp[i].pid,
           Title: tableDataTemp[i].title,
           Ratio: tableDataTemp[i].strRadio +
@@ -163,22 +205,30 @@ export default {
             tableDataTemp[i].totalAcUser +
             '/' +
             tableDataTemp[i].totalSubmit +
-            ')'
+            ')',
+          diff: diff,
+          ojid: this.findOjNameById(tableDataTemp[i].ojid)
         })
       }
       this.loading = false
     },
+    // 获取用户解答状态
     async getProblemSovle () {
       let params = new URLSearchParams()
       params.append('username', this.$store.getters.getUsername)
       let dataProblemSolve = await this.$http.get('/problem/getProblemSolve', params)
       let dataTempSolve = dataProblemSolve.datas[0]
-      let map = new Map()
       for (let i = 0; i < dataTempSolve.length; i++) {
-        map.set(dataTempSolve[i].pid, dataTempSolve[i].solved)
+        this.problemSolveMap.set(dataTempSolve[i].pid, dataTempSolve[i].solved)
       }
-
-      this.problemSolveMap = map
+    },
+    // 获取题目难度系数
+    async getProblemDiff () {
+      let dataProblemDiff = await this.$http.get('/problemDiff/getProblemDiff')
+      let dataDiff = dataProblemDiff.datas[0]
+      for (let i = 0; i < dataDiff.length; i++) {
+        this.problemDiffMap.set(dataDiff[i].pid, dataDiff[i].difficultType)
+      }
     },
     async getProblemTags () {
       let params = new URLSearchParams()
@@ -193,8 +243,21 @@ export default {
         name: '-'
       })
       this.problemTags = dataTempTags
+    },
+    async getProblemTagRecords () {
+      // let params = new URLSearchParams()
+      // let dataProblemTags = await this.$http
+      //   .get('/problemTag/getAllProblemTagRecord', params)
+      // let dataTempTags = dataProblemTags.datas[0]
+    },
+    findOjNameById (value) {
+      for (let item of this.ojIds) {
+        if (item.key === String(value)) {
+          return item.value
+        }
+      }
+      return '未知'
     }
-
   },
   beforeRouteLeave (to, from, next) {
     if (to.name === 'Submit') {
@@ -214,14 +277,13 @@ export default {
   padding-top: 0;
   margin: 0;
   margin-bottom: 20px;
-  font-family: 微软雅黑, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 微软雅黑, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .function-bar {
   width: 100%;
   height: 40px;
   border-bottom: 1px solid #eeeeee;
-  /* background-color: aqua; */
 }
 
 .bar-search-item-input {

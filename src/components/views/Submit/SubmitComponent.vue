@@ -309,7 +309,7 @@ export default {
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['总提交数', '其他']
+          data: ['通过数', '其他']
         },
         series: [
           {

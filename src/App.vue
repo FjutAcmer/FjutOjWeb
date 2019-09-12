@@ -6,7 +6,6 @@
 
     <Head class="header"></Head>
     <Robot></Robot>
-
     <div class="main">
       <transition
         name="fade"

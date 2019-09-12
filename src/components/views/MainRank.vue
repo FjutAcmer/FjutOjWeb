@@ -1,14 +1,25 @@
 <template>
   <!--TODO: add by axiang [20190702] 颜色表示的逻辑非常糟糕，等待重构 -->
   <div class="docker">
-    <el-card
-      :body-style="{ padding: '0px' }"
-      class="box-card"
-    >
-      <div
-        slot="header"
-        class="clearfix"
-      >用户排名</div>
+    <el-card class="box-card">
+      <div slot="header">用户排名</div>
+      <div class="search-bar">
+        <el-input
+          v-model="input"
+          placeholder="Username"
+          size="mini"
+          style="width:250px"
+        >
+          <template slot="prepend">查找</template>
+        </el-input>
+        <el-button
+          icon="el-icon-search"
+          type="primary"
+          size="mini"
+          @click="getSearch(1)"
+        >确定</el-button>
+      </div>
+
       <div class="functionBar">
         <el-pagination
           class="pagination"
@@ -17,34 +28,21 @@
           @current-change="getList"
           :total="this.currentTotal*10"
         ></el-pagination>
-        <el-button
-          class="button"
-          size="mini"
-          @click="getSearch(1)"
-        >确定</el-button>
-        <el-input
-          v-model="input"
-          placeholder="Username"
-          size="mini"
-          class="input"
-        >
-          <template slot="prepend">查找</template>
-        </el-input>
+
       </div>
       <el-table
-        style="width:100%;"
         :data="this.tableData"
         highlight-current-row
         v-loading="loading"
       >
         <el-table-column
           type="index"
-          label="Rank"
+          label="积分排行"
           width="100"
           :index="indexMethod"
         >Rank</el-table-column>
         <el-table-column
-          label="UserName"
+          label="用户名"
           width="200"
         >
           <template slot-scope="scope">
@@ -76,7 +74,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Nick"
+          label="昵称"
           width="220"
         >
           <template slot-scope="scope">
@@ -104,10 +102,10 @@
         </el-table-column>
         <el-table-column
           prop="motto"
-          label="Motto"
+          label="个性宣言"
           width="500"
         ></el-table-column>
-        <el-table-column label="AC">
+        <el-table-column label="AC数">
           <template slot-scope="scope">
             <div
               v-if="scope.row.acnum>=0&&scope.row.acnum<=100"
@@ -216,7 +214,7 @@ export default {
 }
 
 .box-card {
-  width: 90%;
+  width: 85%;
   height: 100%;
   min-height: 500px;
   display: block;
@@ -230,7 +228,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: "";
+  content: '';
 }
 
 .clearfix:after {
@@ -243,6 +241,10 @@ export default {
   padding: 0;
   height: 50px;
   border-bottom: 1px solid silver;
+}
+
+.search-bar {
+  width: 40%;
 }
 
 .pagination {
@@ -258,13 +260,5 @@ export default {
   margin-top: 10px;
   height: 30px;
   width: 200px;
-}
-
-.button {
-  float: right;
-  margin-right: 10px;
-  margin-top: 10px;
-  height: 30px;
-  width: 50px;
 }
 </style>

@@ -8,27 +8,37 @@
     </el-card>
     <el-card class="box-card">
       <div slot="header">
-        本站大数据
+        个性化
       </div>
-      <!--  -->
-      <!-- <iframe
-        src="http://www.baidu.com"
-        width="100%"
-        height="600px;"
-        frameborder="0"
-        name="iframe名称"
-        scrolling="yes"
-      >
-      </iframe> -->
+      <div v-if="this.$store.getters.getIsLogin && loaded">
+        <span class="info-font">亲爱的 {{this.$store.getters.getUsername}}，根据我们的预测，您可能会对以下题目感兴趣，要不要试试？</span>
+        <br />
+        <el-link
+          type="primary"
+          @click="toSubmit(recommendProblems[0].pid)"
+        >#{{recommendProblems[0].pid}} {{recommendProblems[0].title}} </el-link><br />
+        <el-link
+          type="primary"
+          @click="toSubmit(recommendProblems[1].pid)"
+        >#{{recommendProblems[1].pid}} {{recommendProblems[1].title}} </el-link><br />
+        <el-link
+          type="primary"
+          @click="toSubmit(recommendProblems[2].pid)"
+        >#{{recommendProblems[2].pid}} {{recommendProblems[2].title}} </el-link><br />
+        <el-link
+          class="info-font"
+          @click="getRecommendProblems()"
+        >
+          <el-icon class="el-icon-refresh"></el-icon>不喜欢？点我换一波
+        </el-link>
+      </div>
+      <div v-else><span class="info-font">登录后查看哦</span></div>
     </el-card>
     <el-card class="box-card">
       <div slot="header">
         常用文件下载中心
       </div>
-      <el-collapse
-        id="download-file"
-        v-model="defopen"
-      >
+      <el-collapse id="download-file">
         <el-collapse-item name="1">
           <template slot="title">
             <div>浏览器</div>
@@ -100,11 +110,16 @@ export default {
   data () {
     return {
       message: '',
-      defopen: ['1', '2', '3']
+      loaded: false,
+      recommendProblems: []
     }
+  },
+  created () {
+
   },
   mounted () {
     this.getInfo()
+    this.getRecommendProblems()
   },
   methods: {
     async getInfo () {
@@ -116,6 +131,16 @@ export default {
       } else {
         this.message = '公告获取失败哦'
       }
+    },
+    async getRecommendProblems () {
+      let params = new URLSearchParams()
+      params.append('username', this.$store.getters.getUsername)
+      let dataRecommend = await this.$http.get('/problem/getRecommendProblems', params)
+      this.recommendProblems = dataRecommend.datas[0]
+      this.loaded = true
+    },
+    toSubmit (pid) {
+      this.$router.push({ path: '/Submit', query: { pid: pid } })
     }
   }
 }
@@ -129,7 +154,6 @@ export default {
 }
 
 .box-card {
-  width: 100%;
   min-height: 200px;
   margin-bottom: 20px;
 }
@@ -141,5 +165,10 @@ export default {
 
 .el-tag {
   margin-right: 14px;
+}
+
+.info-font {
+  font-size: 16px;
+  line-height: 28px;
 }
 </style>

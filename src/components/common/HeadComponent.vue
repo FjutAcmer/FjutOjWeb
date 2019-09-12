@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="head-box">
-      <el-image @click="toIndex" class="logo-pic" :src="picSrc" :fit="fit"></el-image>
+      <el-image @click="toIndex" class="logo-pic" :src="picSrc" fit="fit"></el-image>
       <el-menu
         class="el-menu"
         mode="horizontal"
@@ -17,6 +17,7 @@
           <span>讨论</span>
         </el-menu-item>
         <el-menu-item index="Challenge">挑战模式</el-menu-item>
+        <el-menu-item index="VideoLesson">视频课堂</el-menu-item>
         <el-menu-item index="Mall">商 城</el-menu-item>
         <el-menu-item index="HonorRank">荣誉榜</el-menu-item>
         <el-submenu index="ContestSub">

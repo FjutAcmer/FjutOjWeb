@@ -3,7 +3,7 @@
     <el-upload
       class="upload-demo"
       name="file"
-      action="http://210.34.193.212:8080/api/file/uploadFile"
+      :action="url"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
       :before-remove="beforeRemove"
@@ -24,18 +24,22 @@
 </template>
 
 <script>
+const config = require('../../../../config/oj.config.json')
+
 export default {
   data () {
     return {
+      url: '',
       fileList: []
     }
   },
+  created () {
+    this.url = config.apiUrl + '/file/uploadFile'
+  },
   methods: {
     handleRemove (file, fileList) {
-      // console.log(file, fileList)
     },
     handlePreview (file) {
-      // console.log(file)
     },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)

@@ -29,7 +29,7 @@ export default {
 
 <style>
 .index-body {
-  width: 85%;
+  width: 80%;
   margin: auto;
   min-height: 800px;
 }
@@ -47,9 +47,9 @@ export default {
 }
 
 .border-body {
-  float: left;
-  width: 25%;
-  margin-left: 30px;
+  float: right;
+  width: 28%;
+  margin-left: 20px;
   min-height: 400px;
 }
 </style>

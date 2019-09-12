@@ -188,21 +188,23 @@ export default {
 }
 
 .border-level-three {
-  color: purple;
+  color: #ff0080;
 }
+
 .border-level-three:hover {
   cursor: pointer;
 }
 
 .border-level-four {
-  color: orange;
+  color: #ff0000;
 }
+
 .border-level-four:hover {
   cursor: pointer;
 }
 
 .border-level-five {
-  color: red;
+  color: #ff8000;
 }
 .border-level-five:hover {
   cursor: pointer;

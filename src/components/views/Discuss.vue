@@ -45,7 +45,7 @@
         ></el-table-column>
         <el-table-column
           label="标题"
-          width="350"
+          width=""
         >
           <template slot-scope="scope">
             <el-link
@@ -70,14 +70,14 @@
             >{{scope.row.author}}</el-link>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="最后回复时间"
           width="200"
-        ></el-table-column>
-        <el-table-column
+        ></el-table-column> -->
+        <!-- <el-table-column
           label="最后回复人"
           width="200"
-        ></el-table-column>
+        ></el-table-column> -->
       </el-table>
     </el-card>
   </div>
@@ -208,7 +208,7 @@ export default {
 
 .box-card {
   min-height: 600px;
-  width: 85%;
+  width: 75%;
   margin: auto;
   padding: 0;
 }

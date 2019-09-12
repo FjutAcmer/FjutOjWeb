@@ -20,7 +20,7 @@
               size="mini"
             ></el-select>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-select
               placeholder="请选择状态"
               size="mini"
@@ -37,7 +37,6 @@
         </el-row>
       </div>
       <el-pagination
-        style="float:left"
         layout="prev, pager, next"
         :current-page="currentPage"
         @current-change="swithPage"

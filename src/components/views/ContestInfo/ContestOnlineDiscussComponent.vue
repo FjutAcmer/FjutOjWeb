@@ -14,7 +14,7 @@ export default {
   data () {
     return {
       // TODO: 指定在线聊天的api地址
-      src: 'http://www.baidu.com'
+      src: 'http://210.34.193.212/index.html?token=%7B%22to%22%3A%22%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%B5%9B%22%2C%22from%22%3A%22carol%22%2C%22type%22%3A%22group%22%7D&msg=%22%22&mode=kefu&res=fwh5_desktop'
     }
   }
 }

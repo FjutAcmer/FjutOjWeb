@@ -1,6 +1,6 @@
 <template>
   <div class="block-body">
-    <el-card :body-style="{ padding: '0px' }">
+    <el-card class="box-card" :body-style="{ padding: '0px' }">
       <div slot="header">挑战模式</div>
       <div id="blockView"></div>
     </el-card>
@@ -341,6 +341,10 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding: 0;
+}
+
+.box-card{
+  margin-bottom: 20px;
 }
 
 #blockView {

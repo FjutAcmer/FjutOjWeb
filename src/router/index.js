@@ -13,7 +13,7 @@ export default new Router({
       name: 'Home',
       component: () => import('@/components/views/Home'),
       meta: {
-        keepAlive: false
+        keepAlive: true
       }
     },
     {
@@ -196,6 +196,14 @@ export default new Router({
       path: '/Verify',
       name: 'Verify',
       component: () => import('@/components/views/Verify'),
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/VideoLesson',
+      name: 'VideoLesson',
+      component: () => import('@/components/views/VideoLesson'),
       meta: {
         keepAlive: false
       }
