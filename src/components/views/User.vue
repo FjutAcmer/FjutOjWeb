@@ -130,7 +130,7 @@ export default {
       let dataUserInfo = await this.$http
         .get('/user/getUserInfo', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.user = dataUserInfo.datas[0]
       // this.img = this.img + username+'.jpg'
@@ -142,7 +142,7 @@ export default {
       let dataAwardInfo = await this.$http
         .post('/user/awardinfo', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.rewordinfo = dataAwardInfo.datas[0]
     },
@@ -152,7 +152,7 @@ export default {
       let dataUserRadar = await this.$http
         .get('/user/getUserRadar', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.radar = dataUserRadar.datas[0]
       this.setRadar()
@@ -209,7 +209,7 @@ export default {
       let dataRatingGraph = await this.$http
         .get('/user/getRatingGraph', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.ratingrecord = dataRatingGraph.datas[0]
       this.setGraphRatingChange()
@@ -255,7 +255,7 @@ export default {
       let dataAllStatusByUsername = await this.$http
         .post('/status/GAllStatusByUsername', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.submitrecord = dataAllStatusByUsername.datas[0]
       this.setGraphSubmitChange()
@@ -302,14 +302,14 @@ export default {
       let dataProblemSolving = await this.$http
         .post('/user/GStatusProblems', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.problemSolved = dataProblemSolving.datas[0]
       params.set('status', 0)
       let dataProblemSolved = await this.$http
         .post('/user/GStatusProblems', params)
         .catch(() => {
-          this.$message({ message: '服务器繁忙，请稍后再试！', type: 'error' })
+
         })
       this.problemSolving = dataProblemSolved.datas[0]
     },

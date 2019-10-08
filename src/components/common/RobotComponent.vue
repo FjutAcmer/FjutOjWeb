@@ -1,35 +1,53 @@
 <template>
-  <div class="customerservice-body">
-    <el-popover
-      class="item"
-      :content="message"
-      width="200"
-      trigger="manual"
-      placement="right-start"
-      v-model="visiable"
+  <div>
+    <div class="customerservice-body">
+      <el-popover
+        class="item"
+        :content="message"
+        width="200"
+        trigger="manual"
+        placement="right-start"
+        v-model="visiable"
+      >
+        <el-image
+          slot="reference"
+          ref="img"
+          class="service-img"
+          :src="urlService"
+          @click="openDialog()"
+        ></el-image>
+        <el-button
+          v-if="isTalking"
+          type="warning"
+          slot="reference"
+          size="mini"
+          @click="this.stopTalking"
+        >“开始唠叨吧”</el-button>
+        <el-button
+          v-else
+          type="warning"
+          slot="reference"
+          size="mini"
+          @click="this.startTalking"
+        >“我生气了”</el-button>
+      </el-popover>
+    </div>
+    <el-dialog
+      title="智能客服"
+      width="60%"
+      :visible.sync="dialogVisiable"
     >
-      <el-image
-        slot="reference"
-        ref="img"
-        class="service-img"
-        :src="urlService"
-      ></el-image>
-      <el-button
-        v-if="isTalking"
-        type="warning"
-        slot="reference"
-        size="mini"
-        @click="this.stopTalking"
-      >“开始唠叨吧”</el-button>
-      <el-button
-        v-else
-        type="warning"
-        slot="reference"
-        size="mini"
-        @click="this.startTalking"
-      >“我生气了”</el-button>
-    </el-popover>
-
+      <iframe
+        id="content"
+        :src="this.src"
+        width="100%"
+        height="800px"
+        frameborder="0"
+        name="智能客服"
+        scrolling="yes"
+      >
+      </iframe>
+    </el-dialog>
   </div>
 </template>
 
@@ -39,7 +57,9 @@ export default {
     return {
       isTalking: true,
       visiable: false,
+      dialogVisiable: false,
       time: '',
+      src: '',
       urlService: require('../../assets/image/icon/robot.gif'),
       message: '我是假机器人，我叫敢敢',
       commonMessage: [
@@ -68,6 +88,19 @@ export default {
     backTop () {
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
+    },
+    openDialog () {
+      this.dialogVisiable = true
+      let name = this.$route.name
+      if (name === 'Home') {
+        this.src = 'http://39.100.235.47:8888/index.html?token=%7B%22to%22%3A%22%23demohelp%22%2C%22from%22%3A%22carol%22%2C%22type%22%3A%22kefu%22%7D&msg=%22home%22&mode=kefu&res=fwh5_desktop'
+      } else if (name === 'Contest' || name === 'ContestInfo') {
+        this.src = 'http://39.100.235.47:8888/index.html?token=%7B%22to%22%3A%22%23demohelp%22%2C%22from%22%3A%22carol%22%2C%22type%22%3A%22kefu%22%7D&msg=%22rangegame%22&mode=kefu&res=fwh5_desktop'
+      } else if (name === 'Problem') {
+        this.src = 'http://39.100.235.47:8888/index.html?token=%7B%22to%22%3A%22%23demohelp%22%2C%22from%22%3A%22carol%22%2C%22type%22%3A%22kefu%22%7D&msg=%22subject%22&mode=kefu&res=fwh5_desktop'
+      }
+      console.log(document.getElementById('content'))
+      document.getElementById('content').src = this.src
     },
     changeMessage () {
       if (!this.$store.getters.getIsLogin) {

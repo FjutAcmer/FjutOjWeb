@@ -36,6 +36,12 @@
     </el-card>
     <el-card class="box-card">
       <div slot="header">
+        本站大数据</div>
+        <!-- <el-select size="mini"></el-select> -->
+        <div id="submit-charts"></div>
+    </el-card>
+    <el-card class="box-card">
+      <div slot="header">
         常用文件下载中心
       </div>
       <el-collapse id="download-file">
@@ -106,12 +112,18 @@
 </template>
 
 <script>
+import echarts from 'echarts'
+import formatterDate from '../../../util/formatterDate.js'
+
 export default {
   data () {
     return {
       message: '',
       loaded: false,
-      recommendProblems: []
+      recommendProblems: [],
+      statusCount: [],
+      days: 500,
+      myChart: ''
     }
   },
   created () {
@@ -120,8 +132,14 @@ export default {
   mounted () {
     this.getInfo()
     this.getRecommendProblems()
+    this.getStatusCount()
+    this.initEcharts()
   },
   methods: {
+    initEcharts () {
+      this.myChart = echarts.init(document.getElementById('submit-charts'))
+      this.myChart.showLoading()
+    },
     async getInfo () {
       let params = new URLSearchParams()
       params.append('key', 'indexNotify')
@@ -139,8 +157,67 @@ export default {
       this.recommendProblems = dataRecommend.datas[0]
       this.loaded = true
     },
+    async getStatusCount () {
+      let params = new URLSearchParams()
+      params.append('days', this.days)
+      let dataStatusCount = await this.$http.get('/status/getStatusCount', params)
+      this.statusCount = dataStatusCount.datas[0]
+      this.loadEcharts()
+    },
     toSubmit (pid) {
       this.$router.push({ path: '/Submit', query: { pid: pid } })
+    },
+    loadEcharts () {
+      let submitDays = []
+      let totalCounts = []
+      let acCounts = []
+      for (let i of this.statusCount) {
+        submitDays.push(formatterDate(i.submitDay, 'yyyy-MM-dd'))
+        totalCounts.push(i.totalCount)
+        acCounts.push(i.acCount)
+      }
+      let option = {
+        title: {
+          text: '本站最近' + this.days + '天提交记录'
+        },
+        tooltip: {
+        },
+        legend: {
+        },
+        grid: {
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: submitDays || '无'
+        },
+        yAxis: {
+          type: 'value'
+        },
+        dataZoom: [
+          {
+            type: 'inside',
+            start: 0,
+            end: 50
+          }
+        ],
+        series: [
+          {
+            name: '当天提交记录数',
+            type: 'line',
+
+            data: totalCounts || 0
+          },
+          {
+            name: '当天AC记录数',
+            type: 'line',
+            data: acCounts || 0
+          }
+        ]
+      }
+      this.myChart.setOption(option)
+      this.myChart.hideLoading()
     }
   }
 }
@@ -156,6 +233,11 @@ export default {
 .box-card {
   min-height: 200px;
   margin-bottom: 20px;
+}
+
+#submit-charts{
+  width: 100%;
+  height: 400px;
 }
 
 .showmore-link {
