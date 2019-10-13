@@ -91,7 +91,6 @@ export default {
   methods: {
     handleCurrentChange (currentPage) {
       this.currentPage = currentPage
-      this.logger.i('currentPage: ' + currentPage)
     },
     // add by axiang [20190613] 获取签到列表
     async getUserAllClockInList () {
@@ -106,7 +105,6 @@ export default {
         })
       this.logger.i('获取用户签到列表 成功')
       let dataClockIn = dataGetClockInList.datas[0]
-      this.logger.p({ currentTotal: this.currentTotal })
       for (let i = 0; i < dataClockIn.length; i++) {
         let time = dataClockIn[i].time
         let timeStr = new Date(time).toLocaleString('chinese', {
@@ -140,7 +138,6 @@ export default {
           todytimes: dataClockIn[i].todytimes
         })
       }
-      this.logger.p({ 'tableData.length': this.tableData.length })
       this.logger.me(this.getUserAllClockInList.className, '')
     }
   }

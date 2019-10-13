@@ -1,7 +1,12 @@
 <template>
   <div class="header">
     <div class="head-box">
-      <el-image @click="toIndex" class="logo-pic" :src="picSrc" fit="fit"></el-image>
+      <el-image
+        @click="toIndex"
+        class="logo-pic"
+        :src="picSrc"
+        fit="fit"
+      ></el-image>
       <el-menu
         class="el-menu"
         mode="horizontal"
@@ -17,7 +22,7 @@
           <span>讨论</span>
         </el-menu-item>
         <el-menu-item index="Challenge">挑战模式</el-menu-item>
-        <el-menu-item index="VideoLesson">视频课堂</el-menu-item>
+        <!-- <el-menu-item index="VideoLesson">视频课堂</el-menu-item> -->
         <el-menu-item index="Mall">商 城</el-menu-item>
         <el-menu-item index="HonorRank">荣誉榜</el-menu-item>
         <el-submenu index="ContestSub">
@@ -37,11 +42,22 @@
           <el-menu-item index="9-3">现役榜</el-menu-item>
           <el-menu-item index="9-4">组队榜</el-menu-item>
         </el-submenu>
-        <el-menu-item v-if="this.isAdmin" index="Admin">管理员</el-menu-item>
+        <el-menu-item
+          v-if="this.isAdmin"
+          index="Admin"
+        >管理员</el-menu-item>
         <!-- FIXME: 方便调试暂时设置，正式部署时需要去除 -->
         <!-- <el-menu-item index="Test">测试</el-menu-item> -->
-        <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Login">登录</el-menu-item>
-        <el-menu-item class="el-menu-item-right" v-if="!this.isLogin" index="Register">注册</el-menu-item>
+        <el-menu-item
+          class="el-menu-item-right"
+          v-if="!this.isLogin"
+          index="Login"
+        >登录</el-menu-item>
+        <el-menu-item
+          class="el-menu-item-right"
+          v-if="!this.isLogin"
+          index="Register"
+        >注册</el-menu-item>
         <div class="menu-rightside">
           <el-button
             class="clockin-button"
@@ -57,13 +73,28 @@
             size="medium"
             @click="toClockIn"
           >你已签到</el-button>
-          <el-dropdown class="el-menu-item-userinfo" v-if="this.isLogin" @command="handleCommand">
-            <router-link to="User" class="router-link">
-              <el-badge is-dot class="badge-dot" v-if="unReadMsgCount > 0">
-                <i class="el-icon-user">{{$store.getters.getUsername}}</i>
+          <el-dropdown
+            class="el-menu-item-userinfo"
+            v-if="this.isLogin"
+            @command="handleCommand"
+          >
+            <router-link
+              to="User"
+              class="router-link"
+            >
+              <el-image
+                class="mini-avatar-img"
+                :src="avatarUrl"
+              ></el-image>
+              <el-badge
+                is-dot
+                class="badge-dot"
+                v-if="unReadMsgCount > 0"
+              >
+                <i>{{$store.getters.getUsername}}</i>
                 <i class="el-icon-arrow-down"></i>
               </el-badge>
-              <i class="el-icon-user" v-else>
+              <i v-else>
                 {{$store.getters.getUsername}}
                 <i class="el-icon-arrow-down"></i>
               </i>
@@ -84,13 +115,22 @@
                   <i class="el-icon-message">消息</i>
                 </span>
               </el-dropdown-item>
-              <el-dropdown-item command="toEditUser" divided>
+              <el-dropdown-item
+                command="toEditUser"
+                divided
+              >
                 <i class="el-icon-edit">编辑</i>
               </el-dropdown-item>
-              <el-dropdown-item command="toVerify" divided>
+              <el-dropdown-item
+                command="toVerify"
+                divided
+              >
                 <i class="el-icon-document-checked">认证</i>
               </el-dropdown-item>
-              <el-dropdown-item command="logout" divided>
+              <el-dropdown-item
+                command="logout"
+                divided
+              >
                 <i class="el-icon-circle-close">退出</i>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -108,11 +148,13 @@ export default {
     return {
       picSrc: require('../../assets/image/logo.png'),
       type: false,
-      datas: []
+      datas: [],
+      avatarUrl: ''
     }
   },
-  created () {},
+  created () { },
   mounted () {
+    this.getUserAvatar()
     if (this.isLogin) {
       this.checkUnReadMsgCount()
     }
@@ -132,7 +174,7 @@ export default {
     }
   },
   methods: {
-    handleSelect (key) {},
+    handleSelect (key) { },
     // add by axiang [20190628] 统一处理用户名下拉框的下拉内容
     handleCommand (command) {
       if (command === 'toEditUser') {
@@ -175,6 +217,14 @@ export default {
     toVerify () {
       this.$router.push({ path: 'Verify' })
     },
+    async getUserAvatar () {
+      let username = this.$store.getters.getUsername
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataUserInfo = await this.$http.get('/user/getUserAvatar', params)
+      let dataAvatar = dataUserInfo.datas[0]
+      this.avatarUrl = dataAvatar
+    },
     // add by axiang [20190613] 签到
     async clockin () {
       let username = this.$store.getters.getUsername
@@ -182,7 +232,7 @@ export default {
       params.append('username', username)
       let dataSetClockIn = await this.$http
         .post('/clockin/setUserClockIn', params)
-        .catch(() => {})
+        .catch(() => { })
       if (dataSetClockIn.code === 200) {
         this.$message({
           message: '签到失败:' + dataSetClockIn.msg,
@@ -270,6 +320,11 @@ export default {
 
 .menu-rightside {
   float: right;
+}
+
+.mini-avatar-img {
+  width: 20px;
+  height: 20px;
 }
 
 .el-menu-item-userinfo {

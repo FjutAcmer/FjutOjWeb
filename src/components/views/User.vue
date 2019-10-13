@@ -24,8 +24,8 @@
           积分达到了<span style="color:orange;font-size:26px;">{{user.rating}}</span>，
           在所有人中排名第 <span style="color:red;font-size:26px;">{{user.rank}} </span>。<tr/>
           已经在OJ上AC过<span style="color:red;font-size:26px;">{{user.acnum}}</span>道题目，
-          已经<span style="color:red;font-size:26px;">[xxx]</span>了，
-          一共提交过<span style="color:red;font-size:26px;">[xxx]</span>次。<tr/>
+          已经<span style="color:red;font-size:26px;">{{user.acDes}}</span>了，
+          一共提交过<span style="color:red;font-size:26px;">{{user.submitCount}}</span>次。<tr/>
           一共给<span style="color:red;font-size:26px;">[xxx]</span>道题目贴过标签，
           当前有<span style="color:red;font-size:26px;">{{user.acb}}</span>ACB。<br/>
           <span style="color:#eeeeee;font-size:26px;">正式队员经历：</span><br/>
@@ -84,7 +84,7 @@ import userPerType from '../../util/UserPermissionType.json'
 export default {
   data () {
     return {
-      circleUrl: require('../../../pic/Head/2.jpg'),
+      circleUrl: '',
       titleImgTest: 'http://www.fjutacm.com/syspic/Title/9001.png',
       title: {
         adjective: '干活干到晕厥',
@@ -114,6 +114,7 @@ export default {
         this.getUserPermission(username)
       }
       this.getUserInfo(username)
+      this.getUserAvatar(username)
       this.getRadarData(username)
       this.getawardinfo(username)
       this.getRatingRecord(username)
@@ -127,13 +128,21 @@ export default {
     async getUserInfo (username) {
       let params = new URLSearchParams()
       params.append('username', username)
-      let dataUserInfo = await this.$http
-        .get('/user/getUserInfo', params)
-        .catch(() => {
-
-        })
+      let dataUserInfo = await this.$http.get('/user/getUserInfo', params)
       this.user = dataUserInfo.datas[0]
-      // this.img = this.img + username+'.jpg'
+      this.user.submitCount = dataUserInfo.datas[1]
+      if (this.user.acnum >= 100) {
+        this.user.acDes = '如火纯青了'
+      } else {
+        this.user.acDes = '有所成就了'
+      }
+    },
+    async getUserAvatar (username) {
+      let params = new URLSearchParams()
+      params.append('username', username)
+      let dataUserInfo = await this.$http.get('/user/getUserAvatar', params)
+      let dataAvatar = dataUserInfo.datas[0]
+      this.circleUrl = dataAvatar
     },
     async getawardinfo () {
       let username = this.$store.getters.getUsername

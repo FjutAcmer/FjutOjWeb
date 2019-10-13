@@ -42,7 +42,7 @@
     </el-card>
     <el-card class="box-card">
       <div slot="header">
-        常用文件下载中心
+        常用软件下载中心
       </div>
       <el-collapse id="download-file">
         <el-collapse-item name="1">
